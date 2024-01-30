@@ -1,6 +1,26 @@
+import { useEffect } from 'react';
 import { useFonts } from 'expo-font';
+import { Slot, router, useSegments } from 'expo-router';
 
-import Index from './index';
+import { AuthContextProvider, useAuth } from '../context/AuthContext';
+
+const RootLayout = () => {
+    const {isAuthenticated} = useAuth();
+    const segments = useSegments();
+
+    useEffect(() => {
+        if (typeof isAuthenticated == 'undefined') return;
+        const inApp = segments[0] == 'app';
+        
+        if (isAuthenticated && !inApp) {
+            router.replace('/home')
+        } else if (!isAuthenticated) {
+            router.replace('/start')
+        }
+    }, [isAuthenticated]);
+
+    return <Slot />
+}
 
 export default function App() {
     const [fontsLoaded, fontError] = useFonts({
@@ -10,10 +30,12 @@ export default function App() {
     });
 
     if (!fontsLoaded && !fontError) {
-        return null;
+        return  null;
     }
 
     return (
-        <Index />
+        <AuthContextProvider>
+            <RootLayout />
+        </AuthContextProvider>
     )
 }

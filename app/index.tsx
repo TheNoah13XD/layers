@@ -1,9 +1,11 @@
-import { View, Text } from 'react-native'
+import { ActivityIndicator, View } from 'react-native';
 
-export default function Index() {
+const Index = () => {
     return (
         <View className='flex-1 justify-center items-center'>
-            <Text style={{ fontFamily: 'ProductSansRegular' }}>Layers!</Text>
+            <ActivityIndicator size="large" color="#000" />
         </View>
-    )
+    );
 }
+
+export default Index;
