@@ -25,9 +25,10 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(undefined);
 
     useEffect(() => {
-        setTimeout(() => {
-            setIsAuthenticated(true);
-        }, 2000);
+        setIsAuthenticated(false);
+        // setTimeout(() => {
+        //     setIsAuthenticated(true);
+        // }, 2000);
     }, []);
 
     const signin = async (email: string, password: string) => {

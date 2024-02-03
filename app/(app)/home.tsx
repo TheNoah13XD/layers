@@ -1,9 +1,11 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native';
+
+import Type from '../../components/ui/Type';
 
 const Home = () => {
     return (
         <View className='flex-1 justify-center items-center'>
-            <Text style={{ fontFamily: 'ProductSansRegular' }}>Layers!</Text>
+            <Type weight='medium'>Layers!</Type>
         </View>
     );
 }
