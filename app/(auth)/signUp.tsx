@@ -1,10 +1,10 @@
-import { View, Text } from 'react-native';
+import { Section, Type } from '../../components/ui/Stylize';
 
 const SignUp = () => {
     return (
-        <View>
-            <Text>SignUp</Text>
-        </View>
+        <Section>
+            <Type>SignUp</Type>
+        </Section>
     );
 }
  

@@ -1,12 +1,10 @@
-import { View } from 'react-native';
-
-import Type from '../../components/ui/Type';
+import { Section, Type } from '../../components/ui/Stylize';
 
 const Home = () => {
     return (
-        <View className='flex-1 justify-center items-center'>
+        <Section stylize='flex-1 justify-center items-center'>
             <Type weight='medium'>Layers!</Type>
-        </View>
+        </Section>
     );
 }
  
