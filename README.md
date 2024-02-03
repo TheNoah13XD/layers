@@ -4,7 +4,7 @@
 
 ## Installation
 
-This project uses [Expo SDK 50](https://docs.expo.dev/) with Typescript, [NativeWind](https://www.nativewind.dev/) with the principles of [Material Design 3](https://material.io/), [Firebase](https://firebase.google.com/) for authentication and database. Make sure you have installed the current version of [NodeJS](https://nodejs.org/en/), [Android Studio](https://developer.android.com/studio) with a Pixel 7 Pro virtual device.
+This project uses [Expo SDK 50](https://docs.expo.dev/) with Typescript, [NativeWind](https://www.nativewind.dev/) with the principles of [Material Design 3](https://material.io/), [Firebase](https://firebase.google.com/) for authentication and database. Make sure you have installed the current version of [NodeJS](https://nodejs.org/en/), [Android Studio](https://developer.android.com/studio) with a Pixel 7 Pro virtual device (instead of Android Studio, You can also use Expo Go app on your phone).
 
 - First, clone the repo:
 
@@ -22,12 +22,26 @@ This project uses [Expo SDK 50](https://docs.expo.dev/) with Typescript, [Native
 
 ## Usage
 
- - Start the virtual device first.
+ - Start the virtual device first or connect to expo go app on your phone.
 
- - Run:
+ - Run: (for android)
 
-```python
+```bash
 npm run android
+```
+
+- Run: (for ios)
+
+```bash
+npm run ios
+```
+
+## Troubleshooting
+
+If you encounter any issues in styling, you can run the following command:
+
+```bash
+npx expo start -c
 ```
 
 ## Contributing
