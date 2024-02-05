@@ -36,6 +36,10 @@ npm run android
 npm run ios
 ```
 
+## Tools
+
+- For styling, we use [NativeWind](https://www.nativewind.dev/), a utility-first CSS framework for React Native. If you want auto-completion for NativeWind classes, you can install the [VSCode extension](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss). After the installation, Go to `Settings` > search for `Tailwind CSS Intellisense` > add `stylize` to the `classAttributes` array.
+
 ## Troubleshooting
 
 If you encounter any issues in styling, you can run the following command:

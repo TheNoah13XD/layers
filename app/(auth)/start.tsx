@@ -12,7 +12,7 @@ const Start = () => {
                 <Type stylize='text-displayLarge tracking-tightest text-onSecondaryContainer'>.layers</Type>
                 <Type weight='medium' stylize='text-titleMedium tracking-wide text-onSecondaryContainer'>Unravel your layered feelings, punctuate your life with a comma.</Type>
             </Section>
-            <Fab type="large" containerColor='bg-secondaryContainer' contentColor='onSecondaryContainer' stylize='absolute bottom-11 right-10' onPress={() => router.push("/signIn")} />
+            <Fab icon='arrow-forward' type="large" containerColor='bg-secondaryContainer' contentColor='onSecondaryContainer' stylize='absolute bottom-11 right-[38px]' onPress={() => router.push("/signIn")} />
         </Section>
     );
 }

@@ -171,3 +171,61 @@ export interface TextColors {
     "text-black": string;
     "text-white": string;
 }
+
+export interface BorderColors {
+    "border-primary": string;
+    "border-onPrimary": string;
+    "border-primaryContainer": string;
+    "border-onPrimaryContainer": string;
+    "border-primaryFixed": string;
+    "border-onPrimaryFixed": string;
+    "border-primaryFixedDim": string;
+    "border-onPrimaryFixedVariant": string;
+    "border-inversePrimary": string;
+    // secondary
+    "border-secondary": string;
+    "border-onSecondary": string;
+    "border-secondaryContainer": string;
+    "border-onSecondaryContainer": string;
+    "border-secondaryFixed": string;
+    "border-onSecondaryFixed": string;
+    "border-secondaryFixedDim": string;
+    "border-onSecondaryFixedVariant": string;
+    // tertiary
+    "border-tertiary": string;
+    "border-onTertiary": string;
+    "border-tertiaryContainer": string;
+    "border-onTertiaryContainer": string;
+    "border-tertiaryFixed": string;
+    "border-onTertiaryFixed": string;
+    "border-tertiaryFixedDim": string;
+    "border-onTertiaryFixedVariant": string;
+    // error
+    "border-error": string;
+    "border-onError": string;
+    "border-errorContainer": string;
+    "border-onErrorContainer": string;
+    // surface
+    "border-surface": string;
+    "border-onSurface": string;
+    "border-surfaceVariant": string;
+    "border-onSurfaceVariant": string;
+    "border-surfaceDim": string;
+    "border-surfaceBright": string;
+    "border-surfaceContainerLowest": string;
+    "border-surfaceContainerLow": string;
+    "border-surfaceContainer": string;
+    "border-surfaceContainerHigh": string;
+    "border-surfaceContainerHighest": string;
+    "border-inverseSurface": string;
+    "border-inverseOnSurface": string;
+    // background
+    "border-background": string;
+    "border-onBackground": string;
+    "border-outline": string;
+    "border-outlineVariant": string;
+    "border-shadow": string;
+    "border-scrim": string;
+    "border-black": string;
+    "border-white": string;
+}

@@ -1,6 +1,7 @@
 import { Text, View } from 'react-native';
 
 import { styled } from 'nativewind';
+import { FontWeight } from "../../constants";
 
 interface SectionProps {
     children: React.ReactNode;
@@ -25,14 +26,8 @@ const Section = ({ children, stylize }: SectionProps) => {
 }
 
 const Type = ({ children, weight = 'regular', stylize }: TypeProps) => {
-    const fontWeights = {
-        regular: 'ProductSansRegular',
-        medium: 'ProductSansMedium',
-        bold: 'ProductSansBold',
-    };
-
     return (
-        <StyledText style={{ fontFamily: fontWeights[weight] }} className={stylize}>
+        <StyledText style={{ fontFamily: FontWeight[weight] }} className={stylize}>
             {children}
         </StyledText>
     );
