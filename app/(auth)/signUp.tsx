@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Pressable } from 'react-native';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
@@ -11,6 +12,7 @@ import Button from '../../components/ui/Button';
 import Fab from '../../components/ui/Fab';
 import TextField from '../../components/ui/TextFiled';
 import Snackbar from '../../components/ui/Snackbar';
+import Check from '../../components/ui/Check';
 
 const SignUp = () => {
     const { signup } = useAuth();
@@ -21,6 +23,7 @@ const SignUp = () => {
     const [username, setUsername] = useState('');
 
     const [completeProfile, setCompleteProfile] = useState(false);
+    const [isChecked, setChecked] = useState(false);
 
     const [snackbar, setSnackbar] = useState(false);
     const [error, setError] = useState('');
@@ -41,6 +44,8 @@ const SignUp = () => {
         } else {
             if (!name || !username) {
                 showError('Please fill in all fields.');
+            } else if (!isChecked) {
+                showError('Please agree to terms & conditions.');
             } else {
                 const response = await signup(email, password, name, username);
                 switch (true) {
@@ -96,17 +101,24 @@ const SignUp = () => {
 
                             <Type stylize='text-bodyLarge text-onSurface text-center mt-4'>or</Type>
 
-                            {/* google button */}
+                            <Pressable className='flex justify-center items-center bg-onSurface w-full h-14 mt-4 rounded-full'>
+                                <Type stylize='text-inverseOnSurface text-bodyLarge'>Continue with Google</Type>
+                            </Pressable>
                         </Section>
                     ) : (
-                        <Section stylize='px-5 pt-10'>
+                        <Section stylize='px-5 pt-[108px]'>
                             <TextField value={name} onChangeText={setName} icon='face' placeholder='Full Name'/>
                             <TextField value={username} onChangeText={setUsername} icon='person' placeholder='Username' stylize='mt-2' />
+
+                            <Section stylize='flex-row items-center pl-4 pt-10'>
+                                <Check value={isChecked} onValueChange={setChecked} />
+                                <Type stylize='text-bodyLarge text-onSurface pl-2'>Agree to terms & conditions.</Type>
+                            </Section>
                         </Section>
                     )}
                 </Section>
 
-                <Section stylize={`flex flex-row items-center justify-between px-[38px] ${!completeProfile ? 'pt-11' : 'pt-11'}`}>
+                <Section stylize={`flex flex-row items-center justify-between px-9 ${!completeProfile ? 'pt-11' : 'pt-2'}`}>
                     <Button type='text' contentColor='text-primary' onPress={() => router.replace("/signIn")}>Sign In</Button>
                     <Fab icon='arrow-forward' type="large" containerColor='bg-primaryContainer' contentColor='onPrimaryContainer' onPress={handleSignUp} />
                 </Section>

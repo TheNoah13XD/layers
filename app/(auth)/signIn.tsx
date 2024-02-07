@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Pressable } from 'react-native';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
@@ -79,11 +80,13 @@ const SignIn = () => {
 
                         <Type stylize='text-bodyLarge text-onSurface text-center mt-4'>or</Type>
 
-                        {/* <TextField stylize='mt-4' /> */}
+                        <Pressable className='flex justify-center items-center bg-onSurface w-full h-14 mt-4 rounded-full'>
+                            <Type stylize='text-inverseOnSurface text-bodyLarge'>Sign in with Google</Type>
+                        </Pressable>
                     </Section>
                 </Section>
 
-                <Section stylize='flex flex-row items-center justify-between px-[38px] pt-11'>
+                <Section stylize='flex flex-row items-center justify-between px-9 pt-11'>
                     <Button type='text' contentColor='text-primary' onPress={() => router.replace("/signUp")}>Create Account</Button>
                     <Fab icon='arrow-forward' type="large" containerColor='bg-primaryContainer' contentColor='onPrimaryContainer' onPress={handleSignIn} />
                 </Section>
