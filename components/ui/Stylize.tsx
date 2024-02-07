@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
-
 import { styled } from 'nativewind';
+
 import { FontWeight } from "../../constants";
 
 interface SectionProps {

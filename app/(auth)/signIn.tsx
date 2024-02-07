@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
 
+import { Blurhash, GradientContainer } from '../../constants';
 import { Section, Type } from '../../components/ui/Stylize';
 import CustomKeyboardView from '../../components/CustomKeyboardView';
 import Icon from '../../components/ui/Icon';
@@ -49,7 +51,20 @@ const SignIn = () => {
         <CustomKeyboardView>
             <Section stylize='w-full h-screen'>
                 <Section stylize='px-[18px]'>
-                    <Section stylize='bg-primaryContainer pl-5 py-10 mt-[68px] rounded-[50px]'>
+                    <Section stylize='pl-5 py-10 mt-[68px] rounded-[50px]'>
+                        <Image
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                bottom: 0,
+                                right: 0,
+                                zIndex: -1
+                            }}
+                            source={GradientContainer}
+                            placeholder={Blurhash}
+                            contentFit="cover"
+                        />
                         <Icon name='lock-open' size={57} color='black' />
 
                         <Section stylize='pl-2 pt-[132px]'>

@@ -1,7 +1,13 @@
-import { Slot } from 'expo-router';
+import { Stack } from 'expo-router';
 
 const AppLayout = () => {
-    return <Slot />
+    return (
+        <Stack screenOptions={{ contentStyle: 
+            { backgroundColor: '#FDF8FF'}
+        }}>
+            <Stack.Screen name='home' options={{ headerShown: false }} />
+        </Stack>
+    );
 }
  
 export default AppLayout;

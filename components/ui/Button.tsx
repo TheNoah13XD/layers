@@ -2,9 +2,9 @@ import { useMemo } from "react";
 import { Pressable } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
+import { BgColors, TextColors, BorderColors, Colors } from "../../constants";
 import Icon from "./Icon";
 import { Section, Type } from "./Stylize";
-import { BgColors, TextColors, BorderColors, Colors } from "../../constants";
 
 interface ButtonProps {
     type: 'elevated' | 'filled' | 'outlined' | 'text';

@@ -2,6 +2,7 @@ import { Colors, BgColors, TextColors, BorderColors } from "./types";
 import { getColorFromClass } from "./utils";
 import { ColorValues } from "./data/colors";
 import { FontWeight } from "./data/types";
+import { Blurhash, Gradient, GradientContainer } from "./data/assets";
 
 // types
 export { Colors, BgColors, TextColors, BorderColors };
@@ -10,4 +11,4 @@ export { Colors, BgColors, TextColors, BorderColors };
 export { getColorFromClass };
 
 // constants
-export { ColorValues, FontWeight };
+export { ColorValues, FontWeight, Blurhash, Gradient, GradientContainer };
