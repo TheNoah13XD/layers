@@ -1,9 +1,15 @@
-import { Section, Type } from '../../components/ui/Stylize';
+import { useAuth } from '../../context/AuthContext';
+
+import Button from '../../components/ui/Button';
+import { Section } from '../../components/ui/Stylize';
 
 const Home = () => {
+    const { user, signout } = useAuth();
+
+    console.log(user)
     return (
         <Section stylize='flex-1 justify-center items-center'>
-            <Type weight='medium'>Layers!</Type>
+            <Button type='text' contentColor='text-primary' onPress={signout}>Logout</Button>
         </Section>
     );
 }
