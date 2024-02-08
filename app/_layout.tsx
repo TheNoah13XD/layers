@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useFonts } from 'expo-font';
 import { Slot, router, useSegments } from 'expo-router';
 
-import { AuthContextProvider, useAuth } from '../context/AuthContext';
+import { AuthContextProvider, useAuth } from '@context';
 
 const RootLayout = () => {
     const {isAuthenticated} = useAuth();

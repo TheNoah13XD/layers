@@ -2,16 +2,12 @@ import { useState } from 'react';
 import { Pressable } from 'react-native';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { useAuth } from '../../context/AuthContext';
 
-import { Blurhash, GradientContainer } from '../../constants';
-import { Section, Type } from '../../components/ui/Stylize';
-import CustomKeyboardView from '../../components/CustomKeyboardView';
-import Icon from '../../components/ui/Icon';
-import Button from '../../components/ui/Button';
-import Fab from '../../components/ui/Fab';
-import TextField from '../../components/ui/TextFiled';
-import Snackbar from '../../components/ui/Snackbar';
+import { useAuth } from '@context';
+import { Blurhash, GradientContainer } from '@constants';
+
+import { CustomKeyboardView, Section, Type } from '@components/styled';
+import { Button, Fab, Icon, Snackbar, TextField } from '@components/material';
 
 const SignIn = () => {
     const { signin } = useAuth();
@@ -75,7 +71,7 @@ const SignIn = () => {
                     </Section>
 
                     <Section stylize='px-5 pt-10'>
-                        <TextField value={email} onChangeText={setEmail} icon='mail-outline' placeholder='Email'/>
+                        <TextField value={email} onChangeText={setEmail} icon='mail-outline' keyboardType='email-address' placeholder='Email'/>
                         <TextField value={password} onChangeText={setPassword} icon='lock-outline' secureTextEntry placeholder='Password' stylize='mt-2' />
 
                         <Type stylize='text-bodyLarge text-onSurface text-center mt-4'>or</Type>

@@ -1,5 +1,5 @@
-import Button from "./Button";
-import { Section, Type } from "./Stylize";
+import { Section, Type } from "../styled";
+import { Button } from "./Button";
 
 interface SnackbarProps {
     view: boolean;
@@ -7,7 +7,7 @@ interface SnackbarProps {
     action?: () => void;
 }
 
-const Snackbar = ({ view, message, action }: SnackbarProps) => {
+export const Snackbar = ({ view, message, action }: SnackbarProps) => {
     const display = view ? "bottom-2" : "-bottom-20";
 
     return (
@@ -17,5 +17,3 @@ const Snackbar = ({ view, message, action }: SnackbarProps) => {
         </Section>
     );
 }
- 
-export default Snackbar;

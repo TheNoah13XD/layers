@@ -1,10 +1,10 @@
 import { ImageBackground } from 'react-native';
 import { router } from 'expo-router';
 
-import { Gradient } from '../../constants';
-import { Section, Type } from '../../components/ui/Stylize';
-import Icon from '../../components/ui/Icon';
-import Fab from '../../components/ui/Fab';
+import { Gradient } from '@constants';
+
+import { Section, Type } from '@components/styled';
+import { Fab, Icon } from '@components/material';
 
 const Start = () => {
     return (

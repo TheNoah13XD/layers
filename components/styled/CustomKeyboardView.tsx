@@ -6,7 +6,7 @@ interface CustomKeyboardViewProps {
 
 const ios = Platform.OS === "ios";
 
-const CustomKeyboardView = ({ children }: CustomKeyboardViewProps) => {
+export const CustomKeyboardView = ({ children }: CustomKeyboardViewProps) => {
     return (
         <KeyboardAvoidingView behavior={ios ? 'padding' : 'height'} style={{ flex: 1 }}>
             <ScrollView style={{ flex: 1 }} bounces={false} showsVerticalScrollIndicator={false}>
@@ -15,5 +15,3 @@ const CustomKeyboardView = ({ children }: CustomKeyboardViewProps) => {
         </KeyboardAvoidingView>
     );
 }
- 
-export default CustomKeyboardView;

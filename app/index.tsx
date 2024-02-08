@@ -1,6 +1,6 @@
 import { ActivityIndicator } from 'react-native';
 
-import { Section } from '../components/ui/Stylize';
+import { Section } from '@components/styled';
 
 const Index = () => {
     return (

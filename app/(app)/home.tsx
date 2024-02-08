@@ -1,7 +1,7 @@
 import { useAuth } from '../../context/AuthContext';
 
-import Button from '../../components/ui/Button';
-import { Section } from '../../components/ui/Stylize';
+import { Section } from '@components/styled';
+import { Button } from '@components/material';
 
 const Home = () => {
     const { user, signout } = useAuth();

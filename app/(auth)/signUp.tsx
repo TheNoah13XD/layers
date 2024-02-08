@@ -2,17 +2,12 @@ import { useState } from 'react';
 import { Pressable } from 'react-native';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { useAuth } from '../../context/AuthContext';
 
-import { Blurhash, GradientContainer } from '../../constants';
-import { Section, Type } from '../../components/ui/Stylize';
-import CustomKeyboardView from '../../components/CustomKeyboardView';
-import Icon from '../../components/ui/Icon';
-import Button from '../../components/ui/Button';
-import Fab from '../../components/ui/Fab';
-import TextField from '../../components/ui/TextFiled';
-import Snackbar from '../../components/ui/Snackbar';
-import Check from '../../components/ui/Check';
+import { useAuth } from '@context';
+import { Blurhash, GradientContainer } from '@constants';
+
+import { CustomKeyboardView, Section, Type } from '@components/styled';
+import { Button, Check, Fab, Icon, Snackbar, TextField } from '@components/material';
 
 const SignUp = () => {
     const { signup } = useAuth();
@@ -96,7 +91,7 @@ const SignUp = () => {
 
                     {!completeProfile ? (
                         <Section stylize='px-5 pt-10'>
-                            <TextField value={email} onChangeText={setEmail} icon='mail-outline' placeholder='Email'/>
+                            <TextField value={email} onChangeText={setEmail} icon='mail-outline' keyboardType='email-address' placeholder='Email'/>
                             <TextField value={password} onChangeText={setPassword} icon='lock-outline' secureTextEntry placeholder='Password' stylize='mt-2' />
 
                             <Type stylize='text-bodyLarge text-onSurface text-center mt-4'>or</Type>
@@ -112,7 +107,7 @@ const SignUp = () => {
 
                             <Section stylize='flex-row items-center pl-4 pt-10'>
                                 <Check value={isChecked} onValueChange={setChecked} />
-                                <Type stylize='text-bodyLarge text-onSurface pl-2'>Agree to terms & conditions.</Type>
+                                <Type stylize='text-bodyLarge text-onPrimaryContainer pl-2'>Agree to terms & conditions.</Type>
                             </Section>
                         </Section>
                     )}

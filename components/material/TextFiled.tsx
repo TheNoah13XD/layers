@@ -2,20 +2,22 @@ import { useState } from 'react';
 import { TextInput } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-import { FontWeight } from "../../constants";
-import { Section, Type } from "./Stylize";
-import Icon from "./Icon";
+import { FontWeight } from '@constants';
+
+import { Section } from "../styled";
+import { Icon } from './Icon';
 
 interface TextFieldProps {
     value: string;
     onChangeText: (text: string) => void;
     placeholder?: string;
     icon?: keyof typeof MaterialIcons.glyphMap;
+    keyboardType?: "email-address" | "numeric" | "phone-pad" | "default";
     secureTextEntry?: boolean;
     stylize?: string;
 }
 
-const TextField = ({ value, onChangeText, placeholder, icon, secureTextEntry, stylize }: TextFieldProps) => {
+export const TextField = ({ value, onChangeText, placeholder, icon, keyboardType, secureTextEntry, stylize }: TextFieldProps) => {
     const [isFocused, setIsFocused] = useState(false);
 
     const handleFocus = () => setIsFocused(true);
@@ -31,6 +33,7 @@ const TextField = ({ value, onChangeText, placeholder, icon, secureTextEntry, st
                 onChangeText={onChangeText} 
                 placeholder={isFocused ? "" : placeholder}
                 placeholderTextColor="#48454E" 
+                keyboardType={keyboardType}
                 secureTextEntry={secureTextEntry} 
                 onFocus={handleFocus}
                 onBlur={handleBlur}
@@ -40,5 +43,3 @@ const TextField = ({ value, onChangeText, placeholder, icon, secureTextEntry, st
         </Section>
     );
 }
- 
-export default TextField;

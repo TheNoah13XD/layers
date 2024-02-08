@@ -2,9 +2,10 @@ import { useMemo } from "react";
 import { Pressable } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-import { BgColors, TextColors, BorderColors, Colors } from "../../constants";
-import Icon from "./Icon";
-import { Section, Type } from "./Stylize";
+import { BgColors, TextColors, BorderColors, Colors } from "@types";
+
+import { Section, Type } from "../styled";
+import { Icon } from "./Icon";
 
 interface ButtonProps {
     type: 'elevated' | 'filled' | 'outlined' | 'text';
@@ -17,7 +18,7 @@ interface ButtonProps {
     children: React.ReactNode;
 }
 
-const Button = ({ type, containerColor, contentColor, borderColor, icon, onPress, stylize, children }: ButtonProps) => {
+export const Button = ({ type, containerColor, contentColor, borderColor, icon, onPress, stylize, children }: ButtonProps) => {
     const iconColor = contentColor.replace('text-', '') as keyof Colors;
     const iconElement = icon ? <Icon name={icon} size={24} color={iconColor} /> : null;
 
@@ -47,5 +48,3 @@ const Button = ({ type, containerColor, contentColor, borderColor, icon, onPress
         </Section>
     );
 }
- 
-export default Button;

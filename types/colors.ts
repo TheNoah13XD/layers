@@ -54,7 +54,7 @@ export interface Colors {
     "scrim": string;
     "black": string;
     "white": string;
-}
+};
 
 export interface BgColors {
     "bg-primary": string;
@@ -112,7 +112,7 @@ export interface BgColors {
     "bg-scrim": string;
     "bg-black": string;
     "bg-white": string;
-}
+};
 
 export interface TextColors {
     "text-primary": string;
@@ -170,7 +170,7 @@ export interface TextColors {
     "text-scrim": string;
     "text-black": string;
     "text-white": string;
-}
+};
 
 export interface BorderColors {
     "border-primary": string;
@@ -228,4 +228,4 @@ export interface BorderColors {
     "border-scrim": string;
     "border-black": string;
     "border-white": string;
-}
+};

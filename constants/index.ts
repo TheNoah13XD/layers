@@ -1,14 +1,4 @@
-import { Colors, BgColors, TextColors, BorderColors } from "./types";
-import { getColorFromClass } from "./utils";
-import { ColorValues } from "./data/colors";
-import { FontWeight } from "./data/types";
-import { Blurhash, Gradient, GradientContainer } from "./data/assets";
-
-// types
-export { Colors, BgColors, TextColors, BorderColors };
-
-// utils
-export { getColorFromClass };
-
-// constants
-export { ColorValues, FontWeight, Blurhash, Gradient, GradientContainer };
+export * from './utils';
+export * from './colors';
+export * from './text';
+export * from './assets';
