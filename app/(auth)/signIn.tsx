@@ -10,7 +10,7 @@ import { CustomKeyboardView, Section, Type } from '@components/styled';
 import { Button, Fab, Icon, Snackbar, TextField } from '@components/material';
 
 const SignIn = () => {
-    const { signin } = useAuth();
+    const { assessment, signin } = useAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -37,6 +37,9 @@ const SignIn = () => {
                     break;
                 case response.toString().includes('credential'):
                     showError('Incorrect password.');
+                    break;
+                case !assessment:
+                    router.replace('/assessments');
                     break;
                 default:
                     router.replace('/home');

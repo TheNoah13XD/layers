@@ -15,6 +15,8 @@ interface AuthContextType {
     user: User | null;
     isLoading: boolean;
     isAuthenticated: boolean | undefined;
+    assessment: boolean;
+    setAssement: (value: boolean) => void;
     signin: (email: string, password: string) => Promise<UserCredential | String>;
     signup: (email: string, password: string, name: string, username: string) => Promise<UserCredential | String>;
     signout: () => Promise<void | String>;
@@ -29,6 +31,7 @@ interface AuthContextProviderProps {
 export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [assessment, setAssement] = useState<boolean>(false);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(undefined);
     
     const updateUserData = useCallback(async (userId: string) => {
@@ -120,6 +123,8 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
             user,
             isLoading,
             isAuthenticated,
+            assessment,
+            setAssement,
             signin,
             signup,
             signout

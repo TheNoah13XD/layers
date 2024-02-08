@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useFonts } from 'expo-font';
-import { Slot, router, useSegments } from 'expo-router';
+import { Slot, SplashScreen, router, useSegments } from 'expo-router';
 
 import { AuthContextProvider, useAuth } from '@context';
 
 const RootLayout = () => {
-    const {isAuthenticated} = useAuth();
+    const { assessment, isAuthenticated } = useAuth();
     const segments = useSegments();
 
     useEffect(() => {
@@ -14,6 +14,8 @@ const RootLayout = () => {
         
         if (isAuthenticated && !inApp) {
             router.replace('/home')
+        } else if (isAuthenticated && !assessment) {
+            router.replace('/assessments')
         } else if (!isAuthenticated) {
             router.replace('/start')
         }
@@ -22,6 +24,8 @@ const RootLayout = () => {
     return <Slot />
 }
 
+SplashScreen.preventAutoHideAsync();
+
 export default function App() {
     const [fontsLoaded, fontError] = useFonts({
         'ProductSansRegular': require('../assets/fonts/ProductSansRegular.ttf'),
@@ -29,13 +33,23 @@ export default function App() {
         'ProductSansBold': require('../assets/fonts/ProductSansBold.ttf'),
     });
 
-    if (!fontsLoaded && !fontError) {
-        return  null;
+    useEffect(() => {
+        if (fontError) throw new Error('Failed to load fonts');
+    }, [fontError]);
+    
+    useEffect(() => {
+        if (fontsLoaded) {
+            SplashScreen.hideAsync();
+        }
+    }, [fontsLoaded]);
+    
+    if (!fontsLoaded) {
+        return null;
     }
 
     return (
         <AuthContextProvider>
             <RootLayout />
         </AuthContextProvider>
-    )
+    );
 }

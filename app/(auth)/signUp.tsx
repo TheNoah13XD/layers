@@ -57,7 +57,7 @@ const SignUp = () => {
                         setCompleteProfile(false);
                         break;
                     default:
-                        router.replace('/home');
+                        router.replace('/assessments');
                 }
             }
         }
