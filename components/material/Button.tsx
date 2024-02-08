@@ -20,24 +20,20 @@ interface ButtonProps {
 
 export const Button = ({ type, containerColor, contentColor, borderColor, icon, onPress, stylize, children }: ButtonProps) => {
     const iconColor = contentColor.replace('text-', '') as keyof Colors;
-    const iconElement = icon ? <Icon name={icon} size={24} color={iconColor} /> : null;
+
+    const iconElement = useMemo(() => {
+        return icon ? <Icon name={icon} size={24} color={iconColor} /> : null;
+    }, [icon, iconColor]);
 
     const buttonStyle = useMemo(() => {
-        let style = '';
-        if (type === 'filled') {
-            style += containerColor;
-        }
-        if (type === 'elevated') {
-            style += `${containerColor} shadow shadow-[0_1px_2px_0px_rgba(0,0,0,0.3)]  shadow-[0_1px_3px_1px_rgba(0,0,0,0.15)]`;
-        }
-        if (type === 'outlined') {
-            style += `border ${borderColor} bg-none`;
-        }
-        if (type === 'text') {
-            style += 'bg-none';
-        }
-        return style;
-    }, [type, containerColor, contentColor]);
+        const styles = {
+            'filled': containerColor,
+            'elevated': `${containerColor} shadow shadow-[0_1px_2px_0px_rgba(0,0,0,0.3)]  shadow-[0_1px_3px_1px_rgba(0,0,0,0.15)]`,
+            'outlined': `border ${borderColor} bg-none`,
+            'text': 'bg-none'
+        };
+        return styles[type] || '';
+    }, [type, containerColor, borderColor]);
 
     return (
         <Section stylize={stylize}>
