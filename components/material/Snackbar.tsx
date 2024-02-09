@@ -8,7 +8,7 @@ interface SnackbarProps {
 }
 
 export const Snackbar = ({ view, message, action }: SnackbarProps) => {
-    const display = view ? "bottom-2" : "-bottom-20";
+    const display = view ? "bottom-5" : "-bottom-20";
 
     return (
         <Section stylize={`flex-row justify-between items-center absolute ${display} self-center bg-inverseSurface rounded-full h-12 pl-6`}>

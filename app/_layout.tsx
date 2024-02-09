@@ -12,7 +12,7 @@ const RootLayout = () => {
         if (typeof isAuthenticated == 'undefined') return;
         const inApp = segments[0] == 'app';
         
-        if (isAuthenticated && !inApp) {
+        if (isAuthenticated && !inApp && assessment) {
             router.replace('/home')
         } else if (isAuthenticated && !assessment) {
             router.replace('/assessments')

@@ -8,7 +8,6 @@ module.exports = {
       wide: 0.15,
       wider: 0.25,
       widest: 0.5,
-      
     },
     extend: {
       fontSize: {

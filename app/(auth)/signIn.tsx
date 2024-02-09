@@ -87,7 +87,7 @@ const SignIn = () => {
 
                 <Section stylize='flex flex-row items-center justify-between px-9 pt-11'>
                     <Button type='text' contentColor='text-primary' onPress={() => router.replace("/signUp")}>Create Account</Button>
-                    <Fab icon='arrow-forward' type="large" containerColor='bg-primaryContainer' contentColor='onPrimaryContainer' onPress={handleSignIn} />
+                    <Fab icon='arrow-forward' type="large" containerColor='bg-primaryContainer' contentColor='primary' onPress={handleSignIn} />
                 </Section>
 
                 <Snackbar view={snackbar} message={error} action={() => setSnackbar(false)} />
