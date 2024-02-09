@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable } from 'react-native';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
@@ -10,13 +10,21 @@ import { CustomKeyboardView, Section, Type } from '@components/styled';
 import { Button, Fab, Icon, Snackbar, TextField } from '@components/material';
 
 const SignIn = () => {
-    const { assessment, signin } = useAuth();
+    const { user, isAuthenticated, signin } = useAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const [snackbar, setSnackbar] = useState(false);
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        if (isAuthenticated && user && user.role) {
+            router.replace('/home');
+        } else if (isAuthenticated && user && !user.role) {
+            router.replace('/assessments');
+        }
+    }, [isAuthenticated]);
 
     const showError = (message: string) => {
         setError(message);
@@ -38,7 +46,7 @@ const SignIn = () => {
                 case response.toString().includes('credential'):
                     showError('Incorrect password.');
                     break;
-                case !assessment:
+                case user && !user.role:
                     router.replace('/assessments');
                     break;
                 default:

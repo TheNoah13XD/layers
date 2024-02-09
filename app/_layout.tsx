@@ -5,21 +5,21 @@ import { Slot, SplashScreen, router, useSegments } from 'expo-router';
 import { AuthContextProvider, useAuth } from '@context';
 
 const RootLayout = () => {
-    const { assessment, isAuthenticated } = useAuth();
+    const { user, isLoading, isAuthenticated } = useAuth();
     const segments = useSegments();
 
     useEffect(() => {
-        if (typeof isAuthenticated == 'undefined') return;
+        if (typeof isAuthenticated == 'undefined' || isLoading) return;
         const inApp = segments[0] == 'app';
         
-        if (isAuthenticated && !inApp && assessment) {
-            router.replace('/home')
-        } else if (isAuthenticated && !assessment) {
-            router.replace('/assessments')
+        if (isAuthenticated && !inApp && user?.role) {
+            router.replace('/home');
+        } else if (isAuthenticated && user && !user?.role) {
+            router.replace('/assessments');
         } else if (!isAuthenticated) {
-            router.replace('/start')
+            router.replace('/start');
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, isLoading]);
 
     return <Slot />
 }

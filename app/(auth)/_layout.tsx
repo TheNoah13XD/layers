@@ -4,13 +4,13 @@ import { Stack, router } from 'expo-router';
 import { useAuth } from '@context';
 
 const AuthLayout = () => {
-    const { assessment, isAuthenticated } = useAuth();
+    const { user, isAuthenticated } = useAuth();
 
     useEffect(() => {
-        if (isAuthenticated && assessment) {
-            router.replace('/home')
-        } else if (isAuthenticated && !assessment) {
-            router.replace('/assessments')
+        if (isAuthenticated && user && user.role) {
+            router.replace('/home');
+        } else if (isAuthenticated && user && !user.role) {
+            router.replace('/assessments');
         }
     }, [isAuthenticated]);
 

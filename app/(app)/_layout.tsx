@@ -1,13 +1,18 @@
-import { Redirect, Stack } from 'expo-router';
+import { useEffect } from 'react';
+import { router, Stack } from 'expo-router';
 
 import { useAuth } from '@context';
 
 const AppLayout = () => {
-    const {isAuthenticated} = useAuth();
+    const { user, isAuthenticated } = useAuth();
 
-    if (!isAuthenticated) {
-        return <Redirect href={'/start'} />;
-    }
+    useEffect(() => {
+        if (!isAuthenticated) {
+            router.replace('/start');
+        } else if (user && user && !user.role) {
+            router.replace('/assessments');
+        }
+    }, [isAuthenticated]);
 
     return (
         <Stack screenOptions={{ contentStyle: 

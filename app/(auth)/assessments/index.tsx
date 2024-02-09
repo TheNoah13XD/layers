@@ -1,4 +1,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
+import { router } from 'expo-router';
+
+import { useAuth } from "@context";
 
 import { Section, Type } from "@components/styled";
 import { Fab, Icon, Pagination, Snackbar, Toggle } from "@components/material";
@@ -8,6 +11,8 @@ const pageTexts = ['why this app?', 'age & gender?', 'helper? / seeker?'];
 const maxPages = pageTexts.length;
 
 const GeneralAssessments = () => {
+    const { user, userUpdate } = useAuth();
+
     const [currentPage, setCurrentPage] = useState(1);
     const [snackbar, setSnackbar] = useState(false);
     const [error, setError] = useState('');
@@ -16,9 +21,9 @@ const GeneralAssessments = () => {
     const [firstWord, ...remainingWords] = useMemo(() => currentPageText.split(' '), [currentPageText]);
 
     const [selectedShapes, setSelectedShapes] = useState(new Set());
-    const [age, setAge] = useState(18);
-    const [isEnabled, setIsEnabled] = useState(false);
-    const [role, setRole] = useState('seeker');
+    const [age, setAge] = useState<number>(15);
+    const [isEnabled, setIsEnabled] = useState<boolean>(false);
+    const [role, setRole] = useState<'helper' | 'seeker'>('helper');
 
     useEffect(() => {
         if (error) {
@@ -40,19 +45,31 @@ const GeneralAssessments = () => {
     const decrementAge = useCallback(() => setAge(prevAge => prevAge > 15 ? prevAge - 1 : prevAge), []);
     const toggleSwitch = useCallback(() => setIsEnabled(prev => !prev), []);
 
-    const selectRole = useCallback((selectedRole: string) => setRole(selectedRole), []);
+    const selectRole = useCallback((selectedRole: string) => setRole(selectedRole as 'helper' | 'seeker'), []);
 
     const handlePreviousPage = useCallback(() => setCurrentPage(prevPage => prevPage > 1 ? prevPage - 1 : prevPage), []);
-
-    const handlePageChange = useCallback((page: number) => {
+    
+    const handlePageChange = useCallback(async (page: number) => {
         if (selectedShapes.size === 0 && page === 1) {
             setError('Please select at least one shape');
             return;
-        } else if (page === maxPages) {
-            console.log('submit');
+        } else if (page === maxPages && user) {
+            try {
+                await userUpdate(user.id, {
+                    age,
+                    gender: isEnabled ? 'female' : 'male',
+                    role: role
+                });
+
+                router.replace('/home');
+                return;
+            } catch (error) {
+                setError((error as Error).message);
+                return;
+            }
         }
         setCurrentPage(prevPage => (page > 0 && page < maxPages) ? prevPage + 1 : prevPage);
-    }, [selectedShapes, maxPages]);
+    }, [selectedShapes, maxPages, age, isEnabled, role]);
 
     return (
         <Section stylize="h-full">
