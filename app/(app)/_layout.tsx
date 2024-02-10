@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { router, Stack } from 'expo-router';
+import { router, Tabs } from 'expo-router';
 
 import { useAuth } from '@context';
 
@@ -15,11 +15,28 @@ const AppLayout = () => {
     }, [isAuthenticated]);
 
     return (
-        <Stack screenOptions={{ contentStyle: 
-            { backgroundColor: '#FDF8FF'}
-        }}>
-            <Stack.Screen name='home' options={{ headerShown: false }} />
-        </Stack>
+        <Tabs>
+            <Tabs.Screen
+                name='index'
+                options={{ href: null }}
+            />
+            <Tabs.Screen
+                name='home'
+                options={{ headerShown: false }}
+            />
+            <Tabs.Screen
+                name='chats'
+                options={{ headerShown: false }}
+            />
+            <Tabs.Screen
+                name='community'
+                options={{ headerShown: false }}
+            />
+            <Tabs.Screen
+                name='profile'
+                options={{ headerShown: false }}
+            />
+        </Tabs>
     );
 }
  

@@ -6,7 +6,7 @@ import { useAuth } from '@context';
 import { Section } from '@components/styled';
 import { Button } from '@components/material';
 
-const Home = () => {
+const Profile = () => {
     const { user, isAuthenticated, signout } = useAuth();
 
     useEffect(() => {
@@ -24,4 +24,4 @@ const Home = () => {
     );
 }
  
-export default Home;
+export default Profile;
