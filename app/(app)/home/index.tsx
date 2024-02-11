@@ -26,8 +26,8 @@ const Home = () => {
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <Section stylize='pt-[74px] px-7'>
-                <Type weight='bold' stylize='text-displayMedium leading-[52px] text-onSurface'>Hi,</Type>
-                <Type weight='bold' stylize='text-displayMedium leading-[52px] text-onSurface'>{firstName}!</Type>
+                <Type weight='bold' stylize='text-displayMedium leading-[52px] tracking-tighter text-onSurface'>Hi,</Type>
+                <Type weight='bold' stylize='text-displayMedium leading-[52px] tracking-tighter text-onSurface'>{firstName}!</Type>
 
                 <Section stylize='flex-row mt-7'>
                     <Button {...getButtonProps(active === 'index')} onPress={() => setActive('index')}>Layer Index</Button>
@@ -49,7 +49,7 @@ const Home = () => {
                 <Section stylize='bg-primaryFixed rounded-[50px] overflow-hidden w-full mt-7 mb-20 pt-7 pb-12'>
                     <Section stylize='flex-row justify-between items-center w-full px-7'>
                         <Type stylize='text-headlineMedium text-onSurfaceVariant tracking-tight'>Therapy</Type>
-                        <Button type='filled' icon='bookmark-outline' containerColor='bg-primaryFixedDim' contentColor='text-onPrimaryFixedVariant' stylize='mt-3'>Logs</Button>
+                        <Button type='filled' icon='bookmark-outline' containerColor='bg-primaryFixedDim' contentColor='text-onPrimaryFixedVariant'>Logs</Button>
                     </Section>
 
                     <Section stylize='px-[6px] py-5'>
