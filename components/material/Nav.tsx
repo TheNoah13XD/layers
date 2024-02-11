@@ -65,7 +65,7 @@ export const Nav = ({ state, descriptors, navigation, ...props }: BottomTabBarPr
                         accessibilityLabel={options.tabBarAccessibilityLabel}
                         testID={options.tabBarTestID}
                         onPress={onPress}
-                        key={route.key}
+                        key={route.key} 
                         className="flex-col justify-center items-center px-1"
                     >
                         <Section stylize={`${isFocused ? 'bg-secondaryContainer' : ''} rounded-full px-5 py-1`}>

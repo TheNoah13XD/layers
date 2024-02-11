@@ -4,6 +4,8 @@ module.exports = {
   theme: {
     letterSpacing: {
       tightest: -3,
+      tighter: -2,
+      tight: -0.8,
       normal: 0,
       wide: 0.15,
       wider: 0.25,

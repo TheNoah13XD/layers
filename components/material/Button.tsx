@@ -7,7 +7,7 @@ import { BgColors, TextColors, BorderColors, Colors } from "@types";
 import { Section, Type } from "../styled";
 import { Icon } from "./Icon";
 
-interface ButtonProps {
+export interface ButtonProps {
     type: 'elevated' | 'filled' | 'outlined' | 'text';
     containerColor?: keyof BgColors;
     contentColor: keyof TextColors;
