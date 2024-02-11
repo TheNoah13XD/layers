@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { router, Tabs } from 'expo-router';
 
 import { useAuth } from '@context';
+import { Nav } from '@components/material';
 
 const AppLayout = () => {
     const { user, isAuthenticated } = useAuth();
@@ -15,26 +16,26 @@ const AppLayout = () => {
     }, [isAuthenticated]);
 
     return (
-        <Tabs>
+        <Tabs
+            screenOptions={{
+                headerShown: false,
+            }}
+            sceneContainerStyle={{
+                backgroundColor: '#FDF8FF',
+            }}
+            tabBar={props => <Nav {...props} />}
+        >
             <Tabs.Screen
-                name='index'
-                options={{ href: null }}
-            />
-            <Tabs.Screen
-                name='home'
-                options={{ headerShown: false }}
+                name='home'  
             />
             <Tabs.Screen
                 name='chats'
-                options={{ headerShown: false }}
             />
             <Tabs.Screen
                 name='community'
-                options={{ headerShown: false }}
             />
             <Tabs.Screen
                 name='profile'
-                options={{ headerShown: false }}
             />
         </Tabs>
     );
