@@ -2,7 +2,7 @@ import { View } from "react-native";
 import { styled } from "nativewind";
 
 interface SectionProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     stylize?: string;
 }
 const StyledView = styled(View)

@@ -8,7 +8,7 @@ import { View } from "react-native";
 
 export const Nav = ({ state, descriptors, navigation, ...props }: BottomTabBarProps) => {
     return (
-        <Section {...props} stylize="absolute bottom-10 flex-row justify-center items-center self-center border border-outline rounded-full w-[360px] h-[70px] bg-[#F5FAFF] pt-[7px] pb-[11px]">
+        <Section {...props} stylize="absolute bottom-6 flex-row justify-center items-center self-center border border-outline rounded-full w-[360px] h-[70px] bg-[#F5FAFF] pt-[7px] pb-[11px]">
             {state.routes.filter(route => route.name !== 'index').map((route, index) => {
                 const { options } = descriptors[route.key];
                 const isFocused = state.index === index;
@@ -32,8 +32,8 @@ export const Nav = ({ state, descriptors, navigation, ...props }: BottomTabBarPr
 
                 switch (route.name) {
                     case 'home':
-                        iconName = 'home';
-                        family = 'material';
+                        iconName = 'home-variant-outline';
+                        family = 'materialCommunity';
                         label = 'Home';
                         break;
                     case 'chats':
