@@ -2,6 +2,7 @@ import { ScrollView } from 'react-native';
 
 import { Section, Type } from '@components/styled';
 import { Card, Icon, Segment } from '@components/material';
+import { Like } from '@components/community';
 
 const Community = () => {
     return (
@@ -66,7 +67,7 @@ const Community = () => {
                     </Section>
                 </ScrollView>
 
-                <Section stylize='mt-7 pr-7'>
+                <Section stylize='mt-7 mb-24 pr-7'>
                     <Card>
                         <Section stylize='flex-row justify-between items-center pt-2 pl-2 pr-1'>
                             <Section stylize='flex-row items-center'>
@@ -89,7 +90,7 @@ const Community = () => {
                         </Section>
 
                         <Section stylize='flex-row self-end mt-8'>
-                            <Icon name='favorite-outline' color='onSurface' />
+                            <Like />
                             <Icon family='materialCommunity' name='comment-outline' color='onSurface' stylize='pl-5' />
                             <Icon name='share' color='onSurface' stylize='pl-5' />
                         </Section>
@@ -117,7 +118,7 @@ const Community = () => {
                         </Section>
 
                         <Section stylize='flex-row self-end mt-8'>
-                            <Icon name='favorite-outline' color='onSurface' />
+                            <Like />
                             <Icon family='materialCommunity' name='comment-outline' color='onSurface' stylize='pl-5' />
                             <Icon name='share' color='onSurface' stylize='pl-5' />
                         </Section>

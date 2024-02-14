@@ -54,4 +54,5 @@ export const ColorValues: { [key: string]: string } = {
     "scrim": "#000000",
     "black": "#000000",
     "white": "#FFFFFF",
+    "like": "#FE6D73",
 };
