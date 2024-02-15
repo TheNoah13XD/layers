@@ -6,6 +6,7 @@ import { useAuth } from '@context';
 import { Section, Type } from '@components/styled';
 import { Button, ButtonProps } from '@components/material';
 import { FeelsLog, GroupCard, JournalStatus, LayerIndex, ViewActivities } from '@components/pages/dashboard';
+import { router } from 'expo-router';
 
 const Home = () => {
     const { user } = useAuth();
@@ -33,7 +34,7 @@ const Home = () => {
                 <Section stylize='flex-row mt-7'>
                     <Button {...getButtonProps(active === 'index')} onPress={() => setActive('index')}>Layer Index</Button>
                     <Button {...getButtonProps(active === 'feels')} onPress={() => setActive('feels')} stylize='ml-1'>Feels</Button>
-                    <Button type='filled' containerColor='bg-error' contentColor='text-onError' stylize='ml-1'>Emergency</Button>
+                    <Button type='filled' containerColor='bg-error' contentColor='text-onError' stylize='ml-1' onPress={() => router.push('/home/emergency')}>Emergency</Button>
                 </Section>
 
                 {active === 'index' ? (
