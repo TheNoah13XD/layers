@@ -19,7 +19,7 @@ export const Fab = ({ icon, type, containerColor, contentColor, onPress, stylize
     const iconSize = type === 'large' ? 36 : 24;
 
     return (
-        <Pressable className={`${sizeClass} rounded-full justify-center items-center ${containerColor} ${stylize}`} onPress={onPress}>
+        <Pressable className={`${sizeClass} flex justify-center items-center rounded-full ${containerColor} ${stylize}`} onPress={onPress}>
             <Icon name={icon} size={iconSize} color={contentColor} />
         </Pressable>
     );
