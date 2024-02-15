@@ -1,6 +1,10 @@
+import { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
+import { format } from 'date-fns';
 
+import { fetchRecords } from "utils/firebase";
 import { useAuth } from "@context";
+import { Record } from "@types";
 
 import { Section, Type } from "@components/styled";
 import { Segment } from "@components/material";
@@ -11,6 +15,31 @@ const JournalHistory = () => {
     if (!user) {
         return null;
     }
+
+    const [data, setData] = useState<Record[]>([]);
+
+    useEffect(() => {
+        const getData = async () => {
+            const records = await fetchRecords(user.id);
+
+            const sortedRecords = records
+                .filter(record => record.journal)
+                .map(record => {
+                    // @ts-ignore
+                    const date = new Date(record.date.toDate().toISOString());
+                        
+                    return {
+                        ...record,
+                        date: format(date, 'MM/dd/yy')
+                    };
+                })
+                .sort((a, b) => b.date.localeCompare(a.date));
+
+            setData(sortedRecords);
+        }
+
+        getData();
+    }, []);
 
     return (
         <ScrollView>
@@ -34,12 +63,9 @@ const JournalHistory = () => {
                 </ScrollView>
 
                 <Section stylize="mt-7 mb-24">
-                    <RecordDiv score={80} date="19/01/24" day="Friday" />
-                    <RecordDiv score={80} date="19/01/24" day="Friday" stylize="mt-2" />
-                    <RecordDiv score={80} date="19/01/24" day="Friday" stylize="mt-2" />
-                    <RecordDiv score={80} date="19/01/24" day="Friday" stylize="mt-2" />
-                    <RecordDiv score={80} date="19/01/24" day="Friday" stylize="mt-2" />
-                    <RecordDiv score={80} date="19/01/24" day="Friday" stylize="mt-2" />
+                    {data.map((record, index) => (
+                        <RecordDiv key={index} score={record.score} date={record.date} day={record.day} stylize={index === 0 ? '' : 'mt-2'} />
+                    ))}
                 </Section>
             </Section>
         </ScrollView>
