@@ -12,6 +12,9 @@ interface User {
     age?: number;
     gender?: 'male' | 'female';
     role?: 'helper' | 'seeker';
+    goal?: string;
+    streak?: number;
+    score?: number;
 }
 
 interface UserUpdate {
