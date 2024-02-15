@@ -1,5 +1,5 @@
-import { Section, Type } from "../styled";
-import { Card, Icon } from "../material";
+import { Section, Type } from "@components/styled";
+import { Card, Icon } from "@components/material";
 import { Like } from "./Like";
 
 export interface PostProps {

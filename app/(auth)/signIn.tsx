@@ -8,6 +8,7 @@ import { Blurhash, GradientContainer } from '@constants';
 
 import { CustomKeyboardView, Section, Type } from '@components/styled';
 import { Button, Fab, Icon, Snackbar, TextField } from '@components/material';
+import { Context } from '@components/pages/auth';
 
 const SignIn = () => {
     const { user, isAuthenticated, signin } = useAuth();
@@ -58,28 +59,8 @@ const SignIn = () => {
     return (
         <CustomKeyboardView>
             <Section stylize='w-full h-screen'>
-                <Section stylize='px-[18px]'>
-                    <Section stylize='pl-5 py-10 mt-[68px] rounded-[50px]'>
-                        <Image
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                bottom: 0,
-                                right: 0,
-                                zIndex: -1
-                            }}
-                            source={GradientContainer}
-                            placeholder={Blurhash}
-                            contentFit="cover"
-                        />
-                        <Icon name='lock-open' size={57} color='black' />
-
-                        <Section stylize='pl-2 pt-[132px]'>
-                            <Type stylize='text-displayMedium tracking-tightest text-black'>Sign In</Type>
-                            <Type stylize='text-titleSmall text-onSurface pt-2'>with your Layers Account or Google Account.</Type>
-                        </Section>
-                    </Section>
+                <Section stylize='px-[18px] mt-[68px]'>
+                    <Context title='Sign In' description='with your Layers Account or Google Account.' icon='lock-open' />
 
                     <Section stylize='px-5 pt-10'>
                         <TextField value={email} onChangeText={setEmail} icon='mail-outline' keyboardType='email-address' placeholder='Email'/>

@@ -23,4 +23,4 @@ export const Fab = ({ icon, type, containerColor, contentColor, onPress, stylize
             <Icon name={icon} size={iconSize} color={contentColor} />
         </Pressable>
     );
-};
+}

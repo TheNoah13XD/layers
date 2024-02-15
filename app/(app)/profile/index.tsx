@@ -5,11 +5,12 @@ import { router } from "expo-router";
 import { useAuth } from "@context";
 
 import { Section, Type } from "@components/styled";
-import { Button, Card, Icon } from "@components/material";
-import { Post } from "@components/community";
+import { Button, Card } from "@components/material";
+import { Post } from "@components/pages/community";
+import { ProfileHeader } from "@components/pages/profile";
 
 const Profile = () => {
-    const { user, isAuthenticated, signout } = useAuth();
+    const { user, isAuthenticated } = useAuth();
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -21,17 +22,7 @@ const Profile = () => {
 
     return (
         <ScrollView>
-            <Section stylize="absolute top-0 bg-primaryContainer rounded-b-[50px] w-full h-[280px]" />
-            <Section stylize="absolute top-[200px] w-full">
-                <Section stylize="self-center bg-primaryFixedDim rounded-[25px] w-40 h-40" />
-            </Section>
-
-            <Icon name="settings" color="onSurfaceVariant" stylize="absolute top-[74px] right-5 flex justify-center items-center bg-onPrimary rounded-full w-12 h-12" onPress={signout} />
-
-            <Section stylize="mt-96">
-                <Type stylize="text-center text-headlineSmall text-onSurface">Noah Patrick</Type>
-                <Type stylize="text-center text-bodySmall text-onSurface tracking-wide mt-1">I like pies.</Type>
-            </Section>
+            <ProfileHeader name={user?.name!} bio="I like pies." />
 
             <Section stylize="mt-6 px-7">
                 <Card>

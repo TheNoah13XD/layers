@@ -1,7 +1,8 @@
 import { ScrollView } from 'react-native';
 
 import { Section, Type } from '@components/styled';
-import { Fab, Icon } from '@components/material';
+import { Fab } from '@components/material';
+import { ArchivedChat } from '@components/pages/chats';
 
 const Chats = () => {
     return (
@@ -26,40 +27,11 @@ const Chats = () => {
                         <Type stylize='text-headlineMedium text-onSurfaceVariant tracking-tight'>Archived Chats</Type>
                     </Section>
 
-                <Section stylize='mt-5'>
-                    <Section stylize='flex-row justify-between items-center bg-primaryFixedDim rounded-full mx-[6px] px-3 py-5'>
-                        <Section stylize='flex-row items-center'>
-                            <Section stylize='flex justify-center items-center bg-primaryContainer rounded-full w-10 h-10'>
-                                <Icon family='materialCommunity' name='account-outline' color='primary' size={28} />
-                            </Section>
-                            <Type stylize='text-headlineSmall text-primary tracking-tight pl-2'>Signal Name</Type>
-                        </Section>
-
-                        <Fab icon='keyboard-arrow-right' type='small' containerColor='bg-primaryContainer' contentColor='primary' />
+                    <Section stylize='mt-5'>
+                        <ArchivedChat name='Signal Name' />
+                        <ArchivedChat name='Signal Name' stylize='mt-1' />
+                        <ArchivedChat name='Signal Name' stylize='mt-1' />
                     </Section>
-
-                    <Section stylize='flex-row justify-between items-center bg-primaryFixedDim rounded-full mx-[6px] px-3 py-5 mt-1'>
-                        <Section stylize='flex-row items-center'>
-                            <Section stylize='flex justify-center items-center bg-primaryContainer rounded-full w-10 h-10'>
-                                <Icon family='materialCommunity' name='account-outline' color='primary' size={28} />
-                            </Section>
-                            <Type stylize='text-headlineSmall text-primary tracking-tight pl-2'>Signal Name</Type>
-                        </Section>
-
-                        <Fab icon='keyboard-arrow-right' type='small' containerColor='bg-primaryContainer' contentColor='primary' />
-                    </Section>
-
-                    <Section stylize='flex-row justify-between items-center bg-primaryFixedDim rounded-full mx-[6px] px-3 py-5 mt-1'>
-                        <Section stylize='flex-row items-center'>
-                            <Section stylize='flex justify-center items-center bg-primaryContainer rounded-full w-10 h-10'>
-                                <Icon family='materialCommunity' name='account-outline' color='primary' size={28} />
-                            </Section>
-                            <Type stylize='text-headlineSmall text-primary tracking-tight pl-2'>Signal Name</Type>
-                        </Section>
-
-                        <Fab icon='keyboard-arrow-right' type='small' containerColor='bg-primaryContainer' contentColor='primary' />
-                    </Section>
-                </Section>
                 </Section>
             </Section>
         </ScrollView>

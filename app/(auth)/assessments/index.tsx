@@ -5,7 +5,7 @@ import { useAuth } from "@context";
 
 import { Section, Type } from "@components/styled";
 import { Fab, Icon, Pagination, Snackbar, Toggle } from "@components/material";
-import { ShapeFive, ShapeFour, ShapeOne, ShapeSix, ShapeThree, ShapeTwo } from "@components/shapes";
+import { InfoSelect, ReasonSelect, RoleSelect } from "@components/pages/assessments";
 
 const pageTexts = ['why this app?', 'age & gender?', 'helper? / seeker?'];
 const maxPages = pageTexts.length;
@@ -20,7 +20,7 @@ const GeneralAssessments = () => {
     const currentPageText = useMemo(() => pageTexts[currentPage - 1], [currentPage]);
     const [firstWord, ...remainingWords] = useMemo(() => currentPageText.split(' '), [currentPageText]);
 
-    const [selectedShapes, setSelectedShapes] = useState(new Set());
+    const [selectedShapes, setSelectedShapes] = useState<Set<string>>(new Set());
     const [age, setAge] = useState<number>(15);
     const [isEnabled, setIsEnabled] = useState<boolean>(false);
     const [role, setRole] = useState<'helper' | 'seeker'>('helper');
@@ -85,34 +85,11 @@ const GeneralAssessments = () => {
             </Section>
 
             {currentPage === 1 ? (
-                <Section stylize="relative flex-row flex-wrap self-center w-[320px] h-[460px] mt-7">
-                    <ShapeOne stylize="absolute top-0 right-0" selected={selectedShapes.has('shapeOne')} onPress={() => handleSelect('shapeOne')} />
-                    <ShapeTwo stylize="absolute top-[93px] left-0" selected={selectedShapes.has('ShapeTwo')} onPress={() => handleSelect('ShapeTwo')} />
-                    <ShapeThree stylize="absolute top-[186px] right-0" selected={selectedShapes.has('ShapeThree')} onPress={() => handleSelect('ShapeThree')} />
-                    <ShapeFour stylize="absolute bottom-0 left-0 -z-10" selected={selectedShapes.has('ShapeFour')} onPress={() => handleSelect('ShapeFour')} />
-                </Section>
+                <ReasonSelect selectedShapes={selectedShapes} handleSelect={handleSelect} stylize="mt-7" />
             ) : currentPage === 2 ? (
-                <Section stylize="flex-col self-center justify-center items-center bg-primaryFixed rounded-[50px] w-[360px] h-[360px] mt-[65px]">
-                    <Section stylize="flex-row justify-center items-center bg-primaryFixedDim rounded-full px-8 w-[308px] h-[120px]">
-                        <Icon name="remove" color="onPrimaryContainer" stylize="justify-center items-center bg-onPrimary rounded-full w-10 h-10 m-1" onPress={decrementAge} />
-                        <Section stylize="justify-center items-center bg-primary rounded-full w-[52px] h-8 ml-12">
-                            <Type stylize="text-titleLarge text-onPrimary">{age}</Type>
-                        </Section>
-                        <Icon name="add" color="onPrimaryContainer" stylize="justify-center items-center bg-onPrimary rounded-full w-10 h-10 m-1 ml-12" onPress={incrementAge} />
-                    </Section>
-                    <Section stylize="flex-row justify-center items-center bg-primaryFixedDim rounded-full px-8 w-[308px] h-[120px] mt-5">
-                        <Icon name="boy" color="onPrimaryContainer" stylize="justify-center items-center bg-onPrimary rounded-full w-10 h-10 m-1" />
-                        <Section stylize="justify-center items-center bg-primary rounded-full w-[52px] h-8 ml-12">
-                            <Toggle isEnabled={isEnabled} toggleSwitch={toggleSwitch} />
-                        </Section>
-                        <Icon name="girl" color="onPrimaryContainer" stylize="justify-center items-center bg-onPrimary rounded-full w-10 h-10 m-1 ml-12" />
-                    </Section>
-                </Section>
+                <InfoSelect age={age} incrementAge={incrementAge} decrementAge={decrementAge} isEnabled={isEnabled} toggleSwitch={toggleSwitch} stylize="mt-[65px]" />
             ) : (
-                <Section stylize="relative flex-row flex-wrap self-center w-[320px] h-[340px] mt-20">
-                    <ShapeFive stylize="absolute top-0 right-0" selected={role === 'helper'} onPress={() => selectRole('helper')} />
-                    <ShapeSix stylize="absolute bottom-0 left-0" selected={role === 'seeker'} onPress={() => selectRole('seeker')} />
-                </Section>
+                <RoleSelect role={role} selectRole={selectRole} stylize="mt-20" />
             )}
 
             <Section stylize="flex-1">

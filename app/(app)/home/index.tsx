@@ -4,7 +4,8 @@ import { ScrollView } from 'react-native';
 import { useAuth } from '@context';
 
 import { Section, Type } from '@components/styled';
-import { Button, ButtonProps, Icon } from '@components/material';
+import { Button, ButtonProps } from '@components/material';
+import { FeelsLog, GroupCard, JournalStatus, LayerIndex, ViewActivities } from '@components/pages/dashboard';
 
 const Home = () => {
     const { user } = useAuth();
@@ -35,16 +36,11 @@ const Home = () => {
                     <Button type='filled' containerColor='bg-error' contentColor='text-onError' stylize='ml-1'>Emergency</Button>
                 </Section>
 
-                <Section stylize='flex-row items-center mt-7'>
-                    <Section stylize='justify-center items-center rounded-[50px] bg-primaryFixed w-[220px] h-[220px]'>
-                        <Type stylize='text-[91px] text-primary'>{active === "index" ? "82" : ": )"}</Type>
-                    </Section>
-                    <Section stylize='flex-col pl-4'>
-                        <Type weight='medium' stylize='text-titleMedium text-onPrimaryContainer w-[120px]'>{active === "index" ? "Embrace positive journey." : "I'm feeling positive!"}</Type>
-                        <Section stylize='border-b border-outlineVariant mt-3' children />
-                        <Button type='filled' icon={active === "index" ? "arrow-right-alt" : "add"} containerColor='bg-primary' contentColor='text-onPrimary' stylize='mt-3'>{active === "index" ? "History" : "Swing"}</Button>
-                    </Section>
-                </Section>
+                {active === 'index' ? (
+                    <LayerIndex score={82} quote='Embrace positive journey.' stylize='mt-7' />
+                ) : (
+                    <FeelsLog feel=': )' quote="I'm feeling positive!" stylize='mt-7' />
+                )}
 
                 <Section stylize='bg-primaryFixed rounded-[50px] overflow-hidden w-full mt-7 mb-20 pt-7 pb-12'>
                     <Section stylize='flex-row justify-between items-center w-full px-7'>
@@ -53,23 +49,8 @@ const Home = () => {
                     </Section>
 
                     <Section stylize='px-[6px] py-5'>
-                        <Section stylize='flex-col bg-primaryFixedDim rounded-[25px] p-4'>
-                            <Type stylize='text-titleLarge tracking-tight w-64 text-black'>You have already started today's journal.</Type>
-                            <Section stylize='flex-row justify-between items-center w-full mt-12'>
-                                <Type stylize='text-titleLarge text-onPrimaryFixed tracking-tight'>20/01/24</Type>
-                                <Section stylize='flex-row'>
-                                    <Icon name='edit' color='onPrimary' size={16} stylize='flex justify-center items-center bg-primary rounded-full w-7 h-7'/>
-                                    <Icon name='mic' color='onPrimary' size={16} stylize='flex justify-center items-center bg-primary rounded-full w-7 h-7 ml-2'/>
-                                </Section>
-                            </Section>
-                        </Section>
-
-                        <Section stylize='flex-col justify-between bg-primaryFixedDim rounded-[25px] p-4 mt-1'>
-                            <Type stylize='text-titleLarge tracking-tight w-64 text-black'>Activities that might interest you for this weekend.</Type>
-                            <Section stylize='flex-row justify-end w-full mt-12'>
-                                <Button type='filled' icon='arrow-right-alt' containerColor='bg-primary' contentColor='text-onPrimary'>View</Button>
-                            </Section>
-                        </Section>
+                        <JournalStatus status='started' />
+                        <ViewActivities stylize='mt-1' />
                     </Section>
 
                     <Section stylize='flex-row justify-between items-center w-full px-7'>
@@ -79,27 +60,8 @@ const Home = () => {
 
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                         <Section stylize='flex-row px-[6px] pt-5'>
-                            <Section stylize='flex-col bg-primaryFixedDim rounded-[25px] w-[260px] p-4'>
-                                <Section stylize='flex-row items-center'>
-                                    <Icon name='diversity-1' color='onPrimary' stylize='flex justify-center items-center bg-primary rounded-full w-10 h-10' />
-                                    <Type stylize='text-headlineSmall text-primary tracking-tight ml-2'>54</Type>
-                                </Section>
-                                <Section stylize='flex-row justify-between items-center w-full mt-[108px]'>
-                                    <Type stylize='text-headlineLarge tracking-tight text-onPrimaryContainer'>Recoverly</Type>
-                                    <Icon name='north-east' color='onPrimaryContainer' size={32}></Icon>
-                                </Section>
-                            </Section>
-
-                            <Section stylize='flex-col bg-primaryFixedDim rounded-[25px] w-[260px] p-4 ml-1'>
-                                <Section stylize='flex-row items-center'>
-                                    <Icon name='diversity-1' color='onPrimary' stylize='flex justify-center items-center bg-primary rounded-full w-10 h-10' />
-                                    <Type stylize='text-headlineSmall text-primary tracking-tight ml-2'>54</Type>
-                                </Section>
-                                <Section stylize='flex-row justify-between items-center w-full mt-[108px]'>
-                                    <Type stylize='text-headlineLarge tracking-tight text-onPrimaryContainer'>Recoverly</Type>
-                                    <Icon name='north-east' color='onPrimaryContainer' size={32}></Icon>
-                                </Section>
-                            </Section>
+                            <GroupCard name='Recoverly' members={54} />
+                            <GroupCard name='Forward' members={69} stylize='ml-1' />
                         </Section>
                     </ScrollView>
                 </Section>

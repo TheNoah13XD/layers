@@ -8,6 +8,7 @@ import { Blurhash, GradientContainer } from '@constants';
 
 import { CustomKeyboardView, Section, Type } from '@components/styled';
 import { Button, Check, Fab, Icon, Snackbar, TextField } from '@components/material';
+import { Context } from '@components/pages/auth';
 
 const SignUp = () => {
     const { user, isAuthenticated, signup } = useAuth();
@@ -74,28 +75,8 @@ const SignUp = () => {
     return (
         <CustomKeyboardView>
             <Section stylize='w-full h-full '>
-                <Section stylize='px-[18px]'>
-                    <Section stylize='pl-5 py-10 mt-[68px] rounded-[50px]'>
-                        <Image
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                bottom: 0,
-                                right: 0,
-                                zIndex: -1
-                            }}
-                            source={GradientContainer}
-                            placeholder={Blurhash}
-                            contentFit="cover"
-                        />
-                        <Icon name='lock-open' size={57} color='black' />
-
-                        <Section stylize='pl-2 pt-[132px]'>
-                            <Type stylize='text-displayMedium tracking-tightest text-black'>Sign Up</Type>
-                            <Type stylize='text-titleSmall text-onSurface pt-2'>create a new Layers Account.</Type>
-                        </Section>
-                    </Section>
+                <Section stylize='px-[18px] mt-[68px]'>
+                    <Context title='Sign Up' description='create a new Layers Account.' icon='lock-open' />
 
                     {!completeProfile ? (
                         <Section stylize='px-5 pt-10'>
