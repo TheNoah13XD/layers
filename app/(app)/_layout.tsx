@@ -26,7 +26,7 @@ const AppLayout = () => {
             tabBar={props => <Nav {...props} />}
         >
             <Tabs.Screen
-                name='home'  
+                name='home'
             />
             <Tabs.Screen
                 name='chats'

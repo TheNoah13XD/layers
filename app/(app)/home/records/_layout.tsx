@@ -1,22 +1,19 @@
 import { Stack } from "expo-router";
 
-const HomeLayout = () => {
+const RecordsLayout = () => {
     return (
         <Stack screenOptions={{ 
             contentStyle: { backgroundColor: '#FDF8FF'},
             headerShown: false,
         }}>
             <Stack.Screen 
-                name="index" 
+                name="indexHistory" 
             />
             <Stack.Screen 
-                name="emergency" 
-            />
-            <Stack.Screen 
-                name="records"
+                name="journalHistory" 
             />
         </Stack>
     );
 }
  
-export default HomeLayout;
+export default RecordsLayout;

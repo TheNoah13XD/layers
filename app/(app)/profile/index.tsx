@@ -11,18 +11,21 @@ import { ProfileHeader } from "@components/pages/profile";
 
 const Profile = () => {
     const { user, isAuthenticated } = useAuth();
+    if (!user) {
+        return null;
+    }
 
     useEffect(() => {
         if (!isAuthenticated) {
             router.replace('/start');
-        } else if (user && user && !user.role) {
+        } else if (!user.role) {
             router.replace('/assessments');
         }
     }, [isAuthenticated]);
 
     return (
         <ScrollView>
-            <ProfileHeader name={user?.name!} bio="I like pies." />
+            <ProfileHeader name={user.name} bio="I like pies." />
 
             <Section stylize="mt-6 px-7">
                 <Card>

@@ -1,6 +1,7 @@
-import { Section, Type, Back } from "@components/styled";
-import { Button, Icon } from "@components/material";
 import { router } from "expo-router";
+
+import { Section, Type } from "@components/styled";
+import { Back, Button, Icon } from "@components/material";
 
 const Emergency = () => {
     return (

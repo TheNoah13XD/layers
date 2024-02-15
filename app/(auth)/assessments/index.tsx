@@ -58,7 +58,8 @@ const GeneralAssessments = () => {
                 await userUpdate(user.id, {
                     age,
                     gender: isEnabled ? 'female' : 'male',
-                    role: role
+                    role: role,
+                    score: 80
                 });
 
                 router.replace('/home');

@@ -15,24 +15,21 @@ const AuthLayout = () => {
     }, [isAuthenticated]);
 
     return (
-        <Stack screenOptions={{ contentStyle: 
-            { backgroundColor: '#FDF8FF'}
+        <Stack screenOptions={{ 
+            contentStyle: { backgroundColor: '#FDF8FF'},
+            headerShown: false,
         }}>
             <Stack.Screen
                 name="start"
-                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="signIn"
-                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="signUp"
-                options={{ headerShown: false }}
             />
             <Stack.Screen
                 name="assessments"
-                options={{ headerShown: false }}
             />
         </Stack>
     );

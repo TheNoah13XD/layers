@@ -10,10 +10,13 @@ import { router } from 'expo-router';
 
 const Home = () => {
     const { user } = useAuth();
+    if (!user) {
+        return null;
+    }
 
     const [active, setActive] = useState<'index' | 'feels'>('index');
 
-    const name = user?.name.split(' ');
+    const name = user.name.split(' ');
     const firstName = name ? name[0] : '';
 
     const getButtonProps = (isActive: boolean): ButtonProps => ({
@@ -38,15 +41,15 @@ const Home = () => {
                 </Section>
 
                 {active === 'index' ? (
-                    <LayerIndex score={82} quote='Embrace positive journey.' stylize='mt-7' />
+                    <LayerIndex score={user.score!} stylize='mt-7' />
                 ) : (
-                    <FeelsLog feel=': )' quote="I'm feeling positive!" stylize='mt-7' />
+                    <FeelsLog feel=': )' stylize='mt-7' />
                 )}
 
                 <Section stylize='bg-primaryFixed rounded-[50px] overflow-hidden w-full mt-7 mb-20 pt-7 pb-12'>
                     <Section stylize='flex-row justify-between items-center w-full px-7'>
                         <Type stylize='text-headlineMedium text-onSurfaceVariant tracking-tight'>Therapy</Type>
-                        <Button type='filled' icon='bookmark-outline' containerColor='bg-primaryFixedDim' contentColor='text-onPrimaryFixedVariant'>Logs</Button>
+                        <Button type='filled' icon='bookmark-outline' containerColor='bg-primaryFixedDim' contentColor='text-onPrimaryFixedVariant' onPress={() => router.push('/home/records/journalHistory')}>Logs</Button>
                     </Section>
 
                     <Section stylize='px-[6px] py-5'>

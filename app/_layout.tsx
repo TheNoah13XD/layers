@@ -14,7 +14,7 @@ const RootLayout = () => {
         
         if (isAuthenticated && !inApp && user?.role) {
             router.replace('/home');
-        } else if (isAuthenticated && user && !user?.role) {
+        } else if (isAuthenticated && user && !user.role) {
             router.replace('/assessments');
         } else if (!isAuthenticated) {
             router.replace('/start');

@@ -3,11 +3,12 @@ import { Button, Divider } from "@components/material";
 
 export interface FeelsLogProps {
     feel: string;
-    quote: string;
     stylize?: string;
 }
 
-export const FeelsLog = ({ feel, quote, stylize }: FeelsLogProps) => {
+export const FeelsLog = ({ feel, stylize }: FeelsLogProps) => {
+    const quote = "I'm feeling positive!";
+
     return (
         <Section stylize={`flex-row items-center ${stylize}`}>
             <Section stylize='justify-center items-center rounded-[50px] bg-primaryFixed w-[220px] h-[220px]'>

@@ -12,21 +12,23 @@ interface User {
     age?: number;
     gender?: 'male' | 'female';
     role?: 'helper' | 'seeker';
+    score?: number;
     goal?: string;
     streak?: number;
-    score?: number;
 }
 
 interface UserUpdate {
     age?: number;
     gender?: 'male' | 'female';
     role?: 'helper' | 'seeker';
+    score?: number;
 }
 
 interface AuthContextType {
     user: User | null;
     isLoading: boolean;
     isAuthenticated: boolean | undefined;
+    refreshUser: () => Promise<void>;
     userUpdate: (userId: string, data: UserUpdate) => Promise<void | String>;
     signin: (email: string, password: string) => Promise<UserCredential | String>;
     signup: (email: string, password: string, name: string, username: string) => Promise<UserCredential | String>;
@@ -51,7 +53,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         if (docSnap.exists()) {
             let data = docSnap.data();
             setUser(prevUser => {
-                if (prevUser?.id === userId && prevUser.email === data.email && prevUser.name === data.name && prevUser.username === data.username && prevUser.age === data.age && prevUser.gender === data.gender && prevUser.role === data.role) {
+                if (prevUser?.id === userId && prevUser.email === data.email && prevUser.name === data.name && prevUser.username === data.username && prevUser.age === data.age && prevUser.gender === data.gender && prevUser.role === data.role && prevUser.score === data.score) {
                     return prevUser;
                 }
     
@@ -62,13 +64,20 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                     username: data.username,
                     age: data.age,
                     gender: data.gender,
-                    role: data.role
+                    role: data.role,
+                    score: data.score
                 };
             });
         } else {
             throw new Error(`No user document for user ID ${userId}`);
         }
     }, []);
+
+    const refreshUser = async () => {
+        if (user) {
+            await updateLocalUser(user.id);
+        }
+    }
 
     const userUpdate = async (userId: string, data: UserUpdate): Promise<void | String> => {
         try {
@@ -151,7 +160,8 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
             signin,
             signup,
             signout,
-            userUpdate
+            userUpdate,
+            refreshUser
         }}>
             {children}
         </AuthContext.Provider>
