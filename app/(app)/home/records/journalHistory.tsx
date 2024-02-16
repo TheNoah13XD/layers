@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ScrollView } from "react-native";
+import { FlatList, ScrollView } from "react-native";
 import { format } from 'date-fns';
 
 import { fetchRecords } from "utils/firebase";
@@ -42,33 +42,44 @@ const JournalHistory = () => {
     }, []);
 
     return (
-        <ScrollView>
-            <Section stylize="items-center mt-[68px]">
-                <RecordStats score={21} type="journal" />
-            </Section>
-
-            <Section stylize="px-7 mt-7">
-                <Type stylize="text-headlineMedium text-onSurfaceVariant tracking-tight">Journal History</Type>
-
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    <Section stylize="flex-row items-center mt-2">
-                        <Type stylize="text-labelLarge text-onSurface">Filter</Type>
-
-                        <Section stylize="flex-row ml-6">
-                            <Segment title='This Week' enabled={true} />
-                            <Segment title='Last Week' enabled={false} stylize='ml-1' />
-                            <Segment title='Custom' enabled={false} icon="date-range" stylize='ml-1' />
-                        </Section>
+        <FlatList
+            data={data}
+            keyExtractor={(item, index) => index.toString()}
+            ListHeaderComponent={(
+                <>
+                    <Section stylize="items-center mt-[68px]">
+                        <RecordStats score={21} type="journal" />
                     </Section>
-                </ScrollView>
 
-                <Section stylize="mt-7 mb-24">
-                    {data.map((record, index) => (
-                        <RecordDiv key={index} score={record.score} date={record.date} day={record.day} stylize={index === 0 ? '' : 'mt-2'} />
-                    ))}
-                </Section>
-            </Section>
-        </ScrollView>
+                    <Section stylize="pl-7 mt-7">
+                        <Type stylize="text-headlineMedium text-onSurfaceVariant tracking-tight">Journal History</Type>
+
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                            <Section stylize="flex-row items-center mt-2">
+                                <Type stylize="text-labelLarge text-onSurface">Filter</Type>
+
+                                <Section stylize="flex-row ml-6">
+                                    <Segment title='This Week' enabled={true} />
+                                    <Segment title='Last Week' enabled={false} stylize='ml-1' />
+                                    <Segment title='Custom' enabled={false} icon="date-range" stylize='ml-1' />
+                                </Section>
+                            </Section>
+                        </ScrollView>
+                    </Section>
+                </>
+            )}
+            renderItem={({ item, index }) => (
+                <RecordDiv 
+                    score={item.score} 
+                    date={item.date} 
+                    day={item.day} 
+                    stylize={`
+                        ${index === 0 ? 'mt-7' : 'mt-2'}
+                        ${index === data.length - 1 ? 'mb-24' : ''}
+                    `}
+                />
+            )}
+        />
     );
 }
  
