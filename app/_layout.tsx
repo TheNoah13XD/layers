@@ -5,11 +5,11 @@ import { Slot, SplashScreen, router, useSegments } from 'expo-router';
 import { AuthContextProvider, useAuth } from '@context';
 
 const RootLayout = () => {
-    const { user, isLoading, isAuthenticated } = useAuth();
+    const { user, isAuthenticated } = useAuth();
     const segments = useSegments();
 
     useEffect(() => {
-        if (typeof isAuthenticated == 'undefined' || isLoading) return;
+        if (typeof isAuthenticated == 'undefined') return;
         const inApp = segments[0] == 'app';
         
         if (isAuthenticated && !inApp && user?.role) {
@@ -19,7 +19,7 @@ const RootLayout = () => {
         } else if (!isAuthenticated) {
             router.replace('/start');
         }
-    }, [isAuthenticated, isLoading]);
+    }, [isAuthenticated]);
 
     return <Slot />
 }

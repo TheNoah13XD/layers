@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react';
 import { Pressable } from 'react-native';
-import { Image } from 'expo-image';
 import { router } from 'expo-router';
 
 import { useAuth } from '@context';
-import { Blurhash, GradientContainer } from '@constants';
 
 import { CustomKeyboardView, Section, Type } from '@components/styled';
-import { Button, Fab, Icon, Snackbar, TextField } from '@components/material';
+import { Button, Fab, Snackbar, TextField } from '@components/material';
 import { Context } from '@components/pages/auth';
 
 const SignIn = () => {
-    const { user, isAuthenticated, signin } = useAuth();
+    const { user, isAuthenticated, isLoading, signin } = useAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const [snackbar, setSnackbar] = useState(false);
     const [error, setError] = useState('');
+
+    const family = isLoading ? 'loading' : 'material';
 
     useEffect(() => {
         if (isAuthenticated && user && user.role) {
@@ -76,7 +76,7 @@ const SignIn = () => {
 
                 <Section stylize='flex flex-row items-center justify-between px-9 pt-11'>
                     <Button type='text' contentColor='text-primary' onPress={() => router.replace("/signUp")}>Create Account</Button>
-                    <Fab icon='arrow-forward' type="large" containerColor='bg-primaryContainer' contentColor='primary' onPress={handleSignIn} />
+                    <Fab icon="arrow-forward" family={family} type="large" containerColor='bg-primaryContainer' contentColor='primary' onPress={handleSignIn} />
                 </Section>
 
                 <Snackbar view={snackbar} message={error} action={() => setSnackbar(false)} />

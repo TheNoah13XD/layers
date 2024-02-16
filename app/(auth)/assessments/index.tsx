@@ -4,14 +4,14 @@ import { router } from 'expo-router';
 import { useAuth } from "@context";
 
 import { Section, Type } from "@components/styled";
-import { Fab, Icon, Pagination, Snackbar, Toggle } from "@components/material";
+import { Fab, Icon, Pagination, Snackbar } from "@components/material";
 import { InfoSelect, ReasonSelect, RoleSelect } from "@components/pages/assessments";
 
 const pageTexts = ['why this app?', 'age & gender?', 'helper? / seeker?'];
 const maxPages = pageTexts.length;
 
 const GeneralAssessments = () => {
-    const { user, userUpdate } = useAuth();
+    const { user, userUpdate, isLoading } = useAuth();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [snackbar, setSnackbar] = useState(false);
@@ -24,6 +24,8 @@ const GeneralAssessments = () => {
     const [age, setAge] = useState<number>(15);
     const [isEnabled, setIsEnabled] = useState<boolean>(false);
     const [role, setRole] = useState<'helper' | 'seeker'>('helper');
+
+    const family = isLoading ? 'loading' : 'material';
 
     useEffect(() => {
         if (error) {
@@ -94,7 +96,7 @@ const GeneralAssessments = () => {
             )}
 
             <Section stylize="flex-1">
-                <Fab icon='arrow-forward' type="large" containerColor='bg-primaryContainer' contentColor='primary' stylize="absolute right-9 bottom-11" onPress={() => handlePageChange(currentPage)} />
+                <Fab family={family} icon='arrow-forward' type="large" containerColor='bg-primaryContainer' contentColor='primary' stylize="absolute right-9 bottom-11" onPress={() => handlePageChange(currentPage)} />
             </Section>
 
             <Snackbar view={snackbar} message={error} action={() => setSnackbar(false)} />

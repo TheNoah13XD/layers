@@ -7,7 +7,7 @@ import { useAuth } from "@context";
 import { Record } from "@types";
 
 import { Section, Type } from "@components/styled";
-import { Segment } from "@components/material";
+import { Loading, Segment } from "@components/material";
 import { RecordDiv, RecordStats } from "@components/pages/records";
 
 const JournalHistory = () => {
@@ -16,10 +16,12 @@ const JournalHistory = () => {
         return null;
     }
 
+    const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState<Record[]>([]);
 
     useEffect(() => {
         const getData = async () => {
+            setIsLoading(true);
             const records = await fetchRecords(user.id);
 
             const sortedRecords = records
@@ -36,10 +38,15 @@ const JournalHistory = () => {
                 .sort((a, b) => b.date.localeCompare(a.date));
 
             setData(sortedRecords);
+            setIsLoading(false);
         }
 
         getData();
     }, []);
+
+    if (isLoading) {
+        return <Loading />
+    }
 
     return (
         <FlatList

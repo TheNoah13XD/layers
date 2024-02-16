@@ -74,20 +74,25 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     }, []);
 
     const refreshUser = async () => {
+        setIsLoading(true);
         if (user) {
             await updateLocalUser(user.id);
         }
+        setIsLoading(false);
     }
-
+    
     const userUpdate = async (userId: string, data: UserUpdate): Promise<void | String> => {
+        setIsLoading(true);
         try {
             const userRef = doc(db, "users", userId);
             await setDoc(userRef, { ...data }, { merge: true });
-
+    
             await updateLocalUser(userId);
         } catch (error) {
             console.log(error);
             return (error as Error).message;
+        } finally {
+            setIsLoading(false);
         }
     }
     
@@ -127,6 +132,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     }
 
     const signup = async (email: string, password: string, name: string, username: string): Promise<UserCredential | String> => {
+        setIsLoading(true);
         try {
             const response = await createUserWithEmailAndPassword(auth, email, password);
             await setDoc(doc(db, "users", response.user.uid), {
@@ -135,20 +141,25 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                 name,
                 username
             });
-    
+
             return response;
         } catch (error) {
             console.log(error);
             return (error as Error).message;
+        } finally {
+            setIsLoading(false);
         }
     }
 
     const signout = async (): Promise<void | String> => {
+        setIsLoading(true);
         try {
             await signOut(auth);
         } catch (error) {
             console.log(error);
             return (error as Error).message;
+        } finally {
+            setIsLoading(false);
         }
     }
 
