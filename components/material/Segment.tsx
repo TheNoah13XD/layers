@@ -16,7 +16,7 @@ interface SegmentProps {
 
 export const Segment = ({ title, enabled, icon, family = "material", onPress, stylize }: SegmentProps) => {
     return (
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
             <Section stylize={`flex-row justify-start items-center ${enabled ? 'bg-secondaryContainer' : 'bg-surfaceContainerLow'} rounded-[8px] h-8 px-2 ${stylize}`}>
                 {enabled && <Icon name='check' size={18} color='onSecondaryContainer' />}
                 <Type weight='medium' stylize={`text-labelLarge ${enabled ? 'text-onSecondaryContainer' : 'text-onSurfaceVariant'} px-2`}>{title}</Type>

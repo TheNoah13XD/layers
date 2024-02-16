@@ -1,3 +1,5 @@
+import { TouchableOpacity } from "react-native";
+
 import { Section, Type } from "@components/styled";
 import { Icon } from "@components/material";
 
@@ -24,7 +26,9 @@ export const RecordDiv = ({ score, date, day, onPress, stylize }: RecordDivProps
                     </Section>
                 </Section>
 
-                <Icon name="keyboard-arrow-right" color="primary" stylize="bg-primaryContainer rounded-full p-2 mr-4" onPress={onPress} />
+                <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
+                    <Icon name="keyboard-arrow-right" color="primary" stylize="bg-primaryContainer rounded-full p-2 mr-4" />
+                </TouchableOpacity>
             </Section>
         </Section>
     );

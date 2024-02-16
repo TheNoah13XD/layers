@@ -3,6 +3,7 @@ export * from './Back';
 export * from "./Button";
 export * from "./Card";
 export * from "./Check";
+export * from "./Dialog";
 export * from "./Divider";
 export * from "./Fab";
 export * from "./Icon";

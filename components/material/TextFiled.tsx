@@ -8,7 +8,7 @@ import { Section } from "../styled";
 import { Icon } from './Icon';
 
 interface TextFieldProps {
-    value: string;
+    value: any;
     onChangeText: (text: string) => void;
     placeholder?: string;
     icon?: keyof typeof MaterialIcons.glyphMap;
@@ -29,7 +29,7 @@ export const TextField = ({ value, onChangeText, placeholder, icon, keyboardType
         <Section stylize={`flex-row items-center w-full h-14 ${isFocused ? "border-2 border-primary" : "border border-onSurface"} rounded-full pl-3 overflow-hidden ${stylize}`}>
             {iconElement}
             <TextInput
-                value={value}
+                value={value as string}
                 onChangeText={onChangeText} 
                 placeholder={isFocused ? "" : placeholder}
                 placeholderTextColor="#48454E" 

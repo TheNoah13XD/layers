@@ -1,16 +1,17 @@
 import { collection, doc, getDocs, query, where, orderBy } from "firebase/firestore";
 import { usersRef } from "@firebase";
-import { subWeeks, startOfDay } from 'date-fns';
+import { startOfDay, subWeeks } from 'date-fns';
 
 import { Record } from "@types";
 
-export const fetchRecords = async (userId: string) => {
+export const fetchRecords = async (userId: string, startDate?: Date, endDate?: Date) => {
     const userDoc = doc(usersRef, userId);
     const recordsRef = collection(userDoc, 'records');
 
-    const twoWeeksAgo = startOfDay(subWeeks(new Date(), 2));
+    const start = startDate ? startOfDay(startDate) : startOfDay(subWeeks(new Date(), 2));
+    const end = endDate ? startOfDay(endDate) : startOfDay(new Date());
 
-    const q = query(recordsRef, where('date', '>=', twoWeeksAgo), orderBy('date', 'desc'));
+    const q = query(recordsRef, where('date', '>=', start), where('date', '<=', end), orderBy('date', 'desc'));
     const querySnapshot = await getDocs(q);
 
     const records: Record[] = [];
