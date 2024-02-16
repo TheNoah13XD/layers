@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FlatList, ScrollView } from "react-native";
-import { format } from 'date-fns';
+import { endOfWeek, format, isWithinInterval, parse, startOfWeek, subWeeks } from 'date-fns';
 
 import { fetchRecords } from "utils/firebase";
 import { useAuth } from "@context";
@@ -17,7 +17,9 @@ const JournalHistory = () => {
     }
 
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedSegment, setSelectedSegment] = useState('This Week');
     const [data, setData] = useState<Record[]>([]);
+    const [filteredData, setFilteredData] = useState<Record[]>([]);
 
     useEffect(() => {
         const getData = async () => {
@@ -44,13 +46,32 @@ const JournalHistory = () => {
         getData();
     }, []);
 
+    useEffect(() => {
+        const filtered = data.filter(record => {
+            const recordDate = parse(record.date, 'MM/dd/yy', new Date());
+            if (selectedSegment === 'This Week') {
+                const start = startOfWeek(new Date());
+                const end = endOfWeek(new Date());
+                return isWithinInterval(recordDate, { start, end });
+            } else if (selectedSegment === 'Last Week') {
+                const start = startOfWeek(subWeeks(new Date(), 1));
+                const end = endOfWeek(subWeeks(new Date(), 1));
+                return isWithinInterval(recordDate, { start, end });
+            }
+    
+            return true;
+        });
+    
+        setFilteredData(filtered);
+    }, [data, selectedSegment]);
+
     if (isLoading) {
         return <Loading />
     }
 
     return (
         <FlatList
-            data={data}
+            data={filteredData}
             keyExtractor={(item, index) => index.toString()}
             ListHeaderComponent={(
                 <>
@@ -64,11 +85,26 @@ const JournalHistory = () => {
                         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                             <Section stylize="flex-row items-center mt-2">
                                 <Type stylize="text-labelLarge text-onSurface">Filter</Type>
-
+                                
                                 <Section stylize="flex-row ml-6">
-                                    <Segment title='This Week' enabled={true} />
-                                    <Segment title='Last Week' enabled={false} stylize='ml-1' />
-                                    <Segment title='Custom' enabled={false} icon="date-range" stylize='ml-1' />
+                                    <Segment 
+                                        title='This Week' 
+                                        enabled={selectedSegment === 'This Week'} 
+                                        onPress={() => setSelectedSegment('This Week')}
+                                    />
+                                    <Segment 
+                                        title='Last Week' 
+                                        enabled={selectedSegment === 'Last Week'} 
+                                        onPress={() => setSelectedSegment('Last Week')}
+                                        stylize='ml-1' 
+                                    />
+                                    <Segment 
+                                        title='Custom' 
+                                        enabled={selectedSegment === 'Custom'} 
+                                        icon="date-range" 
+                                        onPress={() => setSelectedSegment('Custom')}
+                                        stylize='ml-1' 
+                                    />
                                 </Section>
                             </Section>
                         </ScrollView>
@@ -82,7 +118,7 @@ const JournalHistory = () => {
                     day={item.day} 
                     stylize={`
                         ${index === 0 ? 'mt-7' : 'mt-2'}
-                        ${index === data.length - 1 ? 'mb-24' : ''}
+                        ${index === filteredData.length - 1 ? 'mb-24' : ''}
                     `}
                 />
             )}
