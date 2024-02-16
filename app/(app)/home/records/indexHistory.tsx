@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FlatList, ScrollView } from "react-native";
+import { router } from "expo-router";
 import { endOfWeek, format, isWithinInterval, parse, startOfWeek, subWeeks } from 'date-fns';
 
 import { fetchRecords } from "utils/firebase";
@@ -145,6 +146,9 @@ const IndexHistory = () => {
                             ${index === 0 ? 'mt-7' : 'mt-2'}
                             ${index === filteredData.length - 1 ? 'mb-24' : ''}
                         `}
+                        onPress={() => {
+                            router.push(`/home/records/record/${item.id}`)
+                        }}
                     />
                 )}
             />

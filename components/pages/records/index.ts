@@ -2,3 +2,5 @@
 export * from './DatePicker';
 export * from './RecordStats';
 export * from './RecordDiv';
+
+export * from './record';

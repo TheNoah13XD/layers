@@ -12,6 +12,12 @@ const RecordsLayout = () => {
             <Stack.Screen 
                 name="journalHistory" 
             />
+            <Stack.Screen 
+                name="record"
+            />
+            <Stack.Screen 
+                name="journal"
+            />
         </Stack>
     );
 }
