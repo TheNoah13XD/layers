@@ -19,7 +19,7 @@ const RootLayout = () => {
         } else if (!isAuthenticated) {
             router.replace('/start');
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, user]);
 
     return <Slot />
 }
