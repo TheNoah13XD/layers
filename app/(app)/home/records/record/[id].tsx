@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { ScrollView, TouchableOpacity } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { Image } from "expo-image";
 import { format } from "date-fns";
@@ -91,7 +90,7 @@ const RecordPage = () => {
                 <Card>
                     <Section stylize="flex-row justify-between items-center p-2">
                         <Type stylize="text-headlineMedium text-primary tracking-tight">Journal</Type>
-                        <Icon name="keyboard-arrow-right" color="primary" />
+                        <Icon name="keyboard-arrow-right" color="primary" onPress={() => router.push(`/home/records/journal/${data.id}`)} />
                     </Section>
 
                     {data.journal ? (
