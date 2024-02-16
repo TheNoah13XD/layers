@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import { FlatList, ScrollView } from "react-native";
 import { endOfWeek, format, isWithinInterval, parse, startOfWeek, subWeeks } from 'date-fns';
-import RNDateTimePicker, { DateTimePickerAndroid, Event } from "@react-native-community/datetimepicker";
 
 import { fetchRecords } from "utils/firebase";
 import { useAuth } from "@context";
 import { Record } from "@types";
 
 import { Section, Type } from "@components/styled";
-import { Button, Dialog, Loading, Segment } from "@components/material";
-import { RecordDiv, RecordStats } from "@components/pages/records";
+import { Loading, Segment } from "@components/material";
+import { DatePickerDialog, RecordDiv, RecordStats } from "@components/pages/records";
 
 const JournalHistory = () => {
     const { user } = useAuth();
@@ -27,49 +26,15 @@ const JournalHistory = () => {
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
 
-    const onChangeStartDate = (event: any, selectedDate: Date | undefined) => {
-        const currentDate = selectedDate;
-        if (currentDate) {
-            setStartDate(currentDate);
-        }
-    };
-    
-    const onChangeEndDate = (event: any, selectedDate: Date | undefined) => {
-        const currentDate = selectedDate || endDate;
-        if (currentDate) {
-            setEndDate(currentDate);
-        }
-    };
-
-    const showStartDate = () => {
-        DateTimePickerAndroid.open({
-            value: startDate || new Date(),
-            onChange: onChangeStartDate,
-            mode: 'date',
-            is24Hour: true,
-        });
-    };
-
-    const showEndDate = () => {
-        DateTimePickerAndroid.open({
-            value: endDate || new Date(),
-            onChange: onChangeEndDate,
-            mode: 'date',
-            is24Hour: true,
-        });
-    };
-
     const getCurrentRecords = async () => {
         setIsLoading(true);
         try {
             const records = await fetchRecords(user.id);
-
             const sortedRecords = records
                 .filter(record => record.journal)
                 .map(record => {
                     // @ts-ignore
                     const date = new Date(record.date.toDate().toISOString());
-                        
                     return {
                         ...record,
                         date: format(date, 'MM/dd/yy')
@@ -91,20 +56,18 @@ const JournalHistory = () => {
         try {
             if (startDate && endDate) {
                 const records = await fetchRecords(user.id, startDate, endDate);
-
                 const sortedRecords = records
                     .filter(record => record.journal)
                     .map(record => {
                         // @ts-ignore
                         const date = new Date(record.date.toDate().toISOString());
-                            
                         return {
                             ...record,
                             date: format(date, 'MM/dd/yy')
                         };
                     })
                     .sort((a, b) => b.date.localeCompare(a.date));
-        
+
                 setCustomData(sortedRecords);
                 setSelectedSegment('Custom');
             }
@@ -121,7 +84,6 @@ const JournalHistory = () => {
 
     useEffect(() => {
         const sourceData = selectedSegment === 'Custom' ? customData : data;
-
         const filtered = sourceData.filter(record => {
             const recordDate = parse(record.date, 'MM/dd/yy', new Date());
             if (selectedSegment === 'This Week') {
@@ -133,7 +95,6 @@ const JournalHistory = () => {
                 const end = endOfWeek(subWeeks(new Date(), 1));
                 return isWithinInterval(recordDate, { start, end });
             }
-
             return true;
         });
 
@@ -161,7 +122,7 @@ const JournalHistory = () => {
                             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                                 <Section stylize="flex-row items-center mt-2">
                                     <Type stylize="text-labelLarge text-onSurface">Filter</Type>
-                                    
+
                                     <Section stylize="flex-row ml-6">
                                         <Segment 
                                             title='This Week' 
@@ -200,21 +161,15 @@ const JournalHistory = () => {
                 )}
             />
 
-            {openDialog && (
-                <Dialog 
-                    title="Enter Dates" 
-                    icon="today" 
-                    onConfirm={getCustomRecords}
-                    onCancel={() => setOpenDialog(false)}
-                >
-                    <Button type="outlined" contentColor="text-secondary" onPress={showStartDate}>
-                        {startDate ? startDate.toLocaleDateString() : 'Start Date'}
-                    </Button>
-                    <Button type="outlined" contentColor="text-secondary" onPress={showEndDate} stylize="ml-3">
-                        {endDate ? endDate.toLocaleDateString() : 'End Date'}
-                    </Button>
-                </Dialog>
-            )}
+            <DatePickerDialog
+                openDialog={openDialog} 
+                setOpenDialog={setOpenDialog} 
+                startDate={startDate} 
+                setStartDate={setStartDate} 
+                endDate={endDate} 
+                setEndDate={setEndDate} 
+                getCustomRecords={getCustomRecords} 
+            />
         </>
     );
 }
