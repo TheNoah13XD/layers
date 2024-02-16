@@ -58,3 +58,7 @@ Please make sure to update tests as appropriate.
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+## Links
+
+[Design](https://www.figma.com/file/FYlq8ZTtoLgkxarQsX2kPo/.layers_prototype?type=design&node-id=3%3A3&mode=design&t=fnCC89uoS0y6fzt2-1) | [Prototype](https://www.figma.com/proto/FYlq8ZTtoLgkxarQsX2kPo/.layers_prototype?page-id=3%3A3&type=design&node-id=88-11505&viewport=-5474%2C-249%2C0.6&t=xN6tjdsUBuTZSruA-1&scaling=scale-down&starting-point-node-id=88%3A11505&show-proto-sidebar=1&mode=design) | [User Flow](https://www.figma.com/file/2C6qP2njKkj1PWEglLLVYz/.layers_userflow?type=whiteboard&node-id=0%3A1&t=q9W1rmD4DuY2YGsK-1)
