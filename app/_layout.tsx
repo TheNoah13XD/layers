@@ -2,6 +2,9 @@ import { useEffect } from 'react';
 import { useFonts } from 'expo-font';
 import { Slot, SplashScreen, router, useSegments } from 'expo-router';
 
+import 'react-native-reanimated';
+import 'react-native-gesture-handler';
+
 import { AuthContextProvider, useAuth } from '@context';
 
 const RootLayout = () => {

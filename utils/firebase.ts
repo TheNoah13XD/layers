@@ -1,8 +1,8 @@
 import { collection, doc, getDocs, query, where, orderBy, getDoc, limit, startAt } from "firebase/firestore";
-import { usersRef } from "@firebase";
+import { groupsRef, usersRef } from "@firebase";
 import { startOfDay, subWeeks } from 'date-fns';
 
-import { Record } from "@types";
+import { Goals, Record, Group, Member } from "@types";
 
 export const fetchRecords = async (userId: string, startDate?: Date, endDate?: Date) => {
     const userDoc = doc(usersRef, userId);
@@ -57,3 +57,50 @@ export const fetchNextRecords = async (userId: string, recordId: string) => {
 
     return records;
 };
+
+export const fetchGroupRecommendations = async (userId: string, goals: Array<keyof Goals>) => {
+    const q = query(groupsRef, where('tags', 'array-contains-any', goals));
+    const querySnapshot = await getDocs(q);
+
+    const groups: Group[] = [];
+    for (const doc of querySnapshot.docs) {
+        const data = doc.data();
+
+        const group: Group = {
+            id: doc.id,
+            name: data.name,
+            members: data.members,
+            owner: data.owner,
+            ownerUsername: data.ownerUsername,
+            description: data.description,
+            tags: data.tags
+        };
+
+        const members = await fetchMembers(group);
+
+        if (!members.some(member => member.id === userId)) {
+            groups.push(group);
+        }
+    }
+
+    return groups;
+}
+
+export const fetchMembers = async (group: Group) => {
+    const groupDoc = doc(groupsRef, group.id);
+    const membersRef = collection(groupDoc, 'members');
+    const querySnapshot = await getDocs(membersRef);
+
+    const members: Member[] = [];
+    querySnapshot.forEach((doc) => {
+        const data = doc.data();
+
+        members.push({
+            id: doc.id,
+            username: data.username,
+            role: data.role
+        });
+    });
+
+    return members;
+}

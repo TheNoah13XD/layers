@@ -9,7 +9,7 @@ export interface GroupCardProps {
 
 export const GroupCard = ({ name, members, stylize }: GroupCardProps) => {
     return (
-        <Section stylize={`flex-col bg-primaryFixedDim rounded-[25px] w-[260px] p-4 ${stylize}`}>
+        <Section stylize={`flex-col bg-primaryFixedDim rounded-[25px] w-[260px] h-[220px] p-4 ${stylize}`}>
             <Section stylize='flex-row items-center'>
                 <Icon name='diversity-1' color='onPrimary' stylize='flex justify-center items-center bg-primary rounded-full w-10 h-10' />
                 <Type stylize='text-headlineSmall text-primary tracking-tight ml-2'>{members}</Type>

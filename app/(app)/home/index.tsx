@@ -5,7 +5,7 @@ import { useAuth } from '@context';
 
 import { Section, Type } from '@components/styled';
 import { Button, ButtonProps } from '@components/material';
-import { FeelsLog, GroupCard, JournalStatus, LayerIndex, ViewActivities } from '@components/pages/dashboard';
+import { FeelsLog, JournalStatus, LayerIndex, Recommend, ViewActivities } from '@components/pages/dashboard';
 import { router } from 'expo-router';
 
 const Home = () => {
@@ -62,12 +62,7 @@ const Home = () => {
                         <Button type='filled' icon='language' containerColor='bg-primaryFixedDim' contentColor='text-onPrimaryFixedVariant' stylize='mt-3'>More</Button>
                     </Section>
 
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        <Section stylize='flex-row px-[6px] pt-5'>
-                            <GroupCard name='Recoverly' members={54} />
-                            <GroupCard name='Forward' members={69} stylize='ml-1' />
-                        </Section>
-                    </ScrollView>
+                    <Recommend user={user} />
                 </Section>
             </Section>
         </ScrollView>

@@ -3,19 +3,7 @@ import { UserCredential, createUserWithEmailAndPassword, onAuthStateChanged, sig
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import { auth, db } from "@firebase";
-
-export interface User {
-    id: string;
-    email: string;
-    name: string;
-    username: string;
-    age?: number;
-    gender?: 'male' | 'female';
-    role?: 'helper' | 'seeker';
-    score?: number;
-    goal?: string;
-    streak?: number;
-}
+import { User } from "@types";
 
 interface UserUpdate {
     age?: number;
@@ -53,7 +41,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         if (docSnap.exists()) {
             let data = docSnap.data();
             setUser(prevUser => {
-                if (prevUser?.id === userId && prevUser.email === data.email && prevUser.name === data.name && prevUser.username === data.username && prevUser.age === data.age && prevUser.gender === data.gender && prevUser.role === data.role && prevUser.score === data.score) {
+                if (prevUser?.id === userId && prevUser.email === data.email && prevUser.name === data.name && prevUser.username === data.username && prevUser.bio === data.bio && prevUser.age === data.age && prevUser.gender === data.gender && prevUser.role === data.role && prevUser.score === data.score && prevUser.goals === data.goals && prevUser.streak === data.streak) {
                     return prevUser;
                 }
     
@@ -62,10 +50,13 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                     email: data.email,
                     name: data.name,
                     username: data.username,
+                    bio: data.bio,
                     age: data.age,
                     gender: data.gender,
                     role: data.role,
-                    score: data.score
+                    score: data.score,
+                    goals: data.goals,
+                    streak: data.streak
                 };
             });
         } else {
