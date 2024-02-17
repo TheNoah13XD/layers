@@ -7,6 +7,7 @@ export interface ReasonSelectProps {
     stylize?: string;
 }
 
+
 export const ReasonSelect = ({ selectedShapes, handleSelect, stylize }: ReasonSelectProps) => {
     return (
         <Section stylize={`relative flex-row flex-wrap self-center w-[320px] h-[460px] ${stylize}`}>
@@ -17,3 +18,4 @@ export const ReasonSelect = ({ selectedShapes, handleSelect, stylize }: ReasonSe
         </Section>
     );
 }
+
