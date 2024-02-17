@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { FlatList } from "react-native";
+import { router } from "expo-router";
 import { Skeleton } from 'moti/skeleton';
 
 import { fetchGroupRecommendations } from "utils/firebase";
@@ -90,6 +91,9 @@ export const Recommend = ({ user }: RecommendProps) => {
                             ${index === 0 ? ' mt-5' : 'ml-1  mt-5'}
                             ${index === groups.length - 1 ? 'mr-2' : ''}
                         `}
+                        onPress={() => {
+                            router.push(`/community/explore/${item.id}`);
+                        }}
                     />
                 )
             )}

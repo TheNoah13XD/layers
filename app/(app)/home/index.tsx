@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { ScrollView } from 'react-native';
+import { router } from 'expo-router';
 
 import { useAuth } from '@context';
 
 import { Section, Type } from '@components/styled';
 import { Button, ButtonProps } from '@components/material';
 import { FeelsLog, JournalStatus, LayerIndex, Recommend, ViewActivities } from '@components/pages/dashboard';
-import { router } from 'expo-router';
 
 const Home = () => {
     const { user } = useAuth();
@@ -59,7 +59,7 @@ const Home = () => {
 
                     <Section stylize='flex-row justify-between items-center w-full px-7'>
                         <Type stylize='text-headlineMedium text-onSurfaceVariant tracking-tight'>Recess Groups</Type>
-                        <Button type='filled' icon='language' containerColor='bg-primaryFixedDim' contentColor='text-onPrimaryFixedVariant' stylize='mt-3'>More</Button>
+                        <Button type='filled' icon='language' containerColor='bg-primaryFixedDim' contentColor='text-onPrimaryFixedVariant' stylize='mt-3' onPress={() => router.push('/community/explore')}>More</Button>
                     </Section>
 
                     <Recommend user={user} />

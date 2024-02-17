@@ -104,3 +104,25 @@ export const fetchMembers = async (group: Group) => {
 
     return members;
 }
+
+export const fetchGroups = async () => {
+    const q = query(groupsRef);
+    const querySnapshot = await getDocs(q);
+
+    const groups: Group[] = [];
+    querySnapshot.forEach((doc) => {
+        const data = doc.data();
+
+        groups.push({
+            id: doc.id,
+            name: data.name,
+            members: data.members,
+            owner: data.owner,
+            ownerUsername: data.ownerUsername,
+            description: data.description,
+            tags: data.tags
+        });
+    });
+
+    return groups;
+}
