@@ -1,13 +1,16 @@
+import { User } from "@context";
+
 import { Section, Type } from "@components/styled";
 import { Icon } from "@components/material";
 
 export interface JournalStatusProps {
-    status: 'started' | 'not-started';
+    user: User;
     stylize?: string;
 }
 
-export const JournalStatus = ({ status, stylize }: JournalStatusProps) => {
+export const JournalStatus = ({ user, stylize }: JournalStatusProps) => {
     const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    const status = 'started';
 
     return (
         <Section stylize={`flex-col bg-primaryFixedDim rounded-[25px] p-4 ${stylize}`}>

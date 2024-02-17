@@ -53,7 +53,7 @@ const Home = () => {
                     </Section>
 
                     <Section stylize='px-[6px] py-5'>
-                        <JournalStatus status='started' />
+                        <JournalStatus user={user} />
                         <ViewActivities stylize='mt-1' />
                     </Section>
 

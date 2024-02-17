@@ -15,6 +15,9 @@ const HomeLayout = () => {
             <Stack.Screen 
                 name="records"
             />
+            <Stack.Screen 
+                name="activities"
+            />
         </Stack>
     );
 }
