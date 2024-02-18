@@ -1,4 +1,5 @@
 import { ScrollView } from 'react-native';
+import { router } from 'expo-router';
 
 import { Section, Type } from '@components/styled';
 import { Fab, Icon, Segment } from '@components/material';
@@ -9,9 +10,12 @@ const Community = () => {
         <Section>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <Section stylize='pt-[74px]'>
-                    <Section stylize='pl-7'>
-                        <Type weight='bold' stylize='text-displayMedium leading-[52px] tracking-tighter text-onSurface'>Your</Type>
-                        <Type weight='bold' stylize='text-displayMedium leading-[52px] tracking-tighter text-onSurface'>Groups.</Type>
+                    <Section stylize='flex-row justify-between items-center w-full px-7'>
+                        <Section>
+                            <Type weight='bold' stylize='text-displayMedium leading-[52px] tracking-tighter text-onSurface'>Your</Type>
+                            <Type weight='bold' stylize='text-displayMedium leading-[52px] tracking-tighter text-onSurface'>Groups.</Type>
+                        </Section>
+                        <Icon name="search" color="onSecondaryContainer" stylize="bg-secondaryContainer rounded-full p-3" onPress={() => router.push('/community/explore')} />
                     </Section>
 
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
