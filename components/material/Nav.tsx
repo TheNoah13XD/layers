@@ -5,6 +5,7 @@ import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { Section, Type } from "../styled";
 import { Icon } from "./Icon";
 import { View } from "react-native";
+import { router } from "expo-router";
 
 export const Nav = ({ state, descriptors, navigation, ...props }: BottomTabBarProps) => {
     return (

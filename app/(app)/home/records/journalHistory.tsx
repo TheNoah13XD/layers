@@ -27,10 +27,9 @@ const JournalHistory = () => {
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
 
-    const getCurrentRecords = async () => {
+    const getCurrentRecords = () => {
         setIsLoading(true);
-        try {
-            const records = await fetchRecords(user.id);
+        const unsubscribe = fetchRecords(user.id, (records) => {
             const sortedRecords = records
                 .filter(record => record.journal)
                 .map(record => {
@@ -44,19 +43,17 @@ const JournalHistory = () => {
                 .sort((a, b) => b.date.localeCompare(a.date));
 
             setData(sortedRecords);
-        } catch (error) {
-            console.error(error);
-        } finally {
             setIsLoading(false);
-        }
+        });
+
+        return unsubscribe;
     }
 
-    const getCustomRecords = async () => {
+    const getCustomRecords = () => {
         setOpenDialog(false);
         setIsLoading(true);
-        try {
-            if (startDate && endDate) {
-                const records = await fetchRecords(user.id, startDate, endDate);
+        if (startDate && endDate) {
+            const unsubscribe = fetchRecords(user.id, (records) => {
                 const sortedRecords = records
                     .filter(record => record.journal)
                     .map(record => {
@@ -71,16 +68,16 @@ const JournalHistory = () => {
 
                 setCustomData(sortedRecords);
                 setSelectedSegment('Custom');
-            }
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setIsLoading(false);
+                setIsLoading(false);
+            }, startDate, endDate);
+
+            return unsubscribe;
         }
     };
 
     useEffect(() => {
-        getCurrentRecords();
+        const unsubscribe = getCurrentRecords();
+        return () => unsubscribe();
     }, []);
 
     useEffect(() => {
@@ -147,6 +144,10 @@ const JournalHistory = () => {
                                 </Section>
                             </ScrollView>
                         </Section>
+                        
+                        {filteredData.length === 0 && (
+                            <Type stylize="text-headlineMedium text-onSurfaceVariant text-center tracking-tight mt-7">No records found.</Type>
+                        )}
                     </>
                 )}
                 renderItem={({ item, index }) => (

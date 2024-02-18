@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
-import { useFocusEffect } from "expo-router";
 
 import { fetchGroups } from "utils/firebase";
 import { Group } from "@types";
@@ -27,23 +26,15 @@ const Search = () => {
         });
     };
 
-    const getGroups = async () => {
+    useEffect(() => {
         setIsLoading(true);
-        try {
-            const groups = await fetchGroups();
+        const unsubscribe = fetchGroups((groups) => {
             setData(groups);
-        } catch (error) {
-            console.error(error);
-        } finally {
             setIsLoading(false);
-        }
-    };
+        });
 
-    useFocusEffect(
-        useCallback(() => {
-            getGroups();
-        }, [])
-    );
+        return () => unsubscribe();
+    }, []);
 
     useEffect(() => {
         let result = data;

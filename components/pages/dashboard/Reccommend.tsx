@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from "react";
-import { FlatList } from "react-native";
+import { useEffect, useState } from "react";
+import { ScrollView } from "react-native";
 import { router } from "expo-router";
 import { Skeleton } from 'moti/skeleton';
 
@@ -35,6 +35,10 @@ export const Recommend = ({ user }: RecommendProps) => {
     const [groups, setGroups] = useState<Group[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
+    const uniqueGroups = groups.filter((group, index, self) =>
+        index === self.findIndex((g) => g.id === group.id)
+    );
+
     function getRandom(arr: any[], n: number) {
         const result = new Array(n);
         let len = arr.length;
@@ -50,54 +54,45 @@ export const Recommend = ({ user }: RecommendProps) => {
 
         return result;
     }
-    
-    const getGroups = useCallback(async () => {
-        setLoading(true);
-        try {
-            const recommendations = await fetchGroupRecommendations(user.id, goals);
-            setGroups(getRandom(recommendations, 3));
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    }, [user.id, goals]);
 
     useEffect(() => {
-        getGroups();
-    }, [getGroups]);
+        setLoading(true);
+        const unsubscribe = fetchGroupRecommendations(user.id, goals, (recommendations) => {
+            const n = Math.min(recommendations.length, 3);
+            setGroups(getRandom(recommendations, n));
+            setLoading(false);
+        });
+
+        return () => unsubscribe();
+    }, [user.id, goals]);
 
     return (
-        <FlatList 
-            data={groups}
-            keyExtractor={group => group.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            ListHeaderComponent={(
-                <Section stylize='flex-row mx-1'>
-                    <Section stylize={`flex-row items-center ml-1 ${loading ? '' : 'hidden'}`}>
-                        <LoadingSkeleton loading={loading} stylize="mt-5" />
-                        <LoadingSkeleton loading={loading} stylize="mt-5 pl-1" />
-                        <LoadingSkeleton loading={loading} stylize="mt-5 pl-1" />
-                    </Section>    
-                </Section>
-            )}
-            renderItem={({ item, index }) => (
-                loading ? <LoadingSkeleton loading={loading} stylize="mt-5" /> : (
-                    <GroupCard 
-                        name={item.name} 
-                        members={item.members} 
-                        stylize={`
-                            ${index === 0 ? ' mt-5' : 'ml-1  mt-5'}
-                            ${index === groups.length - 1 ? 'mr-2' : ''}
-                        `}
-                        onPress={() => {
-                            console.log("sending:", item.id);
-                            router.push(`/community/explore/${item.id}`);
-                        }}
-                    />
-                )
-            )}
-        />
+        <Section stylize='flex-row mx-1'>
+            <Section stylize={`flex-row items-center ml-1 ${loading ? '' : 'hidden'}`}>
+                <LoadingSkeleton loading={loading} stylize="mt-5" />
+                <LoadingSkeleton loading={loading} stylize="mt-5 pl-1" />
+                <LoadingSkeleton loading={loading} stylize="mt-5 pl-1" />
+            </Section>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }} horizontal showsHorizontalScrollIndicator={false}>
+                {loading ? (
+                    <LoadingSkeleton loading={loading} stylize="mt-5" />
+                ) : (
+                    uniqueGroups.map((item, index) => (
+                        <GroupCard 
+                            key={item.id}
+                            name={item.name} 
+                            members={item.members} 
+                            stylize={`
+                                ${index === 0 ? ' mt-5' : 'ml-1  mt-5'}
+                                ${index === groups.length - 1 ? 'mr-2' : ''}
+                            `}
+                            onPress={() => {
+                                router.push(`/community/explore/${item.id}`);
+                            }}
+                        />
+                    ))
+                )}
+            </ScrollView>
+        </Section>
     );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FlatList, ScrollView } from "react-native";
 import { router } from "expo-router";
 import { endOfWeek, format, isWithinInterval, parse, startOfWeek, subWeeks } from 'date-fns';
@@ -11,6 +11,23 @@ import { Section, Type } from "@components/styled";
 import { Loading, Segment } from "@components/material";
 import { DatePickerDialog, RecordDiv, RecordStats } from "@components/pages/records";
 
+const SEGMENTS = {
+    THIS_WEEK: 'This Week',
+    LAST_WEEK: 'Last Week',
+    CUSTOM: 'Custom',
+};
+
+const transformRecords = (records: Record[]) => records
+    .map(record => {
+        // @ts-ignore
+        const date = new Date(record.date.toDate().toISOString());
+        return {
+            ...record,
+            date: format(date, 'MM/dd/yy')
+        };
+    })
+    .sort((a, b) => b.date.localeCompare(a.date));
+
 const IndexHistory = () => {
     const { user } = useAuth();
     if (!user) {
@@ -18,7 +35,7 @@ const IndexHistory = () => {
     }
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [selectedSegment, setSelectedSegment] = useState<string>('This Week');
+    const [selectedSegment, setSelectedSegment] = useState<string>(SEGMENTS.THIS_WEEK);
     const [data, setData] = useState<Record[]>([]);
     const [customData, setCustomData] = useState<Record[]>([]);
     const [filteredData, setFilteredData] = useState<Record[]>([]);
@@ -27,59 +44,44 @@ const IndexHistory = () => {
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
 
-    const getCurrentRecords = async () => {
+    const getCurrentRecords = useCallback(() => {
         setIsLoading(true);
-        const records = await fetchRecords(user.id);
-        const sortedRecords = records
-            .map(record => {
-                // @ts-ignore
-                const date = new Date(record.date.toDate().toISOString());
-                return {
-                    ...record,
-                    date: format(date, 'MM/dd/yy')
-                };
-            })
-            .sort((a, b) => b.date.localeCompare(a.date));
+        const unsubscribe = fetchRecords(user.id, (records) => {
+            setData(transformRecords(records));
+            setIsLoading(false);
+        });
 
-        setData(sortedRecords);
-        setIsLoading(false);
-    }
+        return unsubscribe;
+    }, [user.id]);
 
-    const getCustomRecords = async () => {
+    const getCustomRecords = useCallback(() => {
         setOpenDialog(false);
         setIsLoading(true);
         if (startDate && endDate) {
-            const records = await fetchRecords(user.id, startDate, endDate);
-            const sortedRecords = records
-                .map(record => {
-                    // @ts-ignore
-                    const date = new Date(record.date.toDate().toISOString());
-                    return {
-                        ...record,
-                        date: format(date, 'MM/dd/yy')
-                    };
-                })
-                .sort((a, b) => b.date.localeCompare(a.date));
+            const unsubscribe = fetchRecords(user.id, (records) => {
+                setCustomData(transformRecords(records));
+                setSelectedSegment(SEGMENTS.CUSTOM);
+                setIsLoading(false);
+            }, startDate, endDate);
 
-            setCustomData(sortedRecords);
-            setSelectedSegment('Custom');
+            return unsubscribe;
         }
-        setIsLoading(false);
-    };
+    }, [user.id, startDate, endDate]);
 
     useEffect(() => {
-        getCurrentRecords();
-    }, []);
+        const unsubscribe = getCurrentRecords();
+        return () => unsubscribe();
+    }, [getCurrentRecords]);
 
     useEffect(() => {
-        const sourceData = selectedSegment === 'Custom' ? customData : data;
+        const sourceData = selectedSegment === SEGMENTS.CUSTOM ? customData : data;
         const filtered = sourceData.filter(record => {
             const recordDate = parse(record.date, 'MM/dd/yy', new Date());
-            if (selectedSegment === 'This Week') {
+            if (selectedSegment === SEGMENTS.THIS_WEEK) {
                 const start = startOfWeek(new Date());
                 const end = endOfWeek(new Date());
                 return isWithinInterval(recordDate, { start, end });
-            } else if (selectedSegment === 'Last Week') {
+            } else if (selectedSegment === SEGMENTS.LAST_WEEK) {
                 const start = startOfWeek(subWeeks(new Date(), 1));
                 const end = endOfWeek(subWeeks(new Date(), 1));
                 return isWithinInterval(recordDate, { start, end });
@@ -98,7 +100,7 @@ const IndexHistory = () => {
         <>
             <FlatList
                 data={filteredData}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item) => item.id}
                 ListHeaderComponent={(
                     <>
                         <Section stylize="items-center mt-[68px]">
@@ -135,6 +137,10 @@ const IndexHistory = () => {
                                 </Section>
                             </ScrollView>
                         </Section>
+
+                        {filteredData.length === 0 && (
+                            <Type stylize="text-headlineMedium text-onSurfaceVariant text-center tracking-tight mt-7">No records found.</Type>
+                        )}
                     </>
                 )}
                 renderItem={({ item, index }) => (

@@ -13,10 +13,9 @@ import { Back, Card, Icon, Loading } from "@components/material";
 import { RecordList, ScoreDisplay } from "@components/pages/records/record";
 
 const RecordPage = () => {
-    const day = useLocalSearchParams();
+    const id = useLocalSearchParams();
     const { user } = useAuth();
 
-    const { id } = day as { id: string };
     if (!user || !id) {
         return null;
     }
@@ -25,10 +24,9 @@ const RecordPage = () => {
     const [records, setRecords] = useState<Record[]>([]);
     const [data, setData] = useState<Record>({} as Record);
 
-    const getRecords = async () => {
+    const getRecords = async (): Promise<() => void> => {
         setIsLoading(true);
-        try {
-            const records = await fetchNextRecords(user.id, id);
+        const unsubscribe = await fetchNextRecords(user.id, id.id as string, (records) => {
             const sortedRecords = records
                 .map(record => {
                     // @ts-ignore
@@ -39,14 +37,13 @@ const RecordPage = () => {
                     };
                 })
                 .sort((a, b) => b.date.localeCompare(a.date));
-
+    
             setRecords(sortedRecords);
             setData(sortedRecords[0]);
-        } catch (error) {
-            console.error('Error fetching records:', error);
-        } finally {
             setIsLoading(false);
-        }
+        });
+    
+        return unsubscribe;
     }
 
     const changeCurrentRecord = (id: string) => {
@@ -57,8 +54,16 @@ const RecordPage = () => {
     }
 
     useEffect(() => {
-        getRecords();
-    }, [id]);
+        let unsubscribe: () => void;
+        getRecords().then(unsub => {
+            unsubscribe = unsub;
+        });
+        return () => {
+            if (unsubscribe) {
+                unsubscribe();
+            }
+        };
+    }, [id.id]);
 
     if (isLoading) {
         return <Loading />

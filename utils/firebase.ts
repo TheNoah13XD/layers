@@ -1,10 +1,11 @@
-import { collection, doc, getDocs, query, where, orderBy, getDoc, limit, startAt } from "firebase/firestore";
+import { collection, doc, query, where, orderBy, limit, startAt, setDoc, onSnapshot, updateDoc, increment, getDoc, deleteDoc } from "firebase/firestore";
 import { groupsRef, postsRef, usersRef } from "@firebase";
 import { startOfDay, subWeeks } from 'date-fns';
 
 import { Goals, Record, Group, Member, Post } from "@types";
 
-export const fetchRecords = async (userId: string, startDate?: Date, endDate?: Date) => {
+// query functions
+export const fetchRecords = (userId: string, callback: (records: Record[]) => void, startDate?: Date, endDate?: Date) => {
     const userDoc = doc(usersRef, userId);
     const recordsRef = collection(userDoc, 'records');
 
@@ -12,62 +13,151 @@ export const fetchRecords = async (userId: string, startDate?: Date, endDate?: D
     const end = endDate ? startOfDay(endDate) : startOfDay(new Date());
 
     const q = query(recordsRef, where('date', '>=', start), where('date', '<=', end), orderBy('date', 'desc'));
-    const querySnapshot = await getDocs(q);
 
-    const records: Record[] = [];
-    querySnapshot.forEach((doc) => {
-        const data = doc.data();
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const records: Record[] = [];
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
 
-        records.push({
-            id: doc.id,
-            date: data.date,
-            day: data.day,
-            feels: data.feels,
-            journal: data.journal,
-            score: data.score
+            records.push({
+                id: doc.id,
+                date: data.date,
+                day: data.day,
+                feels: data.feels,
+                journal: data.journal,
+                score: data.score
+            });
         });
+
+        callback(records);
     });
 
-    return records;
+    return unsubscribe;
 };
 
-export const fetchNextRecords = async (userId: string, recordId: string) => {
-    const userDoc = doc(usersRef, userId);
-    const recordsRef = collection(userDoc, 'records');
+export const fetchNextRecords = async (userId: string, recordId: string, callback: (records: Record[]) => void) => {
+    try {
+        const userDoc = doc(usersRef, userId);
+        const recordsRef = collection(userDoc, 'records');
 
-    const recordDoc = doc(recordsRef, recordId);
-    const recordSnap = await getDoc(recordDoc);
+        const recordSnapshot = await getDoc(doc(recordsRef, recordId));
+        const q = query(recordsRef, orderBy('date', 'desc'), startAt(recordSnapshot), limit(7));
 
-    const q = query(recordsRef, orderBy('date', 'desc'), startAt(recordSnap), limit(7));
-    const querySnapshot = await getDocs(q);
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const records: Record[] = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
 
-    const records: Record[] = [];
-    querySnapshot.forEach((doc) => {
-        const data = doc.data();
+                records.push({
+                    id: doc.id,
+                    date: data.date,
+                    day: data.day,
+                    feels: data.feels,
+                    journal: data.journal,
+                    score: data.score
+                });
+            });
 
-        records.push({
-            id: doc.id,
-            date: data.date,
-            day: data.day,
-            feels: data.feels,
-            journal: data.journal,
-            score: data.score
+            callback(records);
         });
-    });
 
-    return records;
+        return unsubscribe;
+    } catch (error) {
+        console.error(error);
+        return () => {};
+    }
 };
 
-export const fetchGroupRecommendations = async (userId: string, goals: Array<keyof Goals>) => {
+export const fetchGroupRecommendations = (userId: string, goals: Array<keyof Goals>, callback: (groups: Group[]) => void) => {
     const q = query(groupsRef, where('tags', 'array-contains-any', goals));
-    const querySnapshot = await getDocs(q);
 
-    const groups: Group[] = [];
-    for (const doc of querySnapshot.docs) {
-        const data = doc.data();
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const groups: Group[] = [];
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            const group: Group = {
+                id: doc.id,
+                name: data.name,
+                members: data.members,
+                owner: data.owner,
+                ownerUsername: data.ownerUsername,
+                description: data.description,
+                tags: data.tags
+            };
+
+            fetchMembers(group, (members) => {
+                if (!members.some(member => member.id === userId)) {
+                    groups.push(group);
+                }
+
+                callback(groups);
+            });
+        });
+    });
+
+    return unsubscribe;
+}
+
+export const fetchMembers = (group: Group, callback: (members: Member[]) => void) => {
+    const groupDoc = doc(groupsRef, group.id);
+    const membersRef = collection(groupDoc, 'members');
+
+    const unsubscribe = onSnapshot(membersRef, (querySnapshot) => {
+        const members: Member[] = [];
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            members.push({
+                id: doc.id,
+                username: data.username,
+                role: data.role
+            });
+        });
+
+        callback(members);
+    });
+
+    return unsubscribe;
+}
+
+export const fetchGroups = (callback: (groups: Group[]) => void) => {
+    const q = query(groupsRef);
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const groups: Group[] = [];
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            groups.push({
+                id: doc.id,
+                name: data.name,
+                members: data.members,
+                owner: data.owner,
+                ownerUsername: data.ownerUsername,
+                description: data.description,
+                tags: data.tags
+            });
+        });
+
+        callback(groups);
+    });
+
+    return unsubscribe;
+}
+
+export const fetchGroup = (groupId: string, callback: (group: Group) => void) => {
+    const groupDoc = doc(groupsRef, groupId);
+
+    const unsubscribe = onSnapshot(groupDoc, (groupSnap) => {
+        const data = groupSnap.data();
+
+        if (!data) {
+            throw new Error(`No group found with id: ${groupId}`);
+        }
 
         const group: Group = {
-            id: doc.id,
+            id: groupSnap.id,
             name: data.name,
             members: data.members,
             owner: data.owner,
@@ -76,99 +166,65 @@ export const fetchGroupRecommendations = async (userId: string, goals: Array<key
             tags: data.tags
         };
 
-        const members = await fetchMembers(group);
+        callback(group);
+    });
 
-        if (!members.some(member => member.id === userId)) {
-            groups.push(group);
-        }
-    }
-
-    return groups;
+    return unsubscribe;
 }
 
-export const fetchMembers = async (group: Group) => {
+export const fetchPosts = (groupId: string, callback: (posts: Post[]) => void) => {
+    const q = query(postsRef, where('groupId', '==', groupId));
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const posts: Post[] = [];
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            posts.push({
+                id: doc.id,
+                user: data.userId,
+                username: data.username,
+                time: data.time,
+                groupId: data.groupId,
+                groupName: data.groupName,
+                content: data.content,
+                likedBy: data.likedBy
+            });
+        });
+
+        callback(posts);
+    });
+
+    return unsubscribe;
+}
+
+// write functions
+export const addMember = async (group: Group, userId: string, username: string) => {
     const groupDoc = doc(groupsRef, group.id);
     const membersRef = collection(groupDoc, 'members');
-    const querySnapshot = await getDocs(membersRef);
 
-    const members: Member[] = [];
-    querySnapshot.forEach((doc) => {
-        const data = doc.data();
-
-        members.push({
-            id: doc.id,
-            username: data.username,
-            role: data.role
-        });
-    });
-
-    return members;
-}
-
-export const fetchGroups = async () => {
-    const q = query(groupsRef);
-    const querySnapshot = await getDocs(q);
-
-    const groups: Group[] = [];
-    querySnapshot.forEach((doc) => {
-        const data = doc.data();
-
-        groups.push({
-            id: doc.id,
-            name: data.name,
-            members: data.members,
-            owner: data.owner,
-            ownerUsername: data.ownerUsername,
-            description: data.description,
-            tags: data.tags
-        });
-    });
-
-    return groups;
-}
-
-export const fetchGroup = async (groupId: string) => {
-    const groupDoc = doc(groupsRef, groupId);
-    const groupSnap = await getDoc(groupDoc);
-
-    const data = groupSnap.data();
-
-    if (!data) {
-        throw new Error(`No group found with id: ${groupId}`);
-    }
-
-    const group: Group = {
-        id: groupSnap.id,
-        name: data.name,
-        members: data.members,
-        owner: data.owner,
-        ownerUsername: data.ownerUsername,
-        description: data.description,
-        tags: data.tags
+    const member = {
+        userId,
+        username,
+        role: 'member'
     };
 
-    return group;
-}
-
-export const fetchPosts = async (groupId: string) => {
-    const q = query(postsRef, where('groupId', '==', groupId));
-    const querySnapshot = await getDocs(q);
-
-    const posts: any[] = [];
-    querySnapshot.forEach((doc) => {
-        const data = doc.data();
-
-        posts.push({
-            id: doc.id,
-            user: data.userId,
-            username: data.username,
-            time: data.time,
-            groupId: data.groupId,
-            groupName: data.groupName,
-            content: data.content,
-            likedBy: data.likedBy
-        });
+    await setDoc(doc(membersRef, userId), member);
+    await updateDoc(groupDoc, {
+        members: increment(1)
     });
 
-    return posts;
+    return member;
+}
+
+export const removeMember = async (group: Group, userId: string) => {
+    const groupDoc = doc(groupsRef, group.id);
+    const memberDoc = collection(groupDoc, 'members');
+
+    await deleteDoc(doc(memberDoc, userId));
+    await updateDoc(groupDoc, {
+        members: increment(-1)
+    });
+
+    return;
 }
