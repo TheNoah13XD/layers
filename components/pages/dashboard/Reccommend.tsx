@@ -83,8 +83,8 @@ export const Recommend = ({ user }: RecommendProps) => {
                             name={item.name} 
                             members={item.members} 
                             stylize={`
-                                ${index === 0 ? ' mt-5' : 'ml-1  mt-5'}
-                                ${index === groups.length - 1 ? 'mr-2' : ''}
+                                ${index === 0 ? 'mt-5' : 'ml-1  mt-5'}
+                                ${index === groups.length - 1 ? 'mr-1' : ''}
                             `}
                             onPress={() => {
                                 router.push(`/community/explore/${item.id}`);

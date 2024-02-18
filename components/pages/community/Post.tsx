@@ -1,25 +1,40 @@
 import { Timestamp } from "firebase/firestore";
 import { formatDistanceToNow } from "date-fns";
 
+import { useAuth } from "@context";
+
 import { Section, Type } from "@components/styled";
 import { Card, Icon } from "@components/material";
 import { Like } from "./Like";
+import { addLike, removeLike } from "utils/firebase";
 
 export interface PostCardProps {
+    id: string;
     name: string;
     group: string;
     content: string;
+    likedBy: string[];
     time?: Timestamp;
     stylize?: string;
 }
 
-export const PostCard = ({ name, group, content, time, stylize }: PostCardProps) => {
-    const postTime = time?.toDate().getTime();
+export const PostCard = ({ id, name, group, content, likedBy, time, stylize }: PostCardProps) => {
+    const { user } = useAuth();
+    const isLiked = likedBy.includes(user?.id || "");
 
+    const postTime = time?.toDate().getTime();
     const getTimeAgo = () => {
         if (!postTime) return "";
         return formatDistanceToNow(postTime, { addSuffix: true });
     };
+
+    const handleLike = async () => {
+        if (isLiked) {
+            await removeLike(id, user?.id!);
+        } else {
+            await addLike(id, user?.id!);
+        }
+    }
 
     return (
         <Card stylize={stylize}>
@@ -46,7 +61,7 @@ export const PostCard = ({ name, group, content, time, stylize }: PostCardProps)
             </Section>
 
             <Section stylize='flex-row self-end mt-8'>
-                <Like />
+                <Like liked={isLiked} action={() => handleLike()} />
                 <Icon family='materialCommunity' name='comment-outline' color='onSurface' stylize='pl-5' />
                 <Icon name='share' color='onSurface' stylize='pl-5' />
             </Section>

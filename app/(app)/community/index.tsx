@@ -43,8 +43,8 @@ const Community = () => {
                     </ScrollView>
 
                     <Section stylize='mt-7 mb-24 px-7'>
-                        <PostCard name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} />
-                        <PostCard name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} stylize='mt-3' />
+                        <PostCard id={"ok"} name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} likedBy={[]} />
+                        <PostCard id={"ok"} name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} likedBy={[]} stylize='mt-3' />
                     </Section>
                 </Section>
             </ScrollView>

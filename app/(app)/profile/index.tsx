@@ -59,6 +59,7 @@ const Profile = () => {
                             posts.map((post, index) => (
                                 <PostCard
                                     key={index}
+                                    id={post.id}
                                     name={post.username}
                                     group={post.groupName}
                                     content={post.content}

@@ -106,9 +106,11 @@ const GroupPage = () => {
                                 posts.map((post, index) => (
                                     <PostCard 
                                         key={index} 
+                                        id={post.id}
                                         name={post.username} 
                                         group={post.groupName} 
                                         content={post.content} 
+                                        likedBy={post.likedBy}
                                         time={post.time} 
                                         stylize={`${index === 0 ? '' : 'mt-3'}`}
                                     />

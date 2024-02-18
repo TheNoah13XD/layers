@@ -1,4 +1,4 @@
-import { collection, doc, query, where, orderBy, limit, startAt, setDoc, onSnapshot, updateDoc, increment, getDoc, deleteDoc } from "firebase/firestore";
+import { collection, doc, query, where, orderBy, limit, startAt, setDoc, onSnapshot, updateDoc, increment, getDoc, deleteDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { groupsRef, postsRef, usersRef } from "@firebase";
 import { startOfDay, subWeeks } from 'date-fns';
 
@@ -250,6 +250,26 @@ export const removeMember = async (group: Group, userId: string) => {
     await deleteDoc(doc(memberDoc, userId));
     await updateDoc(groupDoc, {
         members: increment(-1)
+    });
+
+    return;
+}
+
+export const addLike = async (postId: string, userId: string) => {
+    const postDoc = doc(postsRef, postId);
+
+    await updateDoc(postDoc, {
+        likedBy: arrayUnion(userId)
+    });
+
+    return;
+}
+
+export const removeLike = async (postId: string, userId: string) => {
+    const postDoc = doc(postsRef, postId);
+
+    await updateDoc(postDoc, {
+        likedBy: arrayRemove(userId)
     });
 
     return;
