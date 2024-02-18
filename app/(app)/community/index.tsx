@@ -2,7 +2,7 @@ import { ScrollView } from 'react-native';
 
 import { Section, Type } from '@components/styled';
 import { Fab, Icon, Segment } from '@components/material';
-import { Post, Stage } from '@components/pages/community';
+import { PostCard, Stage } from '@components/pages/community';
 
 const Community = () => {
     return (
@@ -39,8 +39,8 @@ const Community = () => {
                     </ScrollView>
 
                     <Section stylize='mt-7 mb-24 px-7'>
-                        <Post name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} />
-                        <Post name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} stylize='mt-3' />
+                        <PostCard name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} />
+                        <PostCard name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} stylize='mt-3' />
                     </Section>
                 </Section>
             </ScrollView>

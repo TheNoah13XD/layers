@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export interface User {
     id: string;
     email: string;
@@ -46,4 +48,15 @@ export interface Member {
     id: string;
     username: string;
     role: 'owner' | 'admin' | 'member';
+}
+
+export interface Post {
+    id: string;
+    user: string;
+    username: string;
+    time: Timestamp;
+    groupId: string;
+    groupName: string;
+    content: string;
+    likedBy: string[];
 }

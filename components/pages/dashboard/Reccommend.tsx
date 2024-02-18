@@ -92,6 +92,7 @@ export const Recommend = ({ user }: RecommendProps) => {
                             ${index === groups.length - 1 ? 'mr-2' : ''}
                         `}
                         onPress={() => {
+                            console.log("sending:", item.id);
                             router.push(`/community/explore/${item.id}`);
                         }}
                     />

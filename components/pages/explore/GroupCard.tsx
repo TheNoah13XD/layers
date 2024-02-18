@@ -1,8 +1,10 @@
+import { TouchableOpacity } from "react-native";
+import { router } from "expo-router";
+
 import { Group } from "@types";
 
 import { Section, Type } from "@components/styled";
 import { Button, Card, Icon } from "@components/material";
-import { router } from "expo-router";
 
 interface GroupCardProps {
     group: Group;
@@ -24,7 +26,9 @@ export const GroupCard = ({ group, isFirst }: GroupCardProps) => {
             </Section>
     
             <Section stylize="mt-7 px-3 mb-2">
-                <Type stylize="text-headlineSmall text-onSurface">{group.name}</Type>
+                <TouchableOpacity activeOpacity={0.7} onPress={() => { router.push(`/community/explore/${group.id}`) }}>
+                    <Type stylize="text-headlineSmall text-onSurface">{group.name}</Type>
+                </TouchableOpacity>
                 <Type stylize="text-bodyMedium text-onSurface mt-2">{group.description}</Type>
             </Section>
         </Card>

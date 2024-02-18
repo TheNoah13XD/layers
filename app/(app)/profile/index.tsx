@@ -6,7 +6,7 @@ import { useAuth } from "@context";
 
 import { Section, Type } from "@components/styled";
 import { Button, Card } from "@components/material";
-import { Post } from "@components/pages/community";
+import { PostCard } from "@components/pages/community";
 import { ProfileHeader } from "@components/pages/profile";
 
 const Profile = () => {
@@ -53,8 +53,8 @@ const Profile = () => {
                         <Type stylize="text-headlineMedium text-onSurfaceVariant tracking-tight pl-5">Your Posts</Type>
                     </Section>
 
-                    <Post name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} stylize='mt-7' />
-                    <Post name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} stylize='mt-3' />
+                    <PostCard name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} stylize='mt-7' />
+                    <PostCard name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} stylize='mt-3' />
                 </Card>
             </Section>
         </ScrollView>

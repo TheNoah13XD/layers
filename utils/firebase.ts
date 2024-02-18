@@ -1,8 +1,8 @@
 import { collection, doc, getDocs, query, where, orderBy, getDoc, limit, startAt } from "firebase/firestore";
-import { groupsRef, usersRef } from "@firebase";
+import { groupsRef, postsRef, usersRef } from "@firebase";
 import { startOfDay, subWeeks } from 'date-fns';
 
-import { Goals, Record, Group, Member } from "@types";
+import { Goals, Record, Group, Member, Post } from "@types";
 
 export const fetchRecords = async (userId: string, startDate?: Date, endDate?: Date) => {
     const userDoc = doc(usersRef, userId);
@@ -125,4 +125,50 @@ export const fetchGroups = async () => {
     });
 
     return groups;
+}
+
+export const fetchGroup = async (groupId: string) => {
+    const groupDoc = doc(groupsRef, groupId);
+    const groupSnap = await getDoc(groupDoc);
+
+    const data = groupSnap.data();
+
+    if (!data) {
+        throw new Error(`No group found with id: ${groupId}`);
+    }
+
+    const group: Group = {
+        id: groupSnap.id,
+        name: data.name,
+        members: data.members,
+        owner: data.owner,
+        ownerUsername: data.ownerUsername,
+        description: data.description,
+        tags: data.tags
+    };
+
+    return group;
+}
+
+export const fetchPosts = async (groupId: string) => {
+    const q = query(postsRef, where('groupId', '==', groupId));
+    const querySnapshot = await getDocs(q);
+
+    const posts: any[] = [];
+    querySnapshot.forEach((doc) => {
+        const data = doc.data();
+
+        posts.push({
+            id: doc.id,
+            user: data.userId,
+            username: data.username,
+            time: data.time,
+            groupId: data.groupId,
+            groupName: data.groupName,
+            content: data.content,
+            likedBy: data.likedBy
+        });
+    });
+
+    return posts;
 }

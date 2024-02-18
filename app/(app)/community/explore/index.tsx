@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ScrollView } from "react-native";
+import { useFocusEffect } from "expo-router";
 
 import { fetchGroups } from "utils/firebase";
 import { Group } from "@types";
@@ -38,6 +39,12 @@ const Search = () => {
         }
     };
 
+    useFocusEffect(
+        useCallback(() => {
+            getGroups();
+        }, [])
+    );
+
     useEffect(() => {
         let result = data;
     
@@ -51,10 +58,6 @@ const Search = () => {
     
         setFilteredGroups(result);
     }, [selectedSegments, search, data]);
-
-    useEffect(() => {
-        getGroups();
-    }, []);
 
     if (isLoading) {
         return <Loading />;

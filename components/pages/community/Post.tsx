@@ -1,15 +1,26 @@
+import { Timestamp } from "firebase/firestore";
+import { formatDistanceToNow } from "date-fns";
+
 import { Section, Type } from "@components/styled";
 import { Card, Icon } from "@components/material";
 import { Like } from "./Like";
 
-export interface PostProps {
+export interface PostCardProps {
     name: string;
     group: string;
     content: string;
+    time?: Timestamp;
     stylize?: string;
 }
 
-export const Post = ({ name, group, content, stylize }: PostProps) => {
+export const PostCard = ({ name, group, content, time, stylize }: PostCardProps) => {
+    const postTime = time?.toDate().getTime();
+
+    const getTimeAgo = () => {
+        if (!postTime) return "";
+        return formatDistanceToNow(postTime, { addSuffix: true });
+    };
+
     return (
         <Card stylize={stylize}>
             <Section stylize={`flex-row justify-between items-center pt-2 pl-2 pr-1`}>
@@ -22,6 +33,8 @@ export const Post = ({ name, group, content, stylize }: PostProps) => {
                         <Section stylize='flex-row'>
                             <Type stylize='text-bodySmall text-onSurfaceVariant leading-[16px] tracking-wide'>on:</Type>
                             <Type stylize='text-bodySmall text-primary leading-[16px] tracking-wide pl-2'>{group}</Type>
+                            <Type stylize='text-bodySmall text-onSurfaceVariant leading-[16px] tracking-wide pl-2'>•</Type>
+                            <Type stylize='text-bodySmall text-onSurfaceVariant leading-[16px] tracking-wide pl-2'>{getTimeAgo()}</Type>
                         </Section>
                     </Section>
                 </Section>

@@ -58,7 +58,7 @@ const RecordPage = () => {
 
     useEffect(() => {
         getRecords();
-    }, []);
+    }, [id]);
 
     if (isLoading) {
         return <Loading />
