@@ -198,6 +198,32 @@ export const fetchPosts = (groupId: string, callback: (posts: Post[]) => void) =
     return unsubscribe;
 }
 
+export const fetchPostsOfUser = (userId: string, callback: (posts: Post[]) => void) => {
+    const q = query(postsRef, where('user', '==', userId));
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const posts: Post[] = [];
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            posts.push({
+                id: doc.id,
+                user: data.userId,
+                username: data.username,
+                time: data.time,
+                groupId: data.groupId,
+                groupName: data.groupName,
+                content: data.content,
+                likedBy: data.likedBy
+            });
+        });
+
+        callback(posts);
+    });
+
+    return unsubscribe;
+}
+
 // write functions
 export const addMember = async (group: Group, userId: string, username: string) => {
     const groupDoc = doc(groupsRef, group.id);

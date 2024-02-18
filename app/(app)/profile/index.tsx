@@ -1,50 +1,47 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
 import { router } from "expo-router";
 
+import { fetchPostsOfUser } from "utils/firebase";
 import { useAuth } from "@context";
+import { Post } from "@types";
 
 import { Section, Type } from "@components/styled";
-import { Button, Card } from "@components/material";
+import { Button, Card, Loading } from "@components/material";
 import { PostCard } from "@components/pages/community";
-import { ProfileHeader } from "@components/pages/profile";
+import { IndexScore, ProfileHeader } from "@components/pages/profile";
 
 const Profile = () => {
-    const { user, isAuthenticated } = useAuth();
-    if (!user) {
+    const { user } = useAuth();
+    if (!user || !user.score) {
         return null;
     }
 
+    const [isPostsLoading, setIsPostsLoading] = useState(true);
+    const [posts, setPosts] = useState<Post[]>([]);
+
     useEffect(() => {
-        if (!isAuthenticated) {
-            router.replace('/start');
-        } else if (!user.role) {
-            router.replace('/assessments');
-        }
-    }, [isAuthenticated]);
+        const unsubscribe = fetchPostsOfUser(user.id, (posts) => {
+            setPosts(posts);
+            setIsPostsLoading(false);
+        });
+
+        return () => unsubscribe();
+    }, [user]);
 
     return (
         <ScrollView>
-            <ProfileHeader name={user.name} bio="I like pies." />
+            <ProfileHeader name={user.name} bio={user.bio} />
 
             <Section stylize="mt-6 px-7">
                 <Card>
-                    <Section stylize="p-2">
-                        <Section stylize="flex-row">
-                            <Type stylize="text-headlineMedium text-onSurfaceVariant tracking-tight">Layer Index:</Type>
-                            <Type stylize="text-headlineMedium text-primary tracking-tight pl-3">82</Type>
-                        </Section>
-
-                        <Section stylize="mt-6">
-                            <Type stylize="text-titleMedium text-onSurface">"Soaring high with a score above 80! Your strength is inspiring—keep shining on the journey to well-being!"</Type>
-                        </Section>
-                    </Section>
+                    <IndexScore score={user.score} />
                 </Card>
 
                 <Card stylize="mt-3">
                     <Section stylize="flex-row justify-between w-full px-2">
                         <Type stylize="text-headlineMedium text-onSurfaceVariant tracking-tight">Journals</Type>
-                        <Button type="filled" icon="arrow-right-alt" containerColor="bg-primary" contentColor="text-onPrimary">Logs</Button>
+                        <Button type="filled" icon="arrow-right-alt" containerColor="bg-primary" contentColor="text-onPrimary" onPress={() => router.push('/home/records/journalHistory')}>Logs</Button>
                     </Section>
                 </Card>
 
@@ -53,8 +50,24 @@ const Profile = () => {
                         <Type stylize="text-headlineMedium text-onSurfaceVariant tracking-tight pl-5">Your Posts</Type>
                     </Section>
 
-                    <PostCard name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} stylize='mt-7' />
-                    <PostCard name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} stylize='mt-3' />
+                    {isPostsLoading ? (
+                        <Loading stylize="mt-6" />
+                    ) : (
+                        posts.length === 0 ? (
+                            <Type stylize="text-headlineSmall text-onSurfaceVariant text-center mt-10 mb-6">No posts yet.</Type>
+                        ) : (
+                            posts.map((post, index) => (
+                                <PostCard
+                                    key={index}
+                                    name={post.username}
+                                    group={post.groupName}
+                                    content={post.content}
+                                    time={post.time}
+                                    stylize={`${index === 0 ? 'mt-6' : 'mt-3'}`}
+                                />
+                            ))
+                        )
+                    )}
                 </Card>
             </Section>
         </ScrollView>

@@ -23,7 +23,7 @@ export const ProfileHeader = ({ name, bio, stylize }: ProfileHeaderProps) => {
 
             <Section stylize="mt-96">
                 <Type stylize="text-center text-headlineSmall text-onSurface">{name}</Type>
-                <Type stylize="text-center text-bodySmall text-onSurface tracking-wide mt-1">{bio}</Type>
+                {bio && <Type stylize="text-center text-bodySmall text-onSurface tracking-wide mt-1">{bio}</Type>}
             </Section>
         </>
     );
