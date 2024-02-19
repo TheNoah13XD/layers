@@ -38,7 +38,7 @@ export const Recommend = ({ user }: RecommendProps) => {
     const uniqueGroups = groups.filter((group, index, self) =>
         index === self.findIndex((g) => g.id === group.id)
     );
-
+        
     function getRandom(arr: any[], n: number) {
         const result = new Array(n);
         let len = arr.length;

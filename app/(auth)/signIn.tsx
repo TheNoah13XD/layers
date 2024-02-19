@@ -79,7 +79,7 @@ const SignIn = () => {
                     <Fab icon="arrow-forward" family={family} type="large" containerColor='bg-primaryContainer' contentColor='primary' onPress={handleSignIn} />
                 </Section>
 
-                <Snackbar view={snackbar} message={error} action={() => setSnackbar(false)} />
+                {snackbar && <Snackbar view={snackbar} message={error} action={() => setSnackbar(false)} />}
             </Section>
         </CustomKeyboardView>
     );

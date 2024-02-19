@@ -16,7 +16,6 @@ interface AuthContextType {
     user: User | null;
     isLoading: boolean;
     isAuthenticated: boolean | undefined;
-    refreshUser: () => Promise<void>;
     userUpdate: (userId: string, data: UserUpdate) => Promise<void | String>;
     signin: (email: string, password: string) => Promise<UserCredential | String>;
     signup: (email: string, password: string, name: string, username: string) => Promise<UserCredential | String>;
@@ -34,6 +33,29 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(undefined);
     
+    const isUserEqual = (prevUser: User | null, data: any) => {
+        if (!prevUser || !data) {
+            return false;
+        }
+
+        return (
+            prevUser.id === data.id &&
+            prevUser.email === data.email &&
+            prevUser.name === data.name &&
+            prevUser.username === data.username &&
+            prevUser.bio === data.bio &&
+            prevUser.age === data.age &&
+            prevUser.gender === data.gender &&
+            prevUser.role === data.role &&
+            prevUser.score === data.score &&
+            prevUser.goals === data.goals &&
+            prevUser.groups === data.groups &&
+            prevUser.streak === data.streak &&
+            prevUser.signal === data.signal &&
+            prevUser.prevSignals === data.prevSignals
+        );
+    };
+
     const updateLocalUser = useCallback((userId: string) => {
         const docRef = doc(db, "users", userId);
 
@@ -42,7 +64,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                 let data = docSnap.data();
 
                 setUser(prevUser => {
-                    if (prevUser?.id === userId && prevUser.email === data.email && prevUser.name === data.name && prevUser.username === data.username && prevUser.bio === data.bio && prevUser.age === data.age && prevUser.gender === data.gender && prevUser.role === data.role && prevUser.score === data.score && prevUser.goals === data.goals && prevUser.groups === data.groups && prevUser.streak === data.streak) {
+                    if (isUserEqual(prevUser, data)) {
                         return prevUser;
                     }
 
@@ -58,7 +80,9 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                         score: data.score,
                         goals: data.goals,
                         groups: data.groups,
-                        streak: data.streak
+                        streak: data.streak,
+                        signal: data.signal,
+                        prevSignals: data.prevSignals
                     };
                 });
             } else {
@@ -68,14 +92,6 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
         return unsubscribe;
     }, []);
-
-    const refreshUser = async () => {
-        setIsLoading(true);
-        if (user) {
-            await updateLocalUser(user.id);
-        }
-        setIsLoading(false);
-    }
     
     const userUpdate = async (userId: string, data: UserUpdate): Promise<void | String> => {
         setIsLoading(true);
@@ -83,7 +99,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
             const userRef = doc(db, "users", userId);
             await setDoc(userRef, { ...data }, { merge: true });
     
-            await updateLocalUser(userId);
+            updateLocalUser(userId);
         } catch (error) {
             console.log(error);
             return (error as Error).message;
@@ -98,7 +114,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                 setIsLoading(true);
                 setIsAuthenticated(true);
                 try {
-                    await updateLocalUser(user.uid);
+                    updateLocalUser(user.uid);
                 } catch (error) {
                     console.error("Failed to update user data:", error);
                     setIsAuthenticated(false); 
@@ -117,7 +133,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         setIsLoading(true);
         try {
             const response = await signInWithEmailAndPassword(auth, email, password);
-            await updateLocalUser(response.user.uid);
+            updateLocalUser(response.user.uid);
             return response;
         } catch (error) {
             console.log(error);
@@ -168,7 +184,6 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
             signup,
             signout,
             userUpdate,
-            refreshUser
         }}>
             {children}
         </AuthContext.Provider>

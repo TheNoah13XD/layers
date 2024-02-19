@@ -1,8 +1,8 @@
-import { collection, doc, query, where, orderBy, limit, startAt, setDoc, onSnapshot, updateDoc, increment, getDoc, deleteDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { collection, doc, query, where, orderBy, limit, startAt, setDoc, onSnapshot, updateDoc, increment, getDoc, deleteDoc, arrayUnion, arrayRemove, Timestamp, getDocs } from "firebase/firestore";
 import { groupsRef, postsRef, usersRef } from "@firebase";
 import { startOfDay, subWeeks } from 'date-fns';
 
-import { Goals, Record, Group, Member, Post } from "@types";
+import { Goals, Record, Group, Member, Post, Journal, SignalRequest } from "@types";
 
 // query functions
 export const fetchRecords = (userId: string, callback: (records: Record[]) => void, startDate?: Date, endDate?: Date) => {
@@ -68,6 +68,64 @@ export const fetchNextRecords = async (userId: string, recordId: string, callbac
     }
 };
 
+export const fetchTodayJournal = (userId: string, callback: (journal: Journal | null) => void) => {
+    try {
+        const userDoc = doc(usersRef, userId);
+        const journalRef = collection(userDoc, 'journals');
+    
+        const now = new Date();
+        const todayStart = Timestamp.fromDate(new Date(now.getFullYear(), now.getMonth(), now.getDate()));
+        const tomorrowStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+        tomorrowStart.setHours(0, 0, 0, 0);
+        const tomorrowStartTimestamp = Timestamp.fromDate(tomorrowStart);
+    
+        const q = query(journalRef, where('date', '>=', todayStart), where('date', '<', tomorrowStartTimestamp));
+    
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            let journal: Journal | null = null;
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+    
+                journal = {
+                    id: doc.id,
+                    date: data.date
+                };
+            });
+    
+            callback(journal);
+        });
+    
+        return unsubscribe;
+    } catch (error) {
+        console.error(error);
+        return () => {};
+    }
+};
+
+export const fetchUserSignalRequests = (userId: string, callback: (signals: SignalRequest[]) => void) => {
+    const userDoc = doc(usersRef, userId);
+    const signalsRef = collection(userDoc, 'signals');
+
+    const q = query(signalsRef, orderBy('time', 'desc'));
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const signals: SignalRequest[] = [];
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            signals.push({
+                id: doc.id,
+                time: data.time,
+                username: data.username
+            });
+        });
+
+        callback(signals);
+    });
+
+    return unsubscribe;
+};
+
 export const fetchGroupRecommendations = (userId: string, goals: Array<keyof Goals>, callback: (groups: Group[]) => void) => {
     const q = query(groupsRef, where('tags', 'array-contains-any', goals), limit(3));
 
@@ -97,7 +155,7 @@ export const fetchGroupRecommendations = (userId: string, goals: Array<keyof Goa
     });
 
     return unsubscribe;
-}
+};
 
 export const fetchMembers = (group: Group, callback: (members: Member[]) => void) => {
     const groupDoc = doc(groupsRef, group.id);
@@ -119,7 +177,7 @@ export const fetchMembers = (group: Group, callback: (members: Member[]) => void
     });
 
     return unsubscribe;
-}
+};
 
 export const fetchGroups = (callback: (groups: Group[]) => void) => {
     const q = query(groupsRef);
@@ -144,7 +202,7 @@ export const fetchGroups = (callback: (groups: Group[]) => void) => {
     });
 
     return unsubscribe;
-}
+};
 
 export const fetchGroup = (groupId: string, callback: (group: Group) => void) => {
     const groupDoc = doc(groupsRef, groupId);
@@ -170,7 +228,7 @@ export const fetchGroup = (groupId: string, callback: (group: Group) => void) =>
     });
 
     return unsubscribe;
-}
+};
 
 export const fetchPosts = (groupId: string, callback: (posts: Post[]) => void) => {
     const q = query(postsRef, where('groupId', '==', groupId));
@@ -196,7 +254,7 @@ export const fetchPosts = (groupId: string, callback: (posts: Post[]) => void) =
     });
 
     return unsubscribe;
-}
+};
 
 export const fetchPostsOfUser = (userId: string, callback: (posts: Post[]) => void) => {
     const q = query(postsRef, where('user', '==', userId));
@@ -222,7 +280,7 @@ export const fetchPostsOfUser = (userId: string, callback: (posts: Post[]) => vo
     });
 
     return unsubscribe;
-}
+};
 
 export const fetchPostsOfUserGroups = (groupIds: string[], callback: (posts: Post[]) => void) => {
     const q = query(postsRef, where('groupId', 'in', groupIds));
@@ -248,7 +306,7 @@ export const fetchPostsOfUserGroups = (groupIds: string[], callback: (posts: Pos
     });
 
     return unsubscribe;
-}
+};
 
 // write functions
 export const addMember = async (group: Group, userId: string, username: string) => {
@@ -267,7 +325,7 @@ export const addMember = async (group: Group, userId: string, username: string) 
     });
 
     return member;
-}
+};
 
 export const removeMember = async (group: Group, userId: string) => {
     const groupDoc = doc(groupsRef, group.id);
@@ -279,7 +337,7 @@ export const removeMember = async (group: Group, userId: string) => {
     });
 
     return;
-}
+};
 
 export const addLike = async (postId: string, userId: string) => {
     const postDoc = doc(postsRef, postId);
@@ -289,7 +347,7 @@ export const addLike = async (postId: string, userId: string) => {
     });
 
     return;
-}
+};
 
 export const removeLike = async (postId: string, userId: string) => {
     const postDoc = doc(postsRef, postId);
@@ -299,4 +357,55 @@ export const removeLike = async (postId: string, userId: string) => {
     });
 
     return;
-}
+};
+
+export const createJournal = async (userId: string) => {
+    const userDoc = doc(usersRef, userId);
+    const journalRef = collection(userDoc, 'journals');
+    const recordsRef = collection(userDoc, 'records');
+
+    const now = new Date();
+    const todayStart = Timestamp.fromDate(new Date(now.getFullYear(), now.getMonth(), now.getDate()));
+
+    const journal = await setDoc(doc(journalRef), {
+        date: todayStart
+    });
+
+    const q = query(recordsRef, where('date', '==', todayStart));
+
+    getDocs(q).then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+            querySnapshot.forEach((document) => {
+                const recordRef = doc(recordsRef, document.id);
+                updateDoc(recordRef, {
+                    journal: true
+                });
+            });
+        } else {
+            console.log('No records found for today');
+        }
+    });
+
+    return journal;
+};
+
+export const updateSigalRequest = async (userId: string, signalName: string, signalId: string, type: 'add' | 'remove') => {
+    try {
+        const signalCollection = collection(usersRef, userId, 'signals');
+        const signalRef = doc(signalCollection, signalId);
+        const userRef = doc(usersRef, userId);
+    
+        if (type === 'add') {
+            await deleteDoc(signalRef);
+    
+            await updateDoc(userRef, {
+                signal: signalName,
+                signalId: signalId,
+            });
+        } else {
+            await deleteDoc(signalRef);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};

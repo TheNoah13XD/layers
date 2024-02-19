@@ -1,19 +1,19 @@
 import { Stack } from "expo-router";
 
-const JournalLayout = () => {
+const FindLayout = () => {
     return (
         <Stack screenOptions={{ 
             contentStyle: { backgroundColor: '#FDF8FF'},
             headerShown: false,
         }}>
             <Stack.Screen
-                name="[id]"
+                name="index"
             />
             <Stack.Screen
-                name="newJournal"
+                name="viewRequests"
             />
         </Stack>
     );
 }
  
-export default JournalLayout;
+export default FindLayout;

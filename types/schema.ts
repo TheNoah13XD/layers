@@ -13,6 +13,8 @@ export interface User {
     goals?: Array<keyof Goals>;
     groups?: string[];
     streak?: number;
+    signal?: string;
+    prevSignals?: string[];
 }
 
 export interface Goals {
@@ -33,6 +35,17 @@ export interface Record {
     feels: boolean;
     journal: boolean;
     score: number;
+}
+
+export interface Journal {
+    id: string;
+    date: Timestamp;
+}
+
+export interface SignalRequest {
+    id: string;
+    time: Timestamp;
+    username: string;
 }
 
 export interface Group {

@@ -1,7 +1,19 @@
-import { Slot } from "expo-router";
+import { Stack } from "expo-router";
 
 const ChatsLayout = () => {
-    return <Slot />;
+    return (
+        <Stack screenOptions={{ 
+            contentStyle: { backgroundColor: '#FDF8FF'},
+            headerShown: false,
+        }}>
+            <Stack.Screen
+                name="index"
+            />
+            <Stack.Screen
+                name="findSignal"
+            />
+        </Stack>
+    )
 }
  
 export default ChatsLayout;
