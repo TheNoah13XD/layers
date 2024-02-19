@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
 import { UserCredential, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, onSnapshot, setDoc } from "firebase/firestore";
 
 import { auth, db } from "@firebase";
 import { User } from "@types";
@@ -34,34 +34,39 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(undefined);
     
-    const updateLocalUser = useCallback(async (userId: string) => {
+    const updateLocalUser = useCallback((userId: string) => {
         const docRef = doc(db, "users", userId);
-        const docSnap = await getDoc(docRef);
-    
-        if (docSnap.exists()) {
-            let data = docSnap.data();
-            setUser(prevUser => {
-                if (prevUser?.id === userId && prevUser.email === data.email && prevUser.name === data.name && prevUser.username === data.username && prevUser.bio === data.bio && prevUser.age === data.age && prevUser.gender === data.gender && prevUser.role === data.role && prevUser.score === data.score && prevUser.goals === data.goals && prevUser.streak === data.streak) {
-                    return prevUser;
-                }
-    
-                return {
-                    id: userId,
-                    email: data.email,
-                    name: data.name,
-                    username: data.username,
-                    bio: data.bio,
-                    age: data.age,
-                    gender: data.gender,
-                    role: data.role,
-                    score: data.score,
-                    goals: data.goals,
-                    streak: data.streak
-                };
-            });
-        } else {
-            throw new Error(`No user document for user ID ${userId}`);
-        }
+
+        const unsubscribe = onSnapshot(docRef, (docSnap) => {
+            if (docSnap.exists()) {
+                let data = docSnap.data();
+
+                setUser(prevUser => {
+                    if (prevUser?.id === userId && prevUser.email === data.email && prevUser.name === data.name && prevUser.username === data.username && prevUser.bio === data.bio && prevUser.age === data.age && prevUser.gender === data.gender && prevUser.role === data.role && prevUser.score === data.score && prevUser.goals === data.goals && prevUser.groups === data.groups && prevUser.streak === data.streak) {
+                        return prevUser;
+                    }
+
+                    return {
+                        id: userId,
+                        email: data.email,
+                        name: data.name,
+                        username: data.username,
+                        bio: data.bio,
+                        age: data.age,
+                        gender: data.gender,
+                        role: data.role,
+                        score: data.score,
+                        goals: data.goals,
+                        groups: data.groups,
+                        streak: data.streak
+                    };
+                });
+            } else {
+                throw new Error(`No user document for user ID ${userId}`);
+            }
+        });
+
+        return unsubscribe;
     }, []);
 
     const refreshUser = async () => {

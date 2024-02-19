@@ -22,7 +22,7 @@ export const GroupCard = ({ group, isFirst }: GroupCardProps) => {
     
                 <Button type="filled" containerColor="bg-primary" contentColor="text-onPrimary" onPress={() => {
                     router.push(`/community/explore/${group.id}`)
-                }}>Join</Button>
+                }}>View</Button>
             </Section>
     
             <Section stylize="mt-7 px-3 mb-2">

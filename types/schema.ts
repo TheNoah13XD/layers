@@ -11,6 +11,7 @@ export interface User {
     role?: 'helper' | 'seeker';
     score?: number;
     goals?: Array<keyof Goals>;
+    groups?: string[];
     streak?: number;
 }
 

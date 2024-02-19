@@ -17,6 +17,8 @@ const Search = () => {
     const [data, setData] = useState<Group[]>([]);
     const [filteredGroups, setFilteredGroups] = useState<Group[]>([]);
 
+    const segments = ['smoking', 'drinking', 'substance', 'porn', 'gambling', 'depression', 'suicidal', 'selfharm'];
+
     const handleSegmentPress = (segment: string) => {
         setSelectedSegments(prev => {
             if (prev.includes(segment)) {
@@ -68,7 +70,7 @@ const Search = () => {
 
                 <SearchBar search={search} setSearch={setSearch} />
 
-                <SegmentFilter selectedSegments={selectedSegments} handleSegmentPress={handleSegmentPress} />
+                <SegmentFilter segments={segments} selectedSegments={selectedSegments} handleSegmentPress={handleSegmentPress} />
 
                 <Section stylize="mt-10">
                     {filteredGroups.length > 0 ? (

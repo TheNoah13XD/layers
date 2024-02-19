@@ -64,6 +64,7 @@ const Profile = () => {
                                     group={post.groupName}
                                     content={post.content}
                                     time={post.time}
+                                    likedBy={post.likedBy}
                                     stylize={`${index === 0 ? 'mt-6' : 'mt-3'}`}
                                 />
                             ))

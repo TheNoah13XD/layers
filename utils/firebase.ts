@@ -69,7 +69,7 @@ export const fetchNextRecords = async (userId: string, recordId: string, callbac
 };
 
 export const fetchGroupRecommendations = (userId: string, goals: Array<keyof Goals>, callback: (groups: Group[]) => void) => {
-    const q = query(groupsRef, where('tags', 'array-contains-any', goals));
+    const q = query(groupsRef, where('tags', 'array-contains-any', goals), limit(3));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const groups: Group[] = [];
@@ -209,6 +209,32 @@ export const fetchPostsOfUser = (userId: string, callback: (posts: Post[]) => vo
             posts.push({
                 id: doc.id,
                 user: data.userId,
+                username: data.username,
+                time: data.time,
+                groupId: data.groupId,
+                groupName: data.groupName,
+                content: data.content,
+                likedBy: data.likedBy
+            });
+        });
+
+        callback(posts);
+    });
+
+    return unsubscribe;
+}
+
+export const fetchPostsOfUserGroups = (groupIds: string[], callback: (posts: Post[]) => void) => {
+    const q = query(postsRef, where('groupId', 'in', groupIds));
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const posts: Post[] = [];
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            posts.push({
+                id: doc.id,
+                user: data.user,
                 username: data.username,
                 time: data.time,
                 groupId: data.groupId,

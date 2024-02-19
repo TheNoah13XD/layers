@@ -1,13 +1,67 @@
+import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import { router } from 'expo-router';
 
+import { Post } from '@types';
+
 import { Section, Type } from '@components/styled';
-import { Fab, Icon, Segment } from '@components/material';
+import { Fab, Icon, Loading, Segment } from '@components/material';
 import { PostCard, Stage } from '@components/pages/community';
+import { useAuth } from '@context';
+import { fetchPostsOfUserGroups } from 'utils/firebase';
+import { SegmentFilter } from '@components/pages/explore';
 
 const Community = () => {
+    const { user } = useAuth();
+    if (!user) {
+        return null;
+    }
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [data, setData] = useState<Post[]>([]);
+
+    const segments = data
+        .map(post => post.groupName)
+        .filter((groupName, index, self) => self.indexOf(groupName) === index);
+    const [selectedSegments, setSelectedSegments] = useState<string[]>([]);
+    const [filteredData, setFilteredData] = useState<Post[]>([]);
+
+    const handleSegmentPress = (segment: string) => {
+        setSelectedSegments(prev => {
+            if (prev.includes(segment)) {
+                return prev.filter(s => s !== segment);
+            } else {
+                return [...prev, segment];
+            }
+        });
+    };
+
+    useEffect(() => {
+        let result = data;
+
+        if (selectedSegments.length > 0) {
+            result = result.filter(post => selectedSegments.includes(post.groupName));
+            setFilteredData(result);
+        } else {
+            setFilteredData(data);
+        }
+
+    }, [selectedSegments, data]);
+
+    useEffect(() => {
+        if (user.groups) {
+            setIsLoading(true);
+            const unsubscribe = fetchPostsOfUserGroups(user.groups, (posts) => {
+                setData(posts);
+                setIsLoading(false);
+            });
+
+            return () => unsubscribe();
+        }
+    }, []);
+
     return (
-        <Section>
+        <Section stylize='h-full'>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <Section stylize='pt-[74px]'>
                     <Section stylize='flex-row justify-between items-center w-full px-7'>
@@ -32,19 +86,21 @@ const Community = () => {
                     </Section>
 
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        <Section stylize='flex-row items-center mt-2 pl-7'>
-                            <Type weight='medium' stylize='text-labelLarge'>Filter:</Type>
-                            <Section stylize='flex-row ml-6 mr-7'>
-                                <Segment title='Group One' enabled={true} />
-                                <Segment title='Group Two' enabled={false} stylize='ml-1' />
-                                <Segment title='Group Three' enabled={false} stylize='ml-1' />
-                            </Section>
+                        <Section stylize='pl-7'>
+                            <SegmentFilter segments={segments} selectedSegments={selectedSegments} handleSegmentPress={handleSegmentPress} stylize='mt-0' />
                         </Section>
                     </ScrollView>
 
                     <Section stylize='mt-7 mb-24 px-7'>
-                        <PostCard id={"ok"} name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} likedBy={[]} />
-                        <PostCard id={"ok"} name={"Totally Human"} group={"Chill"} content={"Sometimes I wonder, if James Bond is the most famous spy, wouldn't that also make him the worst spy?"} likedBy={[]} stylize='mt-3' />
+                        {isLoading ? (
+                            <Loading />
+                        ) : (
+                            filteredData.map((post, index) => (
+                                <PostCard key={post.id} id={post.id} name={post.username} group={post.groupName} content={post.content} likedBy={post.likedBy} time={post.time} stylize={`
+                                    ${index === 0 ? '' : 'mt-3'}
+                                `} />
+                            ))
+                        )}
                     </Section>
                 </Section>
             </ScrollView>
