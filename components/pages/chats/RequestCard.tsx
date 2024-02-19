@@ -10,9 +10,10 @@ interface RequestCardProps {
     time: Timestamp;
     onSuccess: () => void;
     onDecline: () => void;
+    stylize?: string;
 }
 
-export const RequestCard = ({ username, time, onSuccess, onDecline }: RequestCardProps) => {
+export const RequestCard = ({ username, time, onSuccess, onDecline, stylize }: RequestCardProps) => {
     const postTime = time?.toDate().getTime();
     const getTimeAgo = () => {
         if (!postTime) return "";
@@ -20,7 +21,7 @@ export const RequestCard = ({ username, time, onSuccess, onDecline }: RequestCar
     };
 
     return(
-        <Card stylize="py-5 pl-5 pr-6">
+        <Card stylize={`py-5 pl-5 pr-6 ${stylize}`}>
             <Section stylize="flex-row justify-between items-center">
                 <Section stylize="flex-row justify-center items-center">
                     <Section stylize='flex justify-center items-center bg-primaryContainer rounded-full w-10 h-10'>
