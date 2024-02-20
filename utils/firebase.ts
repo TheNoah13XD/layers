@@ -236,6 +236,60 @@ export const fetchMembers = (group: Group, callback: (members: Member[]) => void
     return unsubscribe;
 };
 
+export const fetchSeekers = (callback: (seekers: User[]) => void) => {
+    const q = query(usersRef, where('role', '==', 'seeker'), where('signal', '==', ''));
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const seekers: User[] = [];
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            seekers.push({
+                id: doc.id,
+                email: data.email,
+                name: data.name,
+                username: data.username,
+                bio: data.bio,
+                role: data.role,
+                score: data.score,
+                goals: data.goals,
+            });
+        });
+
+        callback(seekers);
+    });
+
+    return unsubscribe;
+};
+
+export const fetchSeekersRequests = (userId: string): Promise<SignalRequest[]> => {
+    return new Promise((resolve, reject) => {
+        const userDoc = doc(usersRef, userId);
+        const seekersRef = collection(userDoc, 'signals');
+
+        const q = query(seekersRef, orderBy('time', 'desc'));
+
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const requests: SignalRequest[] = [];
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+
+                const request: SignalRequest = {
+                    id: doc.id,
+                    time: data.time,
+                    username: data.username
+                };
+
+                requests.push(request);
+            });
+
+            resolve(requests);
+        }, reject);
+
+        return unsubscribe;
+    });
+};
+
 export const fetchGroups = (callback: (groups: Group[]) => void) => {
     const q = query(groupsRef);
 
@@ -444,6 +498,19 @@ export const createJournal = async (userId: string) => {
     });
 
     return journal;
+};
+
+export const sendSignalRequest = async (seekerId: string, helperId: string, helperUsername: string) => {
+    const userRef = doc(usersRef, seekerId);
+    const signalsRef = collection(userRef, 'signals');
+
+    const signal = await setDoc(doc(signalsRef, helperId), {
+        id: helperId,
+        time: Timestamp.now(),
+        username: helperUsername
+    });
+
+    return signal;
 };
 
 export const updateSigalRequest = async (userId: string, signalName: string, signalId: string, type: 'add' | 'remove') => {

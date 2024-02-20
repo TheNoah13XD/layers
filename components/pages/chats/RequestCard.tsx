@@ -48,4 +48,4 @@ export const RequestCard = ({ id, username, time, onSuccess, onDecline, stylize 
             </Section>
         </Card>
     );
-};
+}

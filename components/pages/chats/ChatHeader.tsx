@@ -13,7 +13,7 @@ interface ChatHeaderProps {
 export const ChatHeader = ({ title, color = "secondary" }: ChatHeaderProps) => {
     return (
         <Section stylize="bg-[#F5FAFF] rounded-[18px] border border-outline w-full h-[140px]">
-            <Back color={color} onPress={() => router.back()} />
+            <Back color={color} onPress={() => router.push('/chats')} />
 
             <Section stylize="flex-row mt-[84px] ml-16">
                 {/* <Icon family='materialCommunity' name='account-outline' color='primary' size={28} /> */}

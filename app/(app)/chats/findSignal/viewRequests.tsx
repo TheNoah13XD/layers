@@ -7,12 +7,19 @@ import { SignalRequest } from "@types";
 import { Section, Type } from "@components/styled";
 import { Loading } from "@components/material";
 import { ChatHeader, RequestCard } from "@components/pages/chats";
+import { router } from "expo-router";
 
 const ViewRequests = () => {
     const { user } = useAuth();
     if (!user || user.signal) {
         return null;
     }
+
+    useEffect(() => {
+        if (user && user.role === 'helper') {
+            router.push('/chats/findSignal');
+        }
+    }, [user]);
 
     const [isLoading, setIsLoading] = useState(false);
     const [requests, setRequests] = useState<SignalRequest[]>([]);
