@@ -81,6 +81,7 @@ const publicProfile = () => {
                                     userId={data.id}
                                     name={post.username}
                                     group={post.groupName}
+                                    groupId={post.groupId}
                                     content={post.content}
                                     time={post.time}
                                     likedBy={post.likedBy}

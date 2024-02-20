@@ -12,6 +12,8 @@ const Chats = () => {
     if (!user) {
         return null;
     }
+    const seeker = user.role === 'seeker';
+    const helper = user.role === 'helper';
 
     const handleSignalClick = () => {
         if (user.signal) {
@@ -21,6 +23,9 @@ const Chats = () => {
         }
     }
 
+    const signalText = seeker && user.signal ? 'Your Signal.' : 'Find Helper.';
+    const helperText = helper && `Find \n Signals.`;
+
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <Section stylize='mt-[74px] px-7'>
@@ -29,7 +34,7 @@ const Chats = () => {
 
                 <Section stylize='flex-row mt-7'>
                     <Section stylize='flex-1 flex-col justify-between bg-secondaryContainer rounded-b-[25px] rounded-tr-[25px] w-full h-[290px] py-3 pl-4 pr-2'>
-                        <Type stylize='text-displaySmall tracking-tighter w-24 text-onSecondaryContainer'>{user.signal ? 'Your Signal.' : 'Find Helper.'}</Type>
+                        <Type stylize={`text-displaySmall tracking-tighter ${seeker ? 'w-24' : 'w-28'} text-onSecondaryContainer`}>{seeker ? signalText : helperText}</Type>
                         <Fab type='regular' containerColor='bg-secondaryFixedDim' contentColor='onSecondaryContainer' icon='north-east' stylize='self-end' onPress={handleSignalClick} />
                     </Section>
                     <Section stylize='flex-1 flex-col justify-between bg-tertiaryContainer rounded-b-[25px] rounded-tl-[25px] w-full h-[290px] py-3 pl-4 pr-2 ml-1'>
@@ -40,7 +45,7 @@ const Chats = () => {
 
                 <Section stylize='bg-primaryFixed rounded-[50px] overflow-hidden w-full mt-7 mb-20 pt-7 pb-12'>
                     <Section stylize='flex-row justify-start w-full px-7'>
-                        <Type stylize='text-headlineMedium text-onSurfaceVariant tracking-tight'>Archived Chats</Type>
+                        <Type stylize='text-headlineMedium text-onSurfaceVariant tracking-tight'>{seeker ? "Archived Chats" : "Signals"}</Type>
                     </Section>
 
                     <Section stylize='mt-5'>

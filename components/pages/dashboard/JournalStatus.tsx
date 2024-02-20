@@ -5,7 +5,8 @@ import { fetchTodayJournal } from "utils/firebase";
 
 import { Section, Type } from "@components/styled";
 import { Icon } from "@components/material";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
+import { TouchableOpacity } from "react-native";
 
 export interface JournalStatusProps {
     user: User;
@@ -28,25 +29,29 @@ export const JournalStatus = ({ user, stylize }: JournalStatusProps) => {
         return () => unsubscribe();
     }, []);
 
+    const seeker = user.role === 'seeker';
+
     return (
-        <Section stylize={`flex-col bg-primaryFixedDim rounded-[25px] p-4 ${stylize}`}>
-            <Type stylize={`text-titleLarge tracking-tight text-black ${journal?.id ? 'w-64' : 'w-44'}`}>
-                {journal?.id ? 'You have already started today\'s journal.' : 'Start your journal for today.'}
-            </Type>
+        <Section stylize={`flex-col ${seeker ? "bg-primaryFixedDim" : "bg-secondaryFixedDim"} rounded-[25px] p-4 ${stylize}`}>
+            <TouchableOpacity activeOpacity={0.7} onPress={() => router.push(`${journal?.id ? `/home/records/journal/newJournal` : '/home/records/journal/newJournal'}`)}>
+                <Type stylize={`text-titleLarge tracking-tight text-black ${journal?.id ? 'w-64' : 'w-44'}`}>
+                    {journal?.id ? 'You have already started today\'s journal.' : 'Start your journal for today.'}
+                </Type>
+            </TouchableOpacity>
             <Section stylize='flex-row justify-between items-center w-full mt-12'>
-                <Type stylize='text-titleLarge text-onPrimaryFixed tracking-tight'>{date}</Type>
+                <Type stylize={`text-titleLarge ${seeker ? "text-onPrimaryFixed" : "text-onSecondaryFixed"} tracking-tight`}>{date}</Type>
                 <Section stylize='flex-row'>
                     <Link href={{ 
                         pathname: `${journal?.id ? `/home/records/journal/newJournal` : '/home/records/journal/newJournal'}`,
                         params: { journal, type: 'edit' }
                      }}>
-                        <Icon name='edit' color='onPrimary' size={16} stylize='flex justify-center items-center bg-primary rounded-full w-7 h-7'/>
+                        <Icon name='edit' color='onPrimary' size={16} stylize={`flex justify-center items-center ${seeker ? "bg-primary" : "bg-secondary"} rounded-full w-7 h-7`}/>
                     </Link>
                     <Link href={{
                         pathname: `${journal?.id ? `/home/records/journal/${journal.id}` : '/home/records/journal/newJournal'}`,
                         params: { journal, type: 'mic' }
                     }} className="ml-2">
-                        <Icon name='mic' color='onPrimary' size={16} stylize='flex justify-center items-center bg-primary rounded-full w-7 h-7'/>
+                        <Icon name='mic' color='onPrimary' size={16} stylize={`flex justify-center items-center ${seeker ? "bg-primary" : "bg-secondary"} rounded-full w-7 h-7`}/>
                     </Link>
                 </Section>
             </Section>

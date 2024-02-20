@@ -52,7 +52,9 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
             prevUser.groups === data.groups &&
             prevUser.streak === data.streak &&
             prevUser.signal === data.signal &&
-            prevUser.prevSignals === data.prevSignals
+            prevUser.prevSignals === data.prevSignals &&
+            prevUser.seekers === data.seekers &&
+            prevUser.prevSeekers === data.prevSeekers
         );
     };
 
@@ -82,7 +84,9 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                         groups: data.groups,
                         streak: data.streak,
                         signal: data.signal,
-                        prevSignals: data.prevSignals
+                        prevSignals: data.prevSignals,
+                        seekers: data.seekers,
+                        prevSeekers: data.prevSeekers
                     };
                 });
             } else {

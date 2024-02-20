@@ -15,6 +15,8 @@ export interface User {
     streak?: number;
     signal?: string;
     prevSignals?: string[];
+    seekers?: string[];
+    prevSeekers?: string[];
 }
 
 export interface Goals {

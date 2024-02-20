@@ -28,7 +28,7 @@ const NewJournal = () => {
                 router.push(`/home/records/journal/${journal.id}`);
             }
             setIsLoading(false);
-        });  
+        });
 
         return () => unsubscribe();
     }, []);
@@ -40,7 +40,7 @@ const NewJournal = () => {
     return (
         <>
             <Back color="primary" stylize="top-[65px]" />
-            <Button type="filled" containerColor="bg-primary" contentColor="text-onPrimary" onPress={() => {}} stylize="absolute top-[57px] right-6">Stats</Button>
+            <Button type="filled" containerColor="bg-primary" contentColor="text-onPrimary" onPress={() => {router.push("/home/records/journalHistory")}} stylize="absolute top-[57px] right-6">Stats</Button>
 
             <Section stylize="mt-[168px] px-7">
                 <Type stylize="text-displayMedium tracking-tight leading-[52px] text-onSurfaceVariant">{`Start a`}</Type>

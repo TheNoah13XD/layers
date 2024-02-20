@@ -74,7 +74,22 @@ const Community = () => {
 
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                         <Section stylize='flex-row mt-7 mx-7'>
-                            <Stage name='Chill' description='Get your shit together man.' />
+
+                            {user.role === "helper" && (
+                                <Section stylize={`flex-col justify-between border-[3px] border-primaryContainer overflow-hidden rounded-[25px] w-[180px] h-[160px] `}>
+                                    <Section stylize='pl-3 pt-4'>
+                                        <Icon name='add' color='black' size={32} />
+                                        <Type stylize='text-bodySmall tracking-wide w-full pt-2 text-black'>Create and moderate a new stage.</Type>
+                                    </Section>
+    
+                                    <Section stylize='flex-row justify-center items-center bg-primaryFixedDim rounded-[18px] w-full py-[10px]'>
+                                        <Icon name='arrow-right-alt' color='black' size={16} />
+                                        <Type stylize='text-bodySmall tracking-wide pl-2 uppercase'>Proceed</Type>
+                                    </Section>
+                                </Section>
+                            )}
+
+                            <Stage name='Chill' description='Get your shit together man.' stylize={user.role === "helper" ? "ml-1" : ""} />
                             <Stage name='Relax' description='Get your shit together man.' stylize='ml-1' />
                             <Stage name='Enjoy' description='Get your shit together man.' stylize='ml-1' />
                         </Section>
@@ -96,7 +111,7 @@ const Community = () => {
                             <Loading />
                         ) : (
                             filteredData.map((post, index) => (
-                                <PostCard key={post.id} id={post.id} userId={post.user} name={post.username} group={post.groupName} content={post.content} likedBy={post.likedBy} time={post.time} stylize={`
+                                <PostCard key={post.id} id={post.id} userId={post.user} name={post.username} group={post.groupName} groupId={post.groupId} content={post.content} likedBy={post.likedBy} time={post.time} stylize={`
                                     ${index === 0 ? '' : 'mt-3'}
                                 `} />
                             ))

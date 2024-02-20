@@ -6,7 +6,7 @@ import { useAuth } from '@context';
 
 import { Section, Type } from '@components/styled';
 import { Button, ButtonProps } from '@components/material';
-import { FeelsLog, JournalStatus, LayerIndex, Recommend, ViewActivities } from '@components/pages/dashboard';
+import { AssessSignals, FeelsLog, JournalStatus, LayerIndex, Recommend, ViewActivities } from '@components/pages/dashboard';
 
 const Home = () => {
     const { user } = useAuth();
@@ -15,6 +15,7 @@ const Home = () => {
     }
 
     const [active, setActive] = useState<'index' | 'feels'>('index');
+    const role = user.role;
 
     const name = user.name.split(' ');
     const firstName = name ? name[0] : '';
@@ -22,8 +23,8 @@ const Home = () => {
     const getButtonProps = (isActive: boolean): ButtonProps => ({
         type: isActive ? "filled" : "outlined",
         icon: isActive ? "layers" : undefined,
-        containerColor: isActive ? "bg-primary" : undefined,
-        contentColor: isActive ? "text-onPrimary" : 'text-primary',
+        containerColor: isActive && role === 'seeker' ? "bg-primary" : isActive && role === 'helper' ? "bg-secondary" : undefined,
+        contentColor: isActive && role === 'seeker' ? "text-onPrimary" : isActive && role === 'helper' ? "text-onSecondary" : 'text-primary',
         onPress: () => {},
         children: '',
     });
@@ -36,30 +37,37 @@ const Home = () => {
 
                 <Section stylize='flex-row mt-7'>
                     <Button {...getButtonProps(active === 'index')} onPress={() => setActive('index')}>Layer Index</Button>
-                    <Button {...getButtonProps(active === 'feels')} onPress={() => setActive('feels')} stylize='ml-1'>Feels</Button>
+                    {user.role === 'seeker' && <Button {...getButtonProps(active === 'feels')} onPress={() => setActive('feels')} stylize='ml-1'>Feels</Button>}
                     <Button type='filled' containerColor='bg-error' contentColor='text-onError' stylize='ml-1' onPress={() => router.push('/home/emergency')}>Emergency</Button>
                 </Section>
 
                 {active === 'index' ? (
-                    <LayerIndex score={user.score!} stylize='mt-7' />
+                    <LayerIndex role={role!} score={user.score!} stylize='mt-7' />
                 ) : (
                     <FeelsLog feel=': )' stylize='mt-7' />
                 )}
 
-                <Section stylize='bg-primaryFixed rounded-[50px] overflow-hidden w-full mt-7 mb-20 pt-7 pb-12'>
+                <Section stylize={`${role === 'seeker' ? "bg-primaryFixed" : "bg-secondaryFixed"} rounded-[50px] overflow-hidden w-full mt-7 mb-20 pt-7 pb-12`}>
                     <Section stylize='flex-row justify-between items-center w-full px-7'>
                         <Type stylize='text-headlineMedium text-onSurfaceVariant tracking-tight'>Therapy</Type>
-                        <Button type='filled' icon='bookmark-outline' containerColor='bg-primaryFixedDim' contentColor='text-onPrimaryFixedVariant' onPress={() => router.push('/home/records/journalHistory')}>Logs</Button>
+                        <Button type='filled' icon='bookmark-outline' containerColor={role === 'seeker' ? "bg-primaryFixedDim" : "bg-secondaryFixedDim"} contentColor={role === "seeker" ? "text-onPrimaryFixedVariant" : "text-onSecondaryFixedVariant"} onPress={() => router.push('/home/records/journalHistory')}>Logs</Button>
                     </Section>
 
                     <Section stylize='px-[6px] py-5'>
                         <JournalStatus user={user} />
-                        <ViewActivities stylize='mt-1' />
+                        <ViewActivities role={user.role!} stylize='mt-1' />
                     </Section>
 
                     <Section stylize='flex-row justify-between items-center w-full px-7'>
+                        <Type stylize='text-headlineMedium text-onSurfaceVariant tracking-tight'>Assess Signals</Type>
+                        <Button type='filled' icon='keyboard-arrow-right' containerColor={role === 'seeker' ? "bg-primaryFixedDim" : "bg-secondaryFixedDim"} contentColor={role === "seeker" ? "text-onPrimaryFixedVariant" : "text-onSecondaryFixedVariant"} stylize='mt-3' onPress={() => router.push('/chats')}>More</Button>
+                    </Section>
+
+                    {user.role === 'helper' && <AssessSignals user={user} />}
+
+                    <Section stylize={`flex-row justify-between items-center w-full px-7 ${user.role === 'helper' ? 'mt-5' : ''}`}>
                         <Type stylize='text-headlineMedium text-onSurfaceVariant tracking-tight'>Recess Groups</Type>
-                        <Button type='filled' icon='language' containerColor='bg-primaryFixedDim' contentColor='text-onPrimaryFixedVariant' stylize='mt-3' onPress={() => router.push('/community/explore')}>More</Button>
+                        <Button type='filled' icon='language' containerColor={role === 'seeker' ? "bg-primaryFixedDim" : "bg-secondaryFixedDim"} contentColor={role === "seeker" ? "text-onPrimaryFixedVariant" : "text-onSecondaryFixedVariant"} stylize='mt-3' onPress={() => router.push('/community/explore')}>More</Button>
                     </Section>
 
                     <Recommend user={user} />

@@ -9,20 +9,20 @@ import { Section, Type } from "@components/styled";
 import { Card, Icon } from "@components/material";
 import { Like } from "./Like";
 import { addLike, removeLike } from "utils/firebase";
-import { useEffect } from "react";
 
 export interface PostCardProps {
     id: string;
     userId: string;
     name: string;
     group: string;
+    groupId: string;
     content: string;
     likedBy: string[];
     time?: Timestamp;
     stylize?: string;
 }
 
-export const PostCard = ({ id, userId, name, group, content, likedBy, time, stylize }: PostCardProps) => {
+export const PostCard = ({ id, userId, name, group, groupId, content, likedBy, time, stylize }: PostCardProps) => {
     const { user } = useAuth();
     const isLiked = likedBy.includes(user?.id || "");
 
@@ -59,7 +59,9 @@ export const PostCard = ({ id, userId, name, group, content, likedBy, time, styl
                         </TouchableOpacity>
                         <Section stylize='flex-row'>
                             <Type stylize='text-bodySmall text-onSurfaceVariant leading-[16px] tracking-wide'>on:</Type>
-                            <Type stylize='text-bodySmall text-primary leading-[16px] tracking-wide pl-2'>{group}</Type>
+                            <TouchableOpacity activeOpacity={0.7} onPress={() => router.push(`/community/explore/${groupId}`)}>
+                                <Type stylize='text-bodySmall text-primary leading-[16px] tracking-wide pl-2'>{group}</Type>
+                            </TouchableOpacity>
                             <Type stylize='text-bodySmall text-onSurfaceVariant leading-[16px] tracking-wide pl-2'>•</Type>
                             <Type stylize='text-bodySmall text-onSurfaceVariant leading-[16px] tracking-wide pl-2'>{getTimeAgo()}</Type>
                         </Section>

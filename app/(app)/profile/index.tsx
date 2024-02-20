@@ -31,7 +31,7 @@ const Profile = () => {
 
     return (
         <ScrollView>
-            <ProfileHeader name={user.name} bio={user.bio} />
+            <ProfileHeader name={user.name} role={user.role!} bio={user.bio} />
 
             <Section stylize="mt-6 px-7">
                 <Card>
@@ -63,6 +63,7 @@ const Profile = () => {
                                     userId={user.id}
                                     name={post.username}
                                     group={post.groupName}
+                                    groupId={post.groupId}
                                     content={post.content}
                                     time={post.time}
                                     likedBy={post.likedBy}

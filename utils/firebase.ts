@@ -102,6 +102,37 @@ export const fetchTodayJournal = (userId: string, callback: (journal: Journal | 
     }
 };
 
+export const fetchUsers = (ids: string[], callback: (users: User[]) => void) => {
+    const users: User[] = [];
+    const unsubscribes: (() => void)[] = [];
+
+    ids.forEach(id => {
+        const userRef = doc(usersRef, id);
+
+        const unsubscribe = onSnapshot(userRef, (docSnap) => {
+            const data = docSnap.data();
+
+            const user: User = {
+                id: docSnap.id,
+                email: data?.email,
+                name: data?.name,
+                username: data?.username,
+                bio: data?.bio,
+                role: data?.role,
+                score: data?.score
+            };
+
+            users.push(user);
+
+            callback(users);
+        });
+
+        unsubscribes.push(unsubscribe);
+    });
+
+    return () => unsubscribes.forEach(unsubscribe => unsubscribe());
+}
+
 export const fetchUser = (userId: string, callback: (user: User) => void) => {
     const userDoc = doc(usersRef, userId);
 

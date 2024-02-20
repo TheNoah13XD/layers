@@ -7,7 +7,7 @@ import { Group, Member, Post } from "@types";
 import { useAuth } from "@context";
 
 import { Section, Type } from "@components/styled";
-import { Back, Button, Icon, Loading } from "@components/material";
+import { Back, Button, Fab, Icon, Loading } from "@components/material";
 import { PostCard } from "@components/pages/community";
 
 const GroupPage = () => {
@@ -77,51 +77,58 @@ const GroupPage = () => {
     }
 
     return (
-        <ScrollView>
-            <Section stylize="mb-24">
-                <Section stylize="bg-primaryContainer rounded-b-[50px] w-full h-[280px]">
-                    <Back color="primary" onPress={() => router.push('/community/explore/')} />
-                    <Icon name='more-vert' color='primary' stylize="absolute top-[88px] right-6" />
-                </Section>
-
-                <Section stylize="mt-6 px-6">
-                    <Section stylize="flex-row justify-between items-center">
-                        <Type stylize="text-displaySmall text-onSurface tracking-tight">{data.name}</Type>
-                        {!members.some(member => member.id === user.id) ? (
-                            <Button type="filled" containerColor="bg-primary" contentColor="text-onPrimary" onPress={joinGroup}>Join</Button>
-                        ) : (
-                            <Button type="filled" containerColor="bg-primary" contentColor="text-onPrimary" icon="check" onPress={leaveGroup}>Joined</Button>
-                        )}
+        <Section stylize="h-screen">
+            <ScrollView>
+                <Section stylize="mb-24">
+                    <Section stylize="bg-primaryContainer rounded-b-[50px] w-full h-[280px]">
+                        <Back color="primary" onPress={() => router.push('/community/explore/')} />
+                        <Icon name='more-vert' color='primary' stylize="absolute top-[88px] right-6" />
                     </Section>
-                    <Type stylize="text-bodyLarge text-onSurface text-center px-8 mt-3">{data.description}</Type>
 
-                    <Type stylize="text-headlineSmall text-onSurface mt-6">Posts</Type>
-                    <Section stylize="mt-6">
-                        {isPostsLoading ? (
-                            <Loading stylize="mt-6" />
-                        ) : (
-                            posts.length === 0 ? (
-                                <Type stylize="text-headlineSmall text-onSurface text-center mt-6">No posts yet.</Type>
+                    <Section stylize="mt-6 px-6">
+                        <Section stylize="flex-row justify-between items-center">
+                            <Type stylize="text-displaySmall text-onSurface tracking-tight">{data.name}</Type>
+                            {!members.some(member => member.id === user.id) ? (
+                                <Button type="filled" containerColor="bg-primary" contentColor="text-onPrimary" onPress={joinGroup}>Join</Button>
                             ) : (
-                                posts.map((post, index) => (
-                                    <PostCard 
-                                        key={index} 
-                                        id={post.id}
-                                        userId={post.user}
-                                        name={post.username} 
-                                        group={post.groupName} 
-                                        content={post.content} 
-                                        likedBy={post.likedBy}
-                                        time={post.time} 
-                                        stylize={`${index === 0 ? '' : 'mt-3'}`}
-                                    />
-                                ))
-                            )
-                        )}
+                                <Button type="filled" containerColor="bg-primary" contentColor="text-onPrimary" icon="check" onPress={leaveGroup}>Joined</Button>
+                            )}
+                        </Section>
+                        <Type stylize="text-bodyLarge text-onSurface text-center px-8 mt-3">{data.description}</Type>
+
+                        <Type stylize="text-headlineSmall text-onSurface mt-6">Posts</Type>
+                        <Section stylize="mt-6">
+                            {isPostsLoading ? (
+                                <Loading stylize="mt-6" />
+                            ) : (
+                                posts.length === 0 ? (
+                                    <Type stylize="text-headlineSmall text-onSurface text-center mt-6">No posts yet.</Type>
+                                ) : (
+                                    posts.map((post, index) => (
+                                        <PostCard 
+                                            key={index} 
+                                            id={post.id}
+                                            userId={post.user}
+                                            name={post.username} 
+                                            group={post.groupName} 
+                                            groupId={post.groupId}
+                                            content={post.content} 
+                                            likedBy={post.likedBy}
+                                            time={post.time} 
+                                            stylize={`${index === 0 ? '' : 'mt-3'}`}
+                                        />
+                                    ))
+                                )
+                            )}
+                        </Section>
                     </Section>
                 </Section>
+            </ScrollView>
+
+            <Section stylize='absolute right-[26px] bottom-20'>
+                <Fab type='regular' icon='mode-edit' containerColor='bg-primaryContainer' contentColor='onPrimaryContainer' stylize='rounded-2xl border border-outline'  />
             </Section>
-        </ScrollView>
+        </Section>
     );
 }
  
