@@ -5,7 +5,7 @@ import { router } from 'expo-router';
 import { Post } from '@types';
 
 import { Section, Type } from '@components/styled';
-import { Fab, Icon, Loading, Segment } from '@components/material';
+import { Fab, Icon, Loading } from '@components/material';
 import { PostCard, Stage } from '@components/pages/community';
 import { useAuth } from '@context';
 import { fetchPostsOfUserGroups } from 'utils/firebase';
@@ -96,7 +96,7 @@ const Community = () => {
                             <Loading />
                         ) : (
                             filteredData.map((post, index) => (
-                                <PostCard key={post.id} id={post.id} name={post.username} group={post.groupName} content={post.content} likedBy={post.likedBy} time={post.time} stylize={`
+                                <PostCard key={post.id} id={post.id} userId={post.user} name={post.username} group={post.groupName} content={post.content} likedBy={post.likedBy} time={post.time} stylize={`
                                     ${index === 0 ? '' : 'mt-3'}
                                 `} />
                             ))

@@ -1,3 +1,5 @@
+import { TouchableOpacity } from "react-native";
+import { router } from "expo-router";
 import { Timestamp } from "firebase/firestore";
 import { formatDistanceToNow } from "date-fns";
 
@@ -7,9 +9,11 @@ import { Section, Type } from "@components/styled";
 import { Card, Icon } from "@components/material";
 import { Like } from "./Like";
 import { addLike, removeLike } from "utils/firebase";
+import { useEffect } from "react";
 
 export interface PostCardProps {
     id: string;
+    userId: string;
     name: string;
     group: string;
     content: string;
@@ -18,7 +22,7 @@ export interface PostCardProps {
     stylize?: string;
 }
 
-export const PostCard = ({ id, name, group, content, likedBy, time, stylize }: PostCardProps) => {
+export const PostCard = ({ id, userId, name, group, content, likedBy, time, stylize }: PostCardProps) => {
     const { user } = useAuth();
     const isLiked = likedBy.includes(user?.id || "");
 
@@ -28,13 +32,19 @@ export const PostCard = ({ id, name, group, content, likedBy, time, stylize }: P
         return formatDistanceToNow(postTime, { addSuffix: true });
     };
 
+    const handleUserRoute = () => {
+        if (user?.id !== userId) {
+            router.push(`/community/publicProfile/${userId}`);
+        }
+    }
+
     const handleLike = async () => {
         if (isLiked) {
             await removeLike(id, user?.id!);
         } else {
             await addLike(id, user?.id!);
         }
-    }
+    };
 
     return (
         <Card stylize={stylize}>
@@ -44,7 +54,9 @@ export const PostCard = ({ id, name, group, content, likedBy, time, stylize }: P
                         <Icon family='materialCommunity' name='account-outline' color='primary' size={28} />
                     </Section>
                     <Section stylize='ml-2'>
-                        <Type stylize='text-bodyMedium text-onSurface leading-[20px] tracking-wide'>{name}</Type>
+                        <TouchableOpacity activeOpacity={0.7} onPress={handleUserRoute}>
+                            <Type stylize='text-bodyMedium text-onSurface leading-[20px] tracking-wide'>{name}</Type>
+                        </TouchableOpacity>
                         <Section stylize='flex-row'>
                             <Type stylize='text-bodySmall text-onSurfaceVariant leading-[16px] tracking-wide'>on:</Type>
                             <Type stylize='text-bodySmall text-primary leading-[16px] tracking-wide pl-2'>{group}</Type>

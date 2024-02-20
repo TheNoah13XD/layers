@@ -56,7 +56,7 @@ const ViewRequests = () => {
             <Section stylize="mt-10 px-6">
                 {requests.length > 0 ? (
                     requests.map((req, index) => (
-                        <RequestCard key={req.id} username={req.username} time={req.time} onSuccess={() => handleSuccess(req)} onDecline={() => handleDecline(req)} stylize={index === 0 ? 'mt-0' : 'mt-3'} />
+                        <RequestCard key={req.id} id={req.id} username={req.username} time={req.time} onSuccess={() => handleSuccess(req)} onDecline={() => handleDecline(req)} stylize={index === 0 ? 'mt-0' : 'mt-3'} />
                     ))
                 ) : (
                     <Type stylize="text-headlineMedium text-onSurfaceVariant text-center tracking-tight px-10">You don't have any Signal requests!</Type>

@@ -1,22 +1,16 @@
 import { Stack } from "expo-router";
 
-const CommunityLayout = () => {
+const publicProfileLayout = () => {
     return (
         <Stack screenOptions={{ 
             contentStyle: { backgroundColor: '#FDF8FF'},
             headerShown: false,
         }}>
             <Stack.Screen 
-                name="index" 
-            />
-            <Stack.Screen 
-                name="explore" 
-            />
-            <Stack.Screen 
-                name="publicProfile"
+                name="[id]" 
             />
         </Stack>
     )
 }
  
-export default CommunityLayout;
+export default publicProfileLayout;

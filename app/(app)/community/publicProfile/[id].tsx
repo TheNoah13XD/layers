@@ -1,53 +1,71 @@
 import { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
-import { router } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 
-import { fetchPostsOfUser } from "utils/firebase";
-import { useAuth } from "@context";
-import { Post } from "@types";
+import { fetchPostsOfUser, fetchUser } from "utils/firebase";
+import { Post, User } from "@types";
 
+import { Card, Loading } from "@components/material";
 import { Section, Type } from "@components/styled";
-import { Button, Card, Loading } from "@components/material";
+import { IndexScore, PublicHeader } from "@components/pages/profile";
 import { PostCard } from "@components/pages/community";
-import { IndexScore, ProfileHeader } from "@components/pages/profile";
 
-const Profile = () => {
-    const { user } = useAuth();
-    if (!user || !user.score) {
+const publicProfile = () => {
+    const id = useLocalSearchParams();
+    if (!id) {
         return null;
     }
 
+    const [isLoading, setIsLoading] = useState(false);
     const [isPostsLoading, setIsPostsLoading] = useState(true);
+    const [data, setData] = useState<User>();
     const [posts, setPosts] = useState<Post[]>([]);
 
     useEffect(() => {
-        const unsubscribe = fetchPostsOfUser(user.id, (posts) => {
+        setIsLoading(true);
+        const unsubscribeGroup = fetchUser(id.id as string, (user) => {
+            setData(user);
+            setIsLoading(false);
+        });
+
+        return () => unsubscribeGroup();
+    }, [id.id]);
+
+    useEffect(() => {
+        if (!data) {
+            return;
+        }
+
+        const unsubscribe = fetchPostsOfUser(data.id, (posts) => {
             setPosts(posts);
             setIsPostsLoading(false);
         });
 
         return () => unsubscribe();
-    }, [user]);
+    }, [data]);
+
+    if (isLoading) {
+        return <Loading />;
+    }
+
+    if (!data) {
+        return null;
+    }
 
     return (
         <ScrollView>
-            <ProfileHeader name={user.name} bio={user.bio} />
+            <PublicHeader username={data.username} bio={data.bio!} role={data.role!} />
 
             <Section stylize="mt-6 px-7">
                 <Card>
-                    <IndexScore score={user.score} />
+                    <IndexScore score={data.score!} />
                 </Card>
+            </Section>
 
-                <Card stylize="mt-3">
-                    <Section stylize="flex-row justify-between w-full px-2">
-                        <Type stylize="text-headlineMedium text-onSurfaceVariant tracking-tight">Journals</Type>
-                        <Button type="filled" icon="arrow-right-alt" containerColor="bg-primary" contentColor="text-onPrimary" onPress={() => router.push('/home/records/journalHistory')}>Logs</Button>
-                    </Section>
-                </Card>
-
+            <Section stylize="px-7">
                 <Card stylize="mt-6 px-0 pb-0 mb-24">
                     <Section stylize="mt-4">
-                        <Type stylize="text-headlineMedium text-onSurfaceVariant tracking-tight pl-5">Your Posts</Type>
+                        <Type stylize="text-headlineMedium text-onSurfaceVariant tracking-tight pl-5">Posts</Type>
                     </Section>
 
                     {isPostsLoading ? (
@@ -60,7 +78,7 @@ const Profile = () => {
                                 <PostCard
                                     key={index}
                                     id={post.id}
-                                    userId={user.id}
+                                    userId={data.id}
                                     name={post.username}
                                     group={post.groupName}
                                     content={post.content}
@@ -77,4 +95,4 @@ const Profile = () => {
     );
 }
  
-export default Profile;
+export default publicProfile;

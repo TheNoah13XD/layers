@@ -1,11 +1,13 @@
+import { Pressable, TouchableOpacity } from "react-native";
 import { Timestamp } from "firebase/firestore";
 import { formatDistanceToNow } from "date-fns";
 
 import { Section, Type } from "@components/styled";
 import { Card, Icon } from "@components/material";
-import { Pressable } from "react-native";
+import { router } from "expo-router";
 
 interface RequestCardProps {
+    id: string;
     username: string;
     time: Timestamp;
     onSuccess: () => void;
@@ -13,7 +15,7 @@ interface RequestCardProps {
     stylize?: string;
 }
 
-export const RequestCard = ({ username, time, onSuccess, onDecline, stylize }: RequestCardProps) => {
+export const RequestCard = ({ id, username, time, onSuccess, onDecline, stylize }: RequestCardProps) => {
     const postTime = time?.toDate().getTime();
     const getTimeAgo = () => {
         if (!postTime) return "";
@@ -28,7 +30,9 @@ export const RequestCard = ({ username, time, onSuccess, onDecline, stylize }: R
                         <Icon family='materialCommunity' name='account-outline' color='primary' size={24} />
                     </Section>
                     <Section stylize="ml-2">
-                        <Type stylize="text-bodyMedium text-onSurface">{username}</Type>
+                        <TouchableOpacity activeOpacity={0.7} onPress={() => router.push(`/community/publicProfile/${id}`)}>
+                            <Type stylize="text-bodyMedium text-onSurface">{username}</Type>
+                        </TouchableOpacity>
                         <Type stylize="text-bodySmall text-onSurfaceVariant">{getTimeAgo()}</Type>
                     </Section>
                 </Section>

@@ -2,7 +2,7 @@ import { collection, doc, query, where, orderBy, limit, startAt, setDoc, onSnaps
 import { groupsRef, postsRef, usersRef } from "@firebase";
 import { startOfDay, subWeeks } from 'date-fns';
 
-import { Goals, Record, Group, Member, Post, Journal, SignalRequest } from "@types";
+import { Goals, Record, Group, Member, Post, Journal, SignalRequest, User } from "@types";
 
 // query functions
 export const fetchRecords = (userId: string, callback: (records: Record[]) => void, startDate?: Date, endDate?: Date) => {
@@ -100,6 +100,32 @@ export const fetchTodayJournal = (userId: string, callback: (journal: Journal | 
         console.error(error);
         return () => {};
     }
+};
+
+export const fetchUser = (userId: string, callback: (user: User) => void) => {
+    const userDoc = doc(usersRef, userId);
+
+    const unsubscribe = onSnapshot(userDoc, (userSnap) => {
+        const data = userSnap.data();
+
+        if (!data) {
+            throw new Error(`No user found with id: ${userId}`);
+        }
+
+        const user: User = {
+            id: userSnap.id,
+            email: data.email,
+            name: data.name,
+            username: data.username,
+            bio: data.bio,
+            role: data.role,
+            score: data.score,
+        }
+
+        callback(user);
+    });
+
+    return unsubscribe;
 };
 
 export const fetchUserSignalRequests = (userId: string, callback: (signals: SignalRequest[]) => void) => {

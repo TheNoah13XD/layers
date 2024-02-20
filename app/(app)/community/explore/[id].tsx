@@ -107,6 +107,7 @@ const GroupPage = () => {
                                     <PostCard 
                                         key={index} 
                                         id={post.id}
+                                        userId={post.user}
                                         name={post.username} 
                                         group={post.groupName} 
                                         content={post.content} 
