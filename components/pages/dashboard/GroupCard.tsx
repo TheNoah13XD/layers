@@ -5,7 +5,7 @@ import { Pressable } from "react-native";
 export interface GroupCardProps {
     name: string;
     members: number;
-    role?: string;
+    role: 'helper' | 'seeker';
     onPress?: () => void;
     stylize?: string;
 }

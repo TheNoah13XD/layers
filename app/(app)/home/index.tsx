@@ -57,13 +57,16 @@ const Home = () => {
                         <JournalStatus user={user} />
                         <ViewActivities role={user.role!} stylize='mt-1' />
                     </Section>
+                    {user.role === 'helper' && (
+                        <>
+                            <Section stylize='flex-row justify-between items-center w-full px-7'>
+                                <Type stylize='text-headlineMedium text-onSurfaceVariant tracking-tight'>Assess Signals</Type>
+                                <Button type='filled' icon='keyboard-arrow-right' containerColor={role === 'seeker' ? "bg-primaryFixedDim" : "bg-secondaryFixedDim"} contentColor={role === "seeker" ? "text-onPrimaryFixedVariant" : "text-onSecondaryFixedVariant"} stylize='mt-3' onPress={() => router.push('/chats')}>More</Button>
+                            </Section>
 
-                    <Section stylize='flex-row justify-between items-center w-full px-7'>
-                        <Type stylize='text-headlineMedium text-onSurfaceVariant tracking-tight'>Assess Signals</Type>
-                        <Button type='filled' icon='keyboard-arrow-right' containerColor={role === 'seeker' ? "bg-primaryFixedDim" : "bg-secondaryFixedDim"} contentColor={role === "seeker" ? "text-onPrimaryFixedVariant" : "text-onSecondaryFixedVariant"} stylize='mt-3' onPress={() => router.push('/chats')}>More</Button>
-                    </Section>
-
-                    {user.role === 'helper' && <AssessSignals user={user} />}
+                            <AssessSignals user={user} />
+                        </>
+                    )}
 
                     <Section stylize={`flex-row justify-between items-center w-full px-7 ${user.role === 'helper' ? 'mt-5' : ''}`}>
                         <Type stylize='text-headlineMedium text-onSurfaceVariant tracking-tight'>Recess Groups</Type>

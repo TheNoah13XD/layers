@@ -42,16 +42,16 @@ export const JournalStatus = ({ user, stylize }: JournalStatusProps) => {
                 <Type stylize={`text-titleLarge ${seeker ? "text-onPrimaryFixed" : "text-onSecondaryFixed"} tracking-tight`}>{date}</Type>
                 <Section stylize='flex-row'>
                     <Link href={{ 
-                        pathname: `${journal?.id ? `/home/records/journal/newJournal` : '/home/records/journal/newJournal'}`,
+                        pathname: `${journal?.id && !isLoading ? `/home/records/journal/newJournal` : !journal?.id && !isLoading && '/home/records/journal/newJournal'}`,
                         params: { journal, type: 'edit' }
                      }}>
-                        <Icon name='edit' color='onPrimary' size={16} stylize={`flex justify-center items-center ${seeker ? "bg-primary" : "bg-secondary"} rounded-full w-7 h-7`}/>
+                        <Icon family={isLoading ? "loading" : "material"} name='edit' color='onPrimary' size={16} stylize={`flex justify-center items-center ${seeker ? "bg-primary" : "bg-secondary"} rounded-full w-7 h-7`}/>
                     </Link>
                     <Link href={{
-                        pathname: `${journal?.id ? `/home/records/journal/${journal.id}` : '/home/records/journal/newJournal'}`,
+                        pathname: `${journal?.id && !isLoading ? `/home/records/journal/newJournal` : !journal?.id && !isLoading && '/home/records/journal/newJournal'}`,
                         params: { journal, type: 'mic' }
                     }} className="ml-2">
-                        <Icon name='mic' color='onPrimary' size={16} stylize={`flex justify-center items-center ${seeker ? "bg-primary" : "bg-secondary"} rounded-full w-7 h-7`}/>
+                        <Icon family={isLoading ? "loading" : "material"} name='mic' color='onPrimary' size={16} stylize={`flex justify-center items-center ${seeker ? "bg-primary" : "bg-secondary"} rounded-full w-7 h-7`}/>
                     </Link>
                 </Section>
             </Section>

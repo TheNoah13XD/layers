@@ -81,6 +81,7 @@ export const Recommend = ({ user }: RecommendProps) => {
                         <GroupCard 
                             key={item.id}
                             name={item.name} 
+                            role={user.role!}
                             members={item.members} 
                             stylize={`
                                 ${index === 0 ? 'mt-5' : 'ml-1  mt-5'}
