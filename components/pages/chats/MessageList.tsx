@@ -13,13 +13,13 @@ interface MessageListProps {
 
 export const MessageList = ({ scrollViewRef, messages }: MessageListProps) => {
     return (
-        <ScrollView ref={scrollViewRef} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingTop: 10, paddingBottom: 80, flex: 1 }} className="w-full">
+        <ScrollView ref={scrollViewRef} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingTop: 10, paddingBottom: 80 }} className="w-full">
             {messages.length > 0 ? (
                 messages.map((message, index) => (
                     <MessageItem key={index} message={message} />
                 ))
             ) : (
-                <Section stylize="flex-1 justify-center items-center">
+                <Section stylize="flex-1 justify-center items-center mt-10">
                     <Icon name="waving-hand" color="primary" size={80} />
                     <Type stylize="text-displaySmall text-primary text-center leading-[44px] tracking-tight w-60 mt-3">Say hello to your new signal!</Type>
                 </Section>

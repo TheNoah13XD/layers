@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { TextInput, ScrollView, Keyboard, Pressable } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 
-import { createRoom, fetchMessages, getRoomId, sendMessage } from "utils/firebase";
+import { createRoom, fetchMessages, fetchUser, getRoomId, sendMessage } from "utils/firebase";
 import { useAuth } from "@context";
-import { Message } from "@types";
+import { Message, User } from "@types";
 
 import { CustomKeyboardView, Section } from "@components/styled";
 import { RoomHeader } from "@components/pages/chats";
@@ -24,9 +24,9 @@ const chatRoom = () => {
     const handleBlur = () => setIsFocused(false);
 
     const [isLoading, setIsLoading] = useState(false);
+    const [signal, setSignal] = useState<User>();
     const [messages, setMessages] = useState<Message[]>([]);
     const [text, setText] = useState('');
-    const inputRef = useRef<TextInput>(null);
     const scrollRef = useRef<ScrollView>(null);
 
     const createRoomIfNotExist = async () => {
@@ -69,6 +69,10 @@ const chatRoom = () => {
         setIsLoading(true);
         createRoomIfNotExist();
 
+        const fetchSignal = fetchUser(id as string, (signal) => {
+            setSignal(signal);
+        });
+
         let roomId = getRoomId(user.id, id as string);
         const unsubscribe = fetchMessages(roomId, (messages) => {
             setMessages(messages);
@@ -80,6 +84,7 @@ const chatRoom = () => {
         });
 
         return () => {
+            fetchSignal();
             unsubscribe();
             KeyboardDidShowListener.remove();
         }
@@ -93,12 +98,12 @@ const chatRoom = () => {
         <>
             <CustomKeyboardView>
                 <Section stylize="h-screen">
-                    <RoomHeader title="Your Signal" role={user.role!} />
+                    <RoomHeader title={signal?.name!} role={user.role!} />
 
                     <MessageList scrollViewRef={scrollRef} messages={messages} />
 
                     <Section stylize="absolute bottom-0 w-full px-6">
-                        <Section stylize="flex-row justify-between items-center border border-outline bg-[#F5FAFF] rounded-full w-full h-[70px] pl-4">
+                        <Section stylize="flex-row justify-between items-center border border-outline bg-[#F5FAFF] rounded-full w-full h-[60px] pl-4">
                             <TextInput
                                 value={text}
                                 onChangeText={setText}
@@ -112,8 +117,8 @@ const chatRoom = () => {
                                 style={{ fontFamily: FontWeight['regular'], flex: 1 }} 
                                 className="text-bodyLarge text-onSurface"
                             /> 
-                            <Pressable className="flex justify-center items-center bg-primaryContainer rounded-full w-16 h-16">
-                                <Icon family="material" name="send" size={16} color="primary" onPress={handleSendMessage} /> 
+                            <Pressable className="flex justify-center items-center bg-primaryContainer rounded-full w-14 h-14" onPress={handleSendMessage}>
+                                <Icon family="material" name="send" size={16} color="primary" /> 
                             </Pressable>
                         </Section>
                     </Section> 
