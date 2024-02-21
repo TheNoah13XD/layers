@@ -1,4 +1,4 @@
-import { ScrollView, TouchableOpacity } from 'react-native';
+import { ScrollView } from 'react-native';
 import { router } from 'expo-router';
 
 import { useAuth } from '@context';
@@ -17,14 +17,33 @@ const Chats = () => {
 
     const handleSignalClick = () => {
         if (user.signal) {
-            router.push('/chats/signal');
+            router.push({
+                pathname: '/chats/chatroom',
+                params: { id: user.signalId, type: 'signal' }
+            });
         } else {
             router.push('/chats/findSignal');
         }
     }
 
+    const handleArchivedChatClick = (id: String) => {
+        if (user.role === 'seeker') {
+            router.push({
+                pathname: '/chats/chatroom',
+                params: { id, type: 'archived' }
+            });
+        } else {
+            router.push({
+                pathname: '/chats/chatroom',
+                params: { id, type: 'signal' }
+            });
+        }
+    }
+
     const signalText = seeker && user.signal ? 'Your Signal.' : 'Find Helper.';
     const helperText = helper && `Find \n Signals.`;
+
+    console.log(user.seekers)
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -49,9 +68,27 @@ const Chats = () => {
                     </Section>
 
                     <Section stylize='mt-5'>
-                        <ArchivedChat name='Signal Name' />
-                        <ArchivedChat name='Signal Name' stylize='mt-1' />
-                        <ArchivedChat name='Signal Name' stylize='mt-1' />
+                        {user.role === 'seeker' ? (
+                            user.prevSignals![0] !== '' ? (
+                                user.prevSignals?.map((signal, index) => (
+                                    <ArchivedChat key={index} helper={false} name={signal} onPress={() => handleArchivedChatClick(signal)} stylize={index === 0 ? 'mt-0' : 'mt-1'} />
+                                ))
+                            ) : (
+                                <Section stylize='flex justify-center items-center'>
+                                    <Type stylize='text-headlineMedium text-primary tracking-tight text-center px-10 my-6'>No Previous signals found.</Type>
+                                </Section>
+                            )
+                        ) : (
+                            user.seekers![0] !== '' ? (
+                                user.seekers?.map((seeker, index) => (
+                                    <ArchivedChat key={index} helper name={seeker} onPress={() => handleArchivedChatClick(seeker)} stylize={index === 0 ? 'mt-0' : 'mt-1'} />
+                                ))
+                            ) : (
+                                <Section stylize='flex justify-center items-center'>
+                                    <Type stylize='text-headlineMedium text-primary tracking-tight text-center px-10 my-6'>No seekers found.</Type>
+                                </Section>
+                            )
+                        )}
                     </Section>
                 </Section>
             </Section>

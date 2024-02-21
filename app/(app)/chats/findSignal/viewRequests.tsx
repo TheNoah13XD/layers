@@ -18,6 +18,8 @@ const ViewRequests = () => {
     useEffect(() => {
         if (user && user.role === 'helper') {
             router.push('/chats/findSignal');
+        } else if (user && user.role === 'seeker' && user.signal) {
+            router.push('/chats');
         }
     }, [user]);
 

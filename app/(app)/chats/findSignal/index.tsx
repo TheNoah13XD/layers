@@ -11,9 +11,15 @@ import { ChatHeader, FindCard } from "@components/pages/chats";
 
 const FindSignal = () => {
     const { user } = useAuth();
-    if (!user || user.role === 'seeker' && user.signal) {
+    if (!user) {
         return null;
     }
+
+    useEffect(() => {
+        if (user && user.role === 'seeker' && user.signal) {
+            router.push('/chats');
+        }
+    }, [user]);
 
     const [loading, setLoading] = useState(false);
     const [snackbar, setSnackbar] = useState(false);

@@ -52,6 +52,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
             prevUser.groups === data.groups &&
             prevUser.streak === data.streak &&
             prevUser.signal === data.signal &&
+            prevUser.signalId === data.signalId &&
             prevUser.prevSignals === data.prevSignals &&
             prevUser.seekers === data.seekers &&
             prevUser.prevSeekers === data.prevSeekers
@@ -84,6 +85,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                         groups: data.groups,
                         streak: data.streak,
                         signal: data.signal,
+                        signalId: data.signalId,
                         prevSignals: data.prevSignals,
                         seekers: data.seekers,
                         prevSeekers: data.prevSeekers

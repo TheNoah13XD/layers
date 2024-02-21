@@ -14,6 +14,7 @@ export interface User {
     groups?: string[];
     streak?: number;
     signal?: string;
+    signalId?: string;
     prevSignals?: string[];
     seekers?: string[];
     prevSeekers?: string[];
@@ -75,4 +76,13 @@ export interface Post {
     groupName: string;
     content: string;
     likedBy: string[];
+}
+
+export interface Message {
+    id: string;
+    userId: string;
+    username: string;
+    role: 'helper' | 'seeker' | 'bot';
+    time: Timestamp;
+    message: string;
 }

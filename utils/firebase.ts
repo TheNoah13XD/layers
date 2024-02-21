@@ -1,8 +1,8 @@
 import { collection, doc, query, where, orderBy, limit, startAt, setDoc, onSnapshot, updateDoc, increment, getDoc, deleteDoc, arrayUnion, arrayRemove, Timestamp, getDocs } from "firebase/firestore";
-import { groupsRef, postsRef, usersRef } from "@firebase";
+import { chatsRef, groupsRef, postsRef, usersRef } from "@firebase";
 import { startOfDay, subWeeks } from 'date-fns';
 
-import { Goals, Record, Group, Member, Post, Journal, SignalRequest, User } from "@types";
+import { Goals, Record, Group, Member, Post, Journal, SignalRequest, User, Message } from "@types";
 
 // query functions
 export const fetchRecords = (userId: string, callback: (records: Record[]) => void, startDate?: Date, endDate?: Date) => {
@@ -158,6 +158,27 @@ export const fetchUser = (userId: string, callback: (user: User) => void) => {
 
     return unsubscribe;
 };
+
+export const fetchUserUsingUsername = (username: string, callback: (user: User) => void) => {
+    const q = query(usersRef, where('username', '==', username));
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            const user: User = {
+                id: doc.id,
+                email: data.email,
+                name: data.name,
+                username: data.username,
+            };
+
+            callback(user);
+        });
+    });
+
+    return unsubscribe;
+}
 
 export const fetchUserSignalRequests = (userId: string, callback: (signals: SignalRequest[]) => void) => {
     const userDoc = doc(usersRef, userId);
@@ -419,6 +440,33 @@ export const fetchPostsOfUserGroups = (groupIds: string[], callback: (posts: Pos
     return unsubscribe;
 };
 
+export const fetchMessages = (roomId: string, callback: (messages: Message[]) => void) => {
+    const docRef = doc(chatsRef, roomId);
+    const messagesRef = collection(docRef, 'messages');
+
+    const q = query(messagesRef, orderBy('time'));
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const messages: Message[] = [];
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            messages.push({
+                id: doc.id,
+                userId: data.userId,
+                message: data.message,
+                username: data.username,
+                role: data.role,
+                time: data.time
+            });
+        });
+
+        callback(messages);
+    });
+
+    return unsubscribe;
+};
+
 // write functions
 export const addMember = async (group: Group, userId: string, username: string) => {
     const groupDoc = doc(groupsRef, group.id);
@@ -533,3 +581,37 @@ export const updateSigalRequest = async (userId: string, signalName: string, sig
         console.error(error);
     }
 };
+
+export const createRoom = async (roomId: string) => {
+    await setDoc(doc(chatsRef, roomId), {
+        roomId,
+        createdAt: Timestamp.fromDate(new Date())
+    });
+}
+
+export const sendMessage = async (roomId: string, userId: string, username: string, message: string, role: 'seeker' | 'helper' | 'bot') => {
+    const docRef = doc(chatsRef, roomId);
+    const messagesRef = collection(docRef, 'messages');
+
+    const now = new Date();
+    const time = Timestamp.fromDate(now);
+
+    const messageDocRef = doc(messagesRef);
+    await setDoc(messageDocRef, {
+        userId,
+        message,
+        username,
+        role,
+        time
+    });
+
+    const messageId = messageDocRef.id;
+    await updateDoc(messageDocRef, { id: messageId });
+}
+
+// util functions
+export const getRoomId = (userId1: string, userId2: string) => {
+    const sortedIds = [userId1, userId2].sort();
+    const roomId = sortedIds.join('-');
+    return roomId;
+}

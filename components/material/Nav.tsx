@@ -1,15 +1,15 @@
 import { TouchableOpacity } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { usePathname } from "expo-router";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 
 import { Section, Type } from "../styled";
 import { Icon } from "./Icon";
 import { View } from "react-native";
-import { router } from "expo-router";
 
 export const Nav = ({ state, descriptors, navigation, ...props }: BottomTabBarProps) => {
     return (
-        <Section {...props} stylize="absolute bottom-6 flex-row justify-center items-center self-center border border-outline rounded-full w-[360px] h-[70px] bg-[#F5FAFF] pt-[7px] pb-[11px]">
+        <Section {...props} stylize={`absolute flex-row justify-center items-center self-center border border-outline rounded-full bg-[#F5FAFF] ${usePathname() === "/chats/chatroom" ? 'hidden' : 'flex pt-[7px] pb-[11px] w-[360px] h-[70px] bottom-6'}`}>
             {state.routes.filter(route => route.name !== 'index').map((route, index) => {
                 const { options } = descriptors[route.key];
                 const isFocused = state.index === index;

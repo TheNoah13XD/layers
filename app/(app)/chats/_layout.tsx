@@ -12,6 +12,9 @@ const ChatsLayout = () => {
             <Stack.Screen
                 name="findSignal"
             />
+            <Stack.Screen
+                name="chatroom"
+            />            
         </Stack>
     )
 }
