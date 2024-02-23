@@ -3,8 +3,10 @@ import { initializeApp } from "firebase/app";
 import { getReactNativePersistence, initializeAuth } from "firebase/auth";
 import { collection, getFirestore } from "firebase/firestore";
 
+const apiKey = process.env.EXPO_PUBLIC_FIREBASE_API_KEY;
+
 const firebaseConfig = {
-	apiKey: "AIzaSyCvcz21MI5XuXme4CVLC2BDoZLG3Xtaojo",
+	apiKey: apiKey,
 	authDomain: "layers-solution.firebaseapp.com",
 	projectId: "layers-solution",
 	storageBucket: "layers-solution.appspot.com",
