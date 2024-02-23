@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
-import { router, Tabs } from 'expo-router';
+import { router, Tabs, useSegments } from 'expo-router';
 
 import { useAuth } from '@context';
 import { Nav } from '@components/material';
 
 const AppLayout = () => {
     const { user, isAuthenticated } = useAuth();
+
+    const segments = useSegments();
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -19,6 +21,7 @@ const AppLayout = () => {
         <Tabs
             screenOptions={{
                 headerShown: false,
+                tabBarHideOnKeyboard: true,
             }}
             sceneContainerStyle={{
                 backgroundColor: '#FDF8FF',

@@ -79,7 +79,7 @@ const Community = () => {
                                 <Section stylize={`flex-col justify-between border-[3px] border-primaryContainer overflow-hidden rounded-[25px] w-[180px] h-[160px] `}>
                                     <Section stylize='pl-3 pt-4'>
                                         <Icon name='add' color='black' size={32} />
-                                        <Type stylize='text-bodySmall tracking-wide w-full pt-2 text-black'>Create and moderate a new stage.</Type>
+                                        <Type stylize='text-bodySmall tracking-wide w-full pt-2 text-black'>Create and moderate a new group.</Type>
                                     </Section>
     
                                     <Section stylize='flex-row justify-center items-center bg-primaryFixedDim rounded-[18px] w-full py-[10px]'>

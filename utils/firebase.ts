@@ -107,27 +107,29 @@ export const fetchUsers = (ids: string[], callback: (users: User[]) => void) => 
     const unsubscribes: (() => void)[] = [];
 
     ids.forEach(id => {
-        const userRef = doc(usersRef, id);
+        if (id.trim() !== '') {
+            const userRef = doc(usersRef, id);
 
-        const unsubscribe = onSnapshot(userRef, (docSnap) => {
-            const data = docSnap.data();
+            const unsubscribe = onSnapshot(userRef, (docSnap) => {
+                const data = docSnap.data();
 
-            const user: User = {
-                id: docSnap.id,
-                email: data?.email,
-                name: data?.name,
-                username: data?.username,
-                bio: data?.bio,
-                role: data?.role,
-                score: data?.score
-            };
+                const user: User = {
+                    id: docSnap.id,
+                    email: data?.email,
+                    name: data?.name,
+                    username: data?.username,
+                    bio: data?.bio,
+                    role: data?.role,
+                    score: data?.score
+                };
 
-            users.push(user);
+                users.push(user);
 
-            callback(users);
-        });
+                callback(users);
+            });
 
-        unsubscribes.push(unsubscribe);
+            unsubscribes.push(unsubscribe);
+        }
     });
 
     return () => unsubscribes.forEach(unsubscribe => unsubscribe());
@@ -564,23 +566,50 @@ export const sendSignalRequest = async (seekerId: string, helperId: string, help
 export const updateSigalRequest = async (userId: string, signalName: string, signalId: string, type: 'add' | 'remove') => {
     try {
         const signalCollection = collection(usersRef, userId, 'signals');
-        const signalRef = doc(signalCollection, signalId);
+        const signalReqRef = doc(signalCollection, signalId);
         const userRef = doc(usersRef, userId);
+
+        const signalRef = doc(usersRef, signalId);
     
         if (type === 'add') {
-            await deleteDoc(signalRef);
+            // update from seeker
+            await deleteDoc(signalReqRef);
     
             await updateDoc(userRef, {
                 signal: signalName,
                 signalId: signalId,
             });
+
+            // update from helper
+            await updateDoc(signalRef, {
+                seekers: arrayUnion(userId)
+            });
         } else {
-            await deleteDoc(signalRef);
+            await deleteDoc(signalReqRef);
         }
     } catch (error) {
         console.error(error);
     }
 };
+
+export const releaseSignal = async (userId: string, signalId: string) => {
+    try {
+        const userRef = doc(usersRef, userId);
+        const signalRef = doc(usersRef, signalId);
+
+        await updateDoc(userRef, {
+            signal: '',
+            signalId: '',
+            prevSignals: arrayUnion(signalId)
+        });
+
+        await updateDoc(signalRef, {
+            seekers: arrayRemove(userId)
+        });
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 export const createRoom = async (roomId: string) => {
     await setDoc(doc(chatsRef, roomId), {
@@ -607,6 +636,14 @@ export const sendMessage = async (roomId: string, userId: string, username: stri
 
     const messageId = messageDocRef.id;
     await updateDoc(messageDocRef, { id: messageId });
+}
+
+export const deletePrevSignal = async (userId: string, signalId: string) => {
+    const userRef = doc(usersRef, userId);
+
+    await updateDoc(userRef, {
+        prevSignals: arrayRemove(signalId)
+    });
 }
 
 // util functions

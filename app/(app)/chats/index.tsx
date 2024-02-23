@@ -43,8 +43,6 @@ const Chats = () => {
     const signalText = seeker && user.signal ? 'Your Signal.' : 'Find Helper.';
     const helperText = helper && `Find \n Signals.`;
 
-    console.log(user.seekers)
-
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <Section stylize='mt-[74px] px-7'>
@@ -69,9 +67,9 @@ const Chats = () => {
 
                     <Section stylize='mt-5'>
                         {user.role === 'seeker' ? (
-                            user.prevSignals![0] !== '' ? (
-                                user.prevSignals?.map((signal, index) => (
-                                    <ArchivedChat key={index} helper={false} name={signal} onPress={() => handleArchivedChatClick(signal)} stylize={index === 0 ? 'mt-0' : 'mt-1'} />
+                            user.prevSignals && user.prevSignals.some(signal => signal.trim() !== '') ? (
+                                user.prevSignals.map((signal, index) => (
+                                    signal.trim() !== '' && <ArchivedChat key={index} name={signal} onPress={() => handleArchivedChatClick(signal)} stylize={index === 0 ? 'mt-0' : 'mt-1'} />
                                 ))
                             ) : (
                                 <Section stylize='flex justify-center items-center'>
@@ -79,9 +77,9 @@ const Chats = () => {
                                 </Section>
                             )
                         ) : (
-                            user.seekers![0] !== '' ? (
-                                user.seekers?.map((seeker, index) => (
-                                    <ArchivedChat key={index} helper name={seeker} onPress={() => handleArchivedChatClick(seeker)} stylize={index === 0 ? 'mt-0' : 'mt-1'} />
+                            user.seekers && user.seekers.some(seeker => seeker.trim() !== '') ? (
+                                user.seekers.map((seeker, index) => (
+                                    seeker.trim() !== '' && <ArchivedChat key={index} name={seeker} onPress={() => handleArchivedChatClick(seeker)} stylize={index === 0 ? 'mt-0' : 'mt-1'} />
                                 ))
                             ) : (
                                 <Section stylize='flex justify-center items-center'>

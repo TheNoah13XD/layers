@@ -6,7 +6,7 @@ import { Skeleton } from 'moti/skeleton';
 import { fetchUsers } from "utils/firebase";
 import { User } from "@types";
 
-import { Section } from "@components/styled";
+import { Section, Type } from "@components/styled";
 import { GroupCard } from "./GroupCard";
 
 interface AssessSignalsProps {
@@ -32,13 +32,11 @@ export const AssessSignals = ({ user }: AssessSignalsProps) => {
         return null;
     }
 
-    const seeker = role === 'seeker';
-
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [users, setUsers] = useState<User[]>([]);
 
     useEffect(() => {
-        if (seekers) {
+        if (seekers?.length) {
             setIsLoading(true);
             const unsubscribe = fetchUsers(seekers, (users) => {
                 setUsers(users);
@@ -60,21 +58,25 @@ export const AssessSignals = ({ user }: AssessSignalsProps) => {
                 {isLoading ? (
                     <LoadingSkeleton loading={isLoading} stylize="mt-5" />
                 ) : (
-                    users.map((item, index) => (
-                        <GroupCard 
-                            key={item.id}
-                            name={item.name} 
-                            role={role}
-                            members={item.score!} 
-                            stylize={`
-                                ${index === 0 ? 'mt-5' : 'ml-1  mt-5'}
-                                ${index === users.length - 1 ? 'mr-1' : ''}
-                            `}
-                            onPress={() => {
-                                router.push(`/community/publicProfile/${item.id}`);
-                            }}
-                        />
-                    ))
+                    users && users.length > 0 ? (
+                        users.map((item, index) => (
+                            <GroupCard 
+                                key={item.id}
+                                name={item.name} 
+                                role={role}
+                                members={item.score!} 
+                                stylize={`
+                                    ${index === 0 ? 'mt-5' : 'ml-1  mt-5'}
+                                    ${index === users.length - 1 ? 'mr-1' : ''}
+                                `}
+                                onPress={() => {
+                                    router.push(`/community/publicProfile/${item.id}`);
+                                }}
+                            />
+                        ))
+                    ) : (
+                        <Type stylize="text-bodySmall text-onSurface ml-1 mt-5">No signals found</Type>
+                    )
                 )}
             </ScrollView>
         </Section>

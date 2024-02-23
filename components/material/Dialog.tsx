@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -10,6 +9,7 @@ import { Icon } from "./Icon";
 export interface DialogProps {
     title: string;
     icon?: keyof typeof MaterialIcons.glyphMap | keyof typeof MaterialCommunityIcons.glyphMap;
+    divider?: boolean;
     family?: 'material' | 'materialCommunity' | 'loading';
     cancelText?: string;
     confirmText?: string;
@@ -19,10 +19,10 @@ export interface DialogProps {
     stylize?: string;
 }
 
-export const Dialog = ({ title, icon, family = "material", cancelText = "Cancel", confirmText = "Done", onConfirm, onCancel, children, stylize }: DialogProps) => {
+export const Dialog = ({ title, icon, divider = true, family = "material", cancelText = "Cancel", confirmText = "Done", onConfirm, onCancel, children, stylize }: DialogProps) => {
     return (
         <>
-            <Section stylize="absolute bg-black w-full h-full opacity-40" />
+            <Section stylize="absolute bg-black w-full h-screen opacity-40 z-50" />
 
             <Section stylize={`absolute justify-center items-center w-full h-full z-10 ${stylize}`}>
                 <Section stylize="bg-surface border border-outline rounded-[28px] py-6">
@@ -31,7 +31,7 @@ export const Dialog = ({ title, icon, family = "material", cancelText = "Cancel"
                         {icon && <Icon family={family} name={icon} size={32} color="onSurfaceVariant" />}
                     </Section>
 
-                    <Divider stylize="mt-2" />
+                    {divider && <Divider stylize="mt-2" />}
 
                     <Section stylize="flex-row justify-between items-center mt-6 px-6">
                         {children}

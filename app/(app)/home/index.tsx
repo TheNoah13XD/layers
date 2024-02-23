@@ -57,7 +57,7 @@ const Home = () => {
                         <JournalStatus user={user} />
                         <ViewActivities role={user.role!} stylize='mt-1' />
                     </Section>
-                    {user.role === 'helper' && (
+                    {user.role === 'helper' && user.seekers && user.seekers.some(seeker => seeker.trim() !== '') && (
                         <>
                             <Section stylize='flex-row justify-between items-center w-full px-7'>
                                 <Type stylize='text-headlineMedium text-onSurfaceVariant tracking-tight'>Assess Signals</Type>

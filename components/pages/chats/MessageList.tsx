@@ -13,7 +13,7 @@ interface MessageListProps {
 
 export const MessageList = ({ scrollViewRef, messages }: MessageListProps) => {
     return (
-        <ScrollView ref={scrollViewRef} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingTop: 10, paddingBottom: 80 }} className="w-full">
+        <ScrollView ref={scrollViewRef} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingTop: 150, paddingBottom: 80 }} className="w-full h-full">
             {messages.length > 0 ? (
                 messages.map((message, index) => (
                     <MessageItem key={index} message={message} />

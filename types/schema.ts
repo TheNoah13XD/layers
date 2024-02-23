@@ -17,7 +17,6 @@ export interface User {
     signalId?: string;
     prevSignals?: string[];
     seekers?: string[];
-    prevSeekers?: string[];
 }
 
 export interface Goals {

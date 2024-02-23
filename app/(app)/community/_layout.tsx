@@ -2,10 +2,13 @@ import { Stack } from "expo-router";
 
 const CommunityLayout = () => {
     return (
-        <Stack screenOptions={{ 
-            contentStyle: { backgroundColor: '#FDF8FF'},
-            headerShown: false,
-        }}>
+        <Stack 
+            screenOptions={{ 
+                contentStyle: { backgroundColor: '#FDF8FF'},
+                headerShown: false,
+            }}
+            initialRouteName="index"
+        >
             <Stack.Screen 
                 name="index" 
             />

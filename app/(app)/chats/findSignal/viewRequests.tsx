@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { fetchUserSignalRequests, updateSigalRequest } from "utils/firebase";
+import { deletePrevSignal, fetchUserSignalRequests, updateSigalRequest } from "utils/firebase";
 import { useAuth } from "@context";
 import { SignalRequest } from "@types";
 
@@ -27,8 +27,10 @@ const ViewRequests = () => {
     const [requests, setRequests] = useState<SignalRequest[]>([]);
 
     const handleSuccess = async ({ id, username }: SignalRequest) => {
-        console.log(user.id, id, 'add')
         try {
+            if (user.prevSignals?.includes(id)) {
+                await deletePrevSignal(user.id, id);
+            }
             await updateSigalRequest(user.id, username, id, 'add');
         } catch (error) {
             console.error(error);
@@ -36,7 +38,6 @@ const ViewRequests = () => {
     };
 
     const handleDecline = async ({ id }: SignalRequest) => {
-        console.log(user.id, id, 'remove')
         try {
             await updateSigalRequest(user.id, '', id, 'remove');
         } catch (error) {
