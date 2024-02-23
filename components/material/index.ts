@@ -11,6 +11,7 @@ export * from "./Loading";
 export * from "./Nav";
 export * from "./Pagination";
 export * from "./Segment";
+export * from "./Select";
 export * from "./Snackbar";
 export * from "./TextFiled";
 export * from "./Toggle";

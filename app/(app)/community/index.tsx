@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 
 import { Post } from '@types';
@@ -82,10 +82,12 @@ const Community = () => {
                                         <Type stylize='text-bodySmall tracking-wide w-full pt-2 text-black'>Create and moderate a new group.</Type>
                                     </Section>
     
-                                    <Section stylize='flex-row justify-center items-center bg-primaryFixedDim rounded-[18px] w-full py-[10px]'>
-                                        <Icon name='arrow-right-alt' color='black' size={16} />
-                                        <Type stylize='text-bodySmall tracking-wide pl-2 uppercase'>Proceed</Type>
-                                    </Section>
+                                    <TouchableOpacity activeOpacity={0.7} onPress={() => router.push('/community/newGroup')}>
+                                        <Section stylize='flex-row justify-center items-center bg-primaryFixedDim rounded-[18px] w-full py-[10px]'>
+                                            <Icon name='arrow-right-alt' color='black' size={16} />
+                                            <Type stylize='text-bodySmall tracking-wide pl-2 uppercase'>Proceed</Type>
+                                        </Section>
+                                    </TouchableOpacity>
                                 </Section>
                             )}
 
@@ -121,7 +123,9 @@ const Community = () => {
             </ScrollView>
 
             <Section stylize='absolute right-[26px] bottom-28'>
-                <Fab type='regular' icon='mode-edit' containerColor='bg-primaryContainer' contentColor='onPrimaryContainer' stylize='rounded-2xl border border-outline'  />
+                <Fab type='regular' icon='mode-edit' containerColor='bg-primaryContainer' contentColor='onPrimaryContainer' stylize='rounded-2xl border border-outline' onPress={() => {
+                    router.push({ pathname: '/community/newPost', params: { type: 'newPost' } });
+                }} />
             </Section>
         </Section>
     );

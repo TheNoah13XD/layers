@@ -609,14 +609,14 @@ export const releaseSignal = async (userId: string, signalId: string) => {
     } catch (error) {
         console.error(error);
     }
-}
+};
 
 export const createRoom = async (roomId: string) => {
     await setDoc(doc(chatsRef, roomId), {
         roomId,
         createdAt: Timestamp.fromDate(new Date())
     });
-}
+};
 
 export const sendMessage = async (roomId: string, userId: string, username: string, message: string, role: 'seeker' | 'helper' | 'bot') => {
     const docRef = doc(chatsRef, roomId);
@@ -636,7 +636,7 @@ export const sendMessage = async (roomId: string, userId: string, username: stri
 
     const messageId = messageDocRef.id;
     await updateDoc(messageDocRef, { id: messageId });
-}
+};
 
 export const deletePrevSignal = async (userId: string, signalId: string) => {
     const userRef = doc(usersRef, userId);
@@ -644,6 +644,53 @@ export const deletePrevSignal = async (userId: string, signalId: string) => {
     await updateDoc(userRef, {
         prevSignals: arrayRemove(signalId)
     });
+};
+
+export const createPost = async (userId: string, username: string, groupId: string, groupName: string, content: string) => {
+    const now = new Date();
+    const time = Timestamp.fromDate(now);
+
+    const postDocRef = doc(postsRef);
+    const post = await setDoc(postDocRef, {
+        user: userId,
+        username,
+        time,
+        groupId,
+        groupName,
+        content,
+        likedBy: []
+    });
+
+    const postId = postDocRef.id;
+    await updateDoc(postDocRef, { id: postId });
+
+    return post;   
+};
+
+export const createGroup = async (userId: string, username: string, name: string, description: string, tags: Array<keyof Goals>) => {
+    const q = query(groupsRef, where("name", "==", name));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+        const groupDocRef = doc(groupsRef);
+        const group = await setDoc(groupDocRef, {
+            name,
+            members: 1,
+            owner: userId,
+            ownerUsername: username,
+            description,
+            tags
+        });
+
+        const groupId = groupDocRef.id;
+        await updateDoc(groupDocRef, { id: groupId });
+
+        const member = await addMember({ id: groupId, name, members: 1, owner: userId, ownerUsername: username, description, tags }, userId, username);
+
+        return { groupId, member };
+    } else {
+        return "Already exists";
+    }
 }
 
 // util functions

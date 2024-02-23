@@ -10,6 +10,7 @@ import { Icon } from './Icon';
 interface TextFieldProps {
     value: any;
     onChangeText: (text: string) => void;
+    maxLength?: number;
     placeholder?: string;
     icon?: keyof typeof MaterialIcons.glyphMap;
     keyboardType?: "email-address" | "numeric" | "phone-pad" | "default";
@@ -17,7 +18,7 @@ interface TextFieldProps {
     stylize?: string;
 }
 
-export const TextField = ({ value, onChangeText, placeholder, icon, keyboardType, secureTextEntry, stylize }: TextFieldProps) => {
+export const TextField = ({ value, onChangeText, maxLength = 120, placeholder, icon, keyboardType, secureTextEntry, stylize }: TextFieldProps) => {
     const [isFocused, setIsFocused] = useState(false);
 
     const handleFocus = () => setIsFocused(true);
@@ -31,6 +32,7 @@ export const TextField = ({ value, onChangeText, placeholder, icon, keyboardType
             <TextInput
                 value={value as string}
                 onChangeText={onChangeText} 
+                maxLength={maxLength}
                 placeholder={isFocused ? "" : placeholder}
                 placeholderTextColor="#48454E" 
                 keyboardType={keyboardType}

@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 
-const CommunityLayout = () => {
+const NewGroupLayout = () => {
     return (
         <Stack 
             screenOptions={{ 
@@ -12,17 +12,8 @@ const CommunityLayout = () => {
             <Stack.Screen 
                 name="index" 
             />
-            <Stack.Screen 
-                name="explore" 
-            />
-            <Stack.Screen 
-                name="newPost"
-            />
-            <Stack.Screen 
-                name="publicProfile"
-            />
         </Stack>
     )
 }
  
-export default CommunityLayout;
+export default NewGroupLayout;
