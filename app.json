@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -49,6 +49,12 @@
         "projectId": "96e5aa13-df95-400e-bad2-c331ec8e3ea8"
       }
     },
-    "owner": "thebrokenxd"
+    "owner": "thebrokenxd",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/96e5aa13-df95-400e-bad2-c331ec8e3ea8"
+    }
   }
 }

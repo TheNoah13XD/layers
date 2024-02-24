@@ -22,6 +22,10 @@ This project uses [Expo SDK 50](https://docs.expo.dev/) built on top of [React N
 
 [Design](https://www.figma.com/file/FYlq8ZTtoLgkxarQsX2kPo/.layers_prototype?type=design&node-id=3%3A3&mode=design&t=fnCC89uoS0y6fzt2-1) | [Prototype](https://www.figma.com/proto/FYlq8ZTtoLgkxarQsX2kPo/.layers_prototype?page-id=3%3A3&type=design&node-id=88-11505&viewport=-5474%2C-249%2C0.6&t=xN6tjdsUBuTZSruA-1&scaling=scale-down&starting-point-node-id=88%3A11505&show-proto-sidebar=1&mode=design) | [User Flow](https://www.figma.com/file/2C6qP2njKkj1PWEglLLVYz/.layers_userflow?type=whiteboard&node-id=0%3A1&t=q9W1rmD4DuY2YGsK-1)
 
+## App
+
+Download the expo go app and scan the QR code to see the app in action.
+
 ## Installation
 
 Make sure you have installed the current version of [NodeJS](https://nodejs.org/en/), [Android Studio](https://developer.android.com/studio) with a Pixel 7 Pro virtual device (instead of Android Studio, You can also use Expo Go app on your phone).
