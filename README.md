@@ -26,6 +26,21 @@ This project uses [Expo SDK 50](https://docs.expo.dev/) built on top of [React N
 
 Download the expo go app and scan the QR code to see the app in action.
 
+<div style="display: flex" >
+  <div>
+    <p>android:</p>
+    <img src="https://raw.githubusercontent.com/TheNoah13XD/layers/ce7ecfcc2552ec1c8ca23168d5f121fd968729dc/assets/images/qr/android.svg" width="300"/>
+  </div>
+  <div>
+    <p>ios:</p>
+    <img src="https://raw.githubusercontent.com/TheNoah13XD/layers/ce7ecfcc2552ec1c8ca23168d5f121fd968729dc/assets/images/qr/ios.svg" width="300"/>
+  </div>
+</div>
+
+## Screenshots
+
+<img src="https://github.com/TheNoah13XD/layers/blob/main/assets/images/screenshots/dashboard.png?raw=true" width="full"/>
+
 ## Installation
 
 Make sure you have installed the current version of [NodeJS](https://nodejs.org/en/), [Android Studio](https://developer.android.com/studio) with a Pixel 7 Pro virtual device (instead of Android Studio, You can also use Expo Go app on your phone).
