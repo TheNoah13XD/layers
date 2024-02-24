@@ -38,6 +38,10 @@ const SignUp = () => {
         setTimeout(() => setSnackbar(false), 2000);
     };
 
+    const handleGoogleSignIn = () => {
+        showError('This feature is not available yet.');
+    };
+
     const handleSignUp = async() => {
         if (!completeProfile) {
             if (!email || !password) {
@@ -85,7 +89,7 @@ const SignUp = () => {
 
                             <Type stylize='text-bodyLarge text-onSurface text-center mt-4'>or</Type>
 
-                            <Pressable className='flex justify-center items-center bg-onSurface w-full h-14 mt-4 rounded-full'>
+                            <Pressable className='flex justify-center items-center bg-onSurface w-full h-14 mt-4 rounded-full' onPress={handleGoogleSignIn}>
                                 <Type stylize='text-inverseOnSurface text-bodyLarge'>Continue with Google</Type>
                             </Pressable>
                         </Section>

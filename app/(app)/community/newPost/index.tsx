@@ -13,7 +13,7 @@ import { Button, Fab, Select, Snackbar } from "@components/material";
 const NewPost = () => {
     const { user } = useAuth();
     const { type } = useLocalSearchParams();
-    if (!user || !type || !user.groups || user.groups.length === 0) {
+    if (!user || !type || !user.groups) {
         return null;
     }
 
@@ -85,6 +85,15 @@ const NewPost = () => {
             });
         }
     }, [user]);
+
+    if (user.groups.length === 0) {
+        return (
+            <Section stylize="flex-1 justify-center items-center">
+                <Type stylize="text-headlineMedium text-onSurfaceVariant text-center tracking-tight">Join a group to post.</Type>
+                <Button type="filled" containerColor="bg-primary" contentColor="text-onPrimary" onPress={() => router.push('/community')} stylize="mt-4">Join a group</Button>
+            </Section>
+        );
+    }
 
     return (
         <CustomKeyboardView>

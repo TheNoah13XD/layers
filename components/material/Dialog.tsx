@@ -22,9 +22,9 @@ export interface DialogProps {
 export const Dialog = ({ title, icon, divider = true, family = "material", cancelText = "Cancel", confirmText = "Done", onConfirm, onCancel, children, stylize }: DialogProps) => {
     return (
         <>
-            <Section stylize="absolute bg-black w-full h-screen opacity-40 z-50" />
+            <Section stylize="absolute bg-black w-full h-screen opacity-40 z-40" />
 
-            <Section stylize={`absolute justify-center items-center w-full h-full z-10 ${stylize}`}>
+            <Section stylize={`absolute justify-center items-center w-full h-full z-50 ${stylize}`}>
                 <Section stylize="bg-surface border border-outline rounded-[28px] py-6">
                     <Section stylize="flex-row justify-between items-center px-6">
                         <Type stylize="text-headlineLarge text-onSurface tracking-tight">{title}</Type>

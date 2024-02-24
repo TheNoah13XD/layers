@@ -3,10 +3,11 @@ import { Button, Divider } from "@components/material";
 
 export interface FeelsLogProps {
     feel: string;
+    onPress: () => void;
     stylize?: string;
 }
 
-export const FeelsLog = ({ feel, stylize }: FeelsLogProps) => {
+export const FeelsLog = ({ feel, onPress, stylize }: FeelsLogProps) => {
     const quote = "I'm feeling positive!";
 
     return (
@@ -17,7 +18,7 @@ export const FeelsLog = ({ feel, stylize }: FeelsLogProps) => {
             <Section stylize='flex-col pl-4'>
                 <Type weight='medium' stylize='text-titleMedium text-onPrimaryContainer w-[120px]'>{quote}</Type>
                 <Divider stylize="mt-3" />
-                <Button type='filled' icon="add" containerColor='bg-primary' contentColor='text-onPrimary' stylize='mt-3'>Swing</Button>
+                <Button type='filled' icon="add" containerColor='bg-primary' contentColor='text-onPrimary' stylize='mt-3' onPress={onPress}>Swing</Button>
             </Section>
         </Section>
     );
