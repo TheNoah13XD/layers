@@ -12,7 +12,7 @@ Layers is an app that helps people overcome addiction, depression, suicidal thou
 
 ### Who?
 
-Our concept is that anyone can be helper by anyone at anytime, anywhere. We believe that everyone has gone through this phenomenon at least once in their life. So, we want everyone to be a part of this community. We want everyone to be a helper. We want everyone to be a friend.
+Our concept is that anyone can be helped by anyone at anytime, anywhere. We believe that everyone has gone through this phenomenon at least once in their life. So, we want everyone to be a part of this community. We want everyone to be a helper. We want everyone to be a friend.
 
 ### How?
 
@@ -29,11 +29,11 @@ Download the expo go app and scan the QR code to see the app in action.
 <div style="display: flex" >
   <div>
     <p>android:</p>
-    <img src="https://raw.githubusercontent.com/TheNoah13XD/layers/ce7ecfcc2552ec1c8ca23168d5f121fd968729dc/assets/images/qr/android.svg" width="300"/>
+    <img src="https://raw.githubusercontent.com/TheNoah13XD/layers/cffb7da62f6242113cfaaa60f392a31aceda52fd/assets/images/qr/android.svg" width="300"/>
   </div>
   <div>
     <p>ios:</p>
-    <img src="https://raw.githubusercontent.com/TheNoah13XD/layers/ce7ecfcc2552ec1c8ca23168d5f121fd968729dc/assets/images/qr/ios.svg" width="300"/>
+    <img src="https://raw.githubusercontent.com/TheNoah13XD/layers/cffb7da62f6242113cfaaa60f392a31aceda52fd/assets/images/qr/ios.svg" width="300"/>
   </div>
 </div>
 

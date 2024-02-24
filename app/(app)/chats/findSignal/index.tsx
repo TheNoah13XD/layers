@@ -93,7 +93,7 @@ const FindSignal = () => {
                     {user.seekers!.length < 5 ? (
                         seekers.length > 0 ? (
                             seekers.map((seeker, index) => (
-                                <FindCard key={seeker.id} id={seeker.id} username={seeker.username} goals={seeker.goals!} onSuccess={() => handleSendRequest(seeker.id)} stylize={index === 0 ? 'mt-0' : 'mt-3'} onViewGoals={() => handleViewGoals(seeker.goals!)} />
+                                <FindCard key={seeker.id} id={seeker.id} username={seeker.username} onSuccess={() => handleSendRequest(seeker.id)} stylize={index === 0 ? 'mt-0' : 'mt-3'} onViewGoals={() => handleViewGoals(seeker.goals!)} />
                             ))
                         ) : (
                             <Type stylize="text-headlineMedium text-onSurfaceVariant text-center tracking-tight mt-7">No seeker found.</Type>
