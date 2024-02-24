@@ -50,9 +50,9 @@ export const PostCard = ({ id, userId, name, group, groupId, content, likedBy, t
         <Card stylize={stylize}>
             <Section stylize={`flex-row justify-between items-center pt-2 pl-2 pr-1`}>
                 <Section stylize='flex-row items-center'>
-                    <Section stylize='flex justify-center items-center bg-primaryContainer rounded-full w-10 h-10'>
+                    <TouchableOpacity activeOpacity={0.7} onPress={handleUserRoute} className='flex justify-center items-center bg-primaryContainer rounded-full w-10 h-10'>
                         <Icon family='materialCommunity' name='account-outline' color='primary' size={28} />
-                    </Section>
+                    </TouchableOpacity>
                     <Section stylize='ml-2'>
                         <TouchableOpacity activeOpacity={0.7} onPress={handleUserRoute}>
                             <Type stylize='text-bodyMedium text-onSurface leading-[20px] tracking-wide'>{name}</Type>

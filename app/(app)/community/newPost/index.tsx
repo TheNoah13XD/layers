@@ -90,7 +90,7 @@ const NewPost = () => {
         return (
             <Section stylize="flex-1 justify-center items-center">
                 <Type stylize="text-headlineMedium text-onSurfaceVariant text-center tracking-tight">Join a group to post.</Type>
-                <Button type="filled" containerColor="bg-primary" contentColor="text-onPrimary" onPress={() => router.push('/community')} stylize="mt-4">Join a group</Button>
+                <Button type="filled" containerColor="bg-primary" contentColor="text-onPrimary" onPress={() => router.push('/community/explore')} stylize="mt-4">Join a group</Button>
             </Section>
         );
     }

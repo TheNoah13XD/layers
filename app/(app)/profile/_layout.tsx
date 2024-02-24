@@ -1,7 +1,22 @@
-import { Slot } from "expo-router";
+import { Stack } from "expo-router";
 
 const ProfileLayout = () => {
-    return <Slot />;
+    return (
+        <Stack
+            screenOptions={{ 
+                contentStyle: { backgroundColor: '#FDF8FF'},
+                headerShown: false,
+            }}
+            initialRouteName="index"
+        >
+            <Stack.Screen 
+                name="index" 
+            />
+            <Stack.Screen 
+                name="settings"
+            />
+        </Stack>
+    );
 }
  
 export default ProfileLayout;

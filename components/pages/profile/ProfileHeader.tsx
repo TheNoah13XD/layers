@@ -1,4 +1,4 @@
-import { useAuth } from "@context";
+import { router } from "expo-router";
 
 import { Icon } from "@components/material";
 import { Section, Type } from "@components/styled";
@@ -11,7 +11,6 @@ export interface ProfileHeaderProps {
 }
 
 export const ProfileHeader = ({ name, role, bio, stylize }: ProfileHeaderProps) => {
-    const { signout } = useAuth();
     const seeker = role === 'seeker';
 
     return (
@@ -21,7 +20,7 @@ export const ProfileHeader = ({ name, role, bio, stylize }: ProfileHeaderProps) 
                 <Section stylize={`self-center ${seeker ? "bg-primaryFixedDim" : "bg-secondaryFixedDim"} rounded-[25px] w-40 h-40`} />
             </Section>
 
-            <Icon name="settings" color="onSurfaceVariant" stylize="absolute top-[74px] right-5 flex justify-center items-center bg-onPrimary rounded-full w-12 h-12" onPress={signout} />
+            <Icon name="settings" color="onSurfaceVariant" stylize="absolute top-[74px] right-5 flex justify-center items-center bg-onPrimary rounded-full w-12 h-12" onPress={() => router.push('/profile/settings')} />
 
             <Section stylize="mt-96">
                 <Type stylize="text-center text-headlineSmall text-onSurface">{name}</Type>

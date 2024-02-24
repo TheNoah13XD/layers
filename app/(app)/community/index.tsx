@@ -112,7 +112,7 @@ const Community = () => {
 
                     <Section stylize='flex-row justify-between w-full px-7 mt-8'>
                         <Type stylize='text-headlineMedium text-onSurfaceVariant tracking-tight'>Recent Posts</Type>
-                        <Icon name='notifications-none' color='onSecondaryContainer' stylize='flex justify-center items-center bg-secondaryContainer rounded-full w-10 h-10' />
+                        <Icon name='notifications-none' color='onSecondaryContainer' stylize='flex justify-center items-center bg-secondaryContainer rounded-full w-10 h-10' onPress={() => showError("No notification available!")} />
                     </Section>
 
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
