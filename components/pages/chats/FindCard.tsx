@@ -8,24 +8,15 @@ import { Button, Card, Icon, Snackbar } from "@components/material";
 interface FindCardProps {
     id: string;
     username: string;
-    goals: string[];
     onSuccess: () => void;
+    onViewGoals: () => void;
     stylize?: string;
 }
 
-export const FindCard = ({ id, username, goals, onSuccess, stylize }: FindCardProps) => {
-    const [snackbar, setSnackbar] = useState(false);
-    const [message, setMessage] = useState('');
-
-    const handleViewGoals = () => {
-        setSnackbar(true);
-        setMessage(goals.join(', ')); 
-        setTimeout(() => setSnackbar(false), 2000);
-    }
-
+export const FindCard = ({ id, username, onSuccess, onViewGoals, stylize }: FindCardProps) => {
     return(
-        <Section stylize="h-full">
-            <Card stylize={`py-5 pl-5 pr-6 ${stylize}`}>
+        <Section stylize={`${stylize}`}>
+            <Card stylize={`py-5 pl-5 pr-6`}>
                 <Section stylize="flex-row justify-between items-center">
                     <Section stylize="flex-row justify-center items-center">
                         <Section stylize='flex justify-center items-center bg-primaryContainer rounded-full w-10 h-10'>
@@ -35,7 +26,7 @@ export const FindCard = ({ id, username, goals, onSuccess, stylize }: FindCardPr
                             <TouchableOpacity activeOpacity={0.7} onPress={() => router.push(`/community/publicProfile/${id}`)}>
                                 <Type stylize="text-bodyMedium text-onSurface">{username}</Type>
                             </TouchableOpacity>
-                            <TouchableOpacity activeOpacity={0.7} onPress={handleViewGoals}>
+                            <TouchableOpacity activeOpacity={0.7} onPress={onViewGoals}>
                                 <Type stylize="text-bodySmall text-primary">View Goals</Type>
                             </TouchableOpacity>
                         </Section>
@@ -44,8 +35,6 @@ export const FindCard = ({ id, username, goals, onSuccess, stylize }: FindCardPr
                     <Button type="filled" containerColor="bg-primary" contentColor="text-onPrimary" onPress={onSuccess}>Request</Button>
                 </Section>
             </Card>
-
-            {snackbar && <Snackbar hasNav view={snackbar} message={message} action={() => setSnackbar(false)} stylize="mb-36" />}
         </Section>
     );
 }

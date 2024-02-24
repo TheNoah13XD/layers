@@ -477,6 +477,8 @@ export const addMember = async (group: Group, userId: string, username: string) 
     const groupDoc = doc(groupsRef, group.id);
     const membersRef = collection(groupDoc, 'members');
 
+    const userDoc = doc(usersRef, userId);
+
     const member = {
         userId,
         username,
@@ -488,6 +490,10 @@ export const addMember = async (group: Group, userId: string, username: string) 
         members: increment(1)
     });
 
+    await updateDoc(userDoc, {
+        groups: arrayUnion(group.id)
+    });
+
     return member;
 };
 
@@ -495,9 +501,15 @@ export const removeMember = async (group: Group, userId: string) => {
     const groupDoc = doc(groupsRef, group.id);
     const memberDoc = collection(groupDoc, 'members');
 
+    const userDoc = doc(usersRef, userId);
+
     await deleteDoc(doc(memberDoc, userId));
     await updateDoc(groupDoc, {
         members: increment(-1)
+    });
+
+    await updateDoc(userDoc, {
+        groups: arrayRemove(group.id)
     });
 
     return;

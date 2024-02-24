@@ -4,7 +4,7 @@ Layers is an app to help people overcome addiction, depression, suicidal thought
 
 ### Why?
 
-Students. We have experienced this problem a lot. When we looked for a soltuion, we couldn't find any. So we decided to create one. We, students, have to manage personal life, academic life, work life and social life at the same time. Since we are new to this, at the end, we end up with either depression, suicidal thoughts or addictions. We dont want others to go through the same thing as we did, not just students, but everyone. The suicide rate is increasing day by day, and it is hard for us to look at the people who are close to us do this to themselves.
+We, Students, have experienced this problem a lot. When we looked for a solution, we couldn't find any. So we decided to create one. We, students, have to manage personal life, academic life, work life and social life at the same time. Since we are new to this, at the end, we end up with either depression, addiction or suicidal thoughts. We dont want others to go through the same thing as we did, not just students, but everyone. The suicide rate is increasing day by day, and it is hard for us to look at the people who are close to us do this to themselves.
 
 ### What?
 

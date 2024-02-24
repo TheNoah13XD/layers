@@ -26,7 +26,8 @@ const GroupPage = () => {
     const joinGroup = async () => {
         if (data) {
             try {
-                await addMember(data, user.id, user.username);
+                const response = await addMember(data, user.id, user.username);
+                console.log(response);
             } catch (error) {
                 console.log(error);
             }
@@ -126,7 +127,7 @@ const GroupPage = () => {
             </ScrollView>
 
             <Section stylize='absolute right-[26px] bottom-20'>
-                <Fab type='regular' icon='mode-edit' containerColor='bg-primaryContainer' contentColor='onPrimaryContainer' stylize='rounded-2xl border border-outline'  />
+                <Fab type='regular' icon='mode-edit' containerColor='bg-primaryContainer' contentColor='onPrimaryContainer' stylize='rounded-2xl border border-outline' onPress={() => router.push({ pathname: '/community/newPost', params: { type: 'newPost' } })} />
             </Section>
         </Section>
     );

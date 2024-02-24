@@ -32,6 +32,12 @@ const FindSignal = () => {
         setTimeout(() => setSnackbar(false), 2000);
     }
 
+    const handleViewGoals = (goals: string[]) => {
+        setSnackbar(true);
+        setMessage(goals.join(', ')); 
+        setTimeout(() => setSnackbar(false), 2000);
+    }
+
     const handleSendRequest = async (id: string) => {
         try {
             await sendSignalRequest(id, user.id, user.username);
@@ -87,7 +93,7 @@ const FindSignal = () => {
                     {user.seekers!.length < 5 ? (
                         seekers.length > 0 ? (
                             seekers.map((seeker, index) => (
-                                <FindCard key={seeker.id} id={seeker.id} username={seeker.username} goals={seeker.goals!} onSuccess={() => handleSendRequest(seeker.id)} stylize={index === 0 ? 'mt-0' : 'mt-3'} />
+                                <FindCard key={seeker.id} id={seeker.id} username={seeker.username} goals={seeker.goals!} onSuccess={() => handleSendRequest(seeker.id)} stylize={index === 0 ? 'mt-0' : 'mt-3'} onViewGoals={() => handleViewGoals(seeker.goals!)} />
                             ))
                         ) : (
                             <Type stylize="text-headlineMedium text-onSurfaceVariant text-center tracking-tight mt-7">No seeker found.</Type>
@@ -98,7 +104,7 @@ const FindSignal = () => {
                 </Section>
             )}
 
-            {snackbar && <Snackbar hasNav view={snackbar} message={message} action={() => setSnackbar(false)} />}
+            {snackbar && <Snackbar hasNav view={snackbar} message={message} action={() => setSnackbar(false)} stylize="mx-10" />}
         </>
     );
 }
