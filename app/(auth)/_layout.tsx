@@ -1,24 +1,14 @@
-import { useEffect } from 'react';
-import { Stack, router } from 'expo-router';
-
-import { useAuth } from '@context';
+import { Stack } from 'expo-router';
 
 const AuthLayout = () => {
-    const { user, isAuthenticated } = useAuth();
-
-    useEffect(() => {
-        if (isAuthenticated && user && user.role) {
-            router.replace('/home');
-        } else if (isAuthenticated && user && !user.role) {
-            router.replace('/assessments');
-        }
-    }, [isAuthenticated]);
-
     return (
-        <Stack screenOptions={{ 
-            contentStyle: { backgroundColor: '#FDF8FF'},
-            headerShown: false,
-        }}>
+        <Stack 
+            screenOptions={{ 
+                contentStyle: { backgroundColor: '#FDF8FF'},
+                headerShown: false,
+            }}
+            initialRouteName='start'
+        >
             <Stack.Screen
                 name="start"
             />

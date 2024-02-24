@@ -75,6 +75,7 @@ export interface Post {
     groupName: string;
     content: string;
     likedBy: string[];
+    reportedBy: string[];
 }
 
 export interface Message {

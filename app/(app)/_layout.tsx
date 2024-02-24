@@ -12,7 +12,7 @@ const AppLayout = () => {
     useEffect(() => {
         if (!isAuthenticated) {
             router.replace('/start');
-        } else if (user && user && !user.role) {
+        } else if (user && !user.role) {
             router.replace('/assessments');
         }
     }, [isAuthenticated]);

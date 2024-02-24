@@ -61,7 +61,6 @@ const GeneralAssessments = () => {
                     age,
                     gender: isEnabled ? 'female' : 'male',
                     role: role,
-                    score: 80
                 });
 
                 router.replace('/home');

@@ -54,8 +54,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
             prevUser.signal === data.signal &&
             prevUser.signalId === data.signalId &&
             prevUser.prevSignals === data.prevSignals &&
-            prevUser.seekers === data.seekers &&
-            prevUser.prevSeekers === data.prevSeekers
+            prevUser.seekers === data.seekers
         );
     };
 
@@ -87,8 +86,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                         signal: data.signal,
                         signalId: data.signalId,
                         prevSignals: data.prevSignals,
-                        seekers: data.seekers,
-                        prevSeekers: data.prevSeekers
+                        seekers: data.seekers
                     };
                 });
             } else {
@@ -103,7 +101,18 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         setIsLoading(true);
         try {
             const userRef = doc(db, "users", userId);
-            await setDoc(userRef, { ...data }, { merge: true });
+            await setDoc(userRef, { 
+                ...data,
+                bio: 'I am a new user!',
+                score: 85,
+                goals: ['smoking', 'drinking', 'substance', 'porn', 'gambling', 'depression', 'suicidal', 'selfharm'],
+                groups: [],
+                streak: 0,
+                signal: "",
+                signalId: "",
+                prevSignals: [],
+                seekers: []
+            }, { merge: true });
     
             updateLocalUser(userId);
         } catch (error) {
@@ -154,7 +163,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         try {
             const response = await createUserWithEmailAndPassword(auth, email, password);
             await setDoc(doc(db, "users", response.user.uid), {
-                userId: response.user.uid,
+                id: response.user.uid,
                 email,
                 name,
                 username

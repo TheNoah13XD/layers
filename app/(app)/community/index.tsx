@@ -5,7 +5,7 @@ import { router } from 'expo-router';
 import { Post } from '@types';
 
 import { Section, Type } from '@components/styled';
-import { Fab, Icon, Loading } from '@components/material';
+import { Fab, Icon, Loading, Snackbar } from '@components/material';
 import { PostCard, Stage } from '@components/pages/community';
 import { useAuth } from '@context';
 import { fetchPostsOfUserGroups } from 'utils/firebase';
@@ -25,6 +25,19 @@ const Community = () => {
         .filter((groupName, index, self) => self.indexOf(groupName) === index);
     const [selectedSegments, setSelectedSegments] = useState<string[]>([]);
     const [filteredData, setFilteredData] = useState<Post[]>([]);
+
+    const [snackbar, setSnackbar] = useState(false);
+    const [error, setError] = useState('');
+
+    const showError = (message: string) => {
+        setError(message);
+        setSnackbar(true);
+        setTimeout(() => setSnackbar(false), 2000);
+    };
+    
+    const handleVoiceJoin = () => {
+        showError('Voice chats are still in development');
+    }
 
     const handleSegmentPress = (segment: string) => {
         setSelectedSegments(prev => {
@@ -49,7 +62,7 @@ const Community = () => {
     }, [selectedSegments, data]);
 
     useEffect(() => {
-        if (user.groups) {
+        if (user.groups && user.groups.length > 0) {
             setIsLoading(true);
             const unsubscribe = fetchPostsOfUserGroups(user.groups, (posts) => {
                 setData(posts);
@@ -58,7 +71,7 @@ const Community = () => {
 
             return () => unsubscribe();
         }
-    }, []);
+    }, [user]);
 
     return (
         <Section stylize='h-full'>
@@ -91,9 +104,9 @@ const Community = () => {
                                 </Section>
                             )}
 
-                            <Stage name='Chill' description='Get your shit together man.' stylize={user.role === "helper" ? "ml-1" : ""} />
-                            <Stage name='Relax' description='Get your shit together man.' stylize='ml-1' />
-                            <Stage name='Enjoy' description='Get your shit together man.' stylize='ml-1' />
+                            <Stage name='Chill' description='Get your shit together man.' stylize={user.role === "helper" ? "ml-1" : ""} onPress={handleVoiceJoin} />
+                            <Stage name='Relax' description='Get your shit together man.' stylize='ml-1' onPress={handleVoiceJoin} />
+                            <Stage name='Enjoy' description='Get your shit together man.' stylize='ml-1' onPress={handleVoiceJoin} />
                         </Section>
                     </ScrollView>
 
@@ -112,11 +125,15 @@ const Community = () => {
                         {isLoading ? (
                             <Loading />
                         ) : (
-                            filteredData.map((post, index) => (
-                                <PostCard key={post.id} id={post.id} userId={post.user} name={post.username} group={post.groupName} groupId={post.groupId} content={post.content} likedBy={post.likedBy} time={post.time} stylize={`
-                                    ${index === 0 ? '' : 'mt-3'}
-                                `} />
-                            ))
+                            filteredData.length > 0 ? (
+                                filteredData.map((post, index) => (
+                                    <PostCard key={post.id} id={post.id} userId={post.user} name={post.username} group={post.groupName} groupId={post.groupId} content={post.content} likedBy={post.likedBy} time={post.time} stylize={`
+                                        ${index === 0 ? '' : 'mt-3'}
+                                    `} />
+                                ))
+                            ) : (
+                                <Type stylize='text-headlineMedium text-onSurfaceVariant text-center tracking-tight'>No posts to show.</Type>
+                            )
                         )}
                     </Section>
                 </Section>
@@ -127,6 +144,8 @@ const Community = () => {
                     router.push({ pathname: '/community/newPost', params: { type: 'newPost' } });
                 }} />
             </Section>
+
+            {snackbar && <Snackbar hasNav view={snackbar} message={error} action={() => setSnackbar(false)} />}
         </Section>
     );
 }

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useFonts } from 'expo-font';
-import { Slot, SplashScreen, router, useSegments } from 'expo-router';
+import { Slot, SplashScreen, router } from 'expo-router';
 
 import 'react-native-reanimated';
 import 'react-native-gesture-handler';
@@ -9,18 +9,16 @@ import { AuthContextProvider, useAuth } from '@context';
 
 const RootLayout = () => {
     const { user, isAuthenticated } = useAuth();
-    const segments = useSegments();
 
     useEffect(() => {
         if (typeof isAuthenticated == 'undefined') return;
-        const inApp = segments[0] == 'app';
         
-        if (isAuthenticated && !inApp && user?.role) {
-            router.replace('/home');
-        } else if (isAuthenticated && user && !user.role) {
-            router.replace('/assessments');
-        } else if (!isAuthenticated) {
+        if (!isAuthenticated) {
             router.replace('/start');
+        } else if (isAuthenticated && user && user.role === undefined) {
+            router.replace('/assessments');
+        } else if (isAuthenticated && user && user.role !== undefined) {
+            router.replace('/home');
         }
     }, [isAuthenticated, user]);
 

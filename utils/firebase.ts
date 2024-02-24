@@ -380,7 +380,8 @@ export const fetchPosts = (groupId: string, callback: (posts: Post[]) => void) =
                 groupId: data.groupId,
                 groupName: data.groupName,
                 content: data.content,
-                likedBy: data.likedBy
+                likedBy: data.likedBy,
+                reportedBy: data.reportedBy
             });
         });
 
@@ -406,7 +407,8 @@ export const fetchPostsOfUser = (userId: string, callback: (posts: Post[]) => vo
                 groupId: data.groupId,
                 groupName: data.groupName,
                 content: data.content,
-                likedBy: data.likedBy
+                likedBy: data.likedBy,
+                reportedBy: data.reportedBy
             });
         });
 
@@ -432,7 +434,8 @@ export const fetchPostsOfUserGroups = (groupIds: string[], callback: (posts: Pos
                 groupId: data.groupId,
                 groupName: data.groupName,
                 content: data.content,
-                likedBy: data.likedBy
+                likedBy: data.likedBy,
+                reportedBy: data.reportedBy
             });
         });
 
@@ -658,7 +661,8 @@ export const createPost = async (userId: string, username: string, groupId: stri
         groupId,
         groupName,
         content,
-        likedBy: []
+        likedBy: [],
+        reportedBy: []
     });
 
     const postId = postDocRef.id;
@@ -687,7 +691,7 @@ export const createGroup = async (userId: string, username: string, name: string
 
         const member = await addMember({ id: groupId, name, members: 1, owner: userId, ownerUsername: username, description, tags }, userId, username);
 
-        return { groupId, member };
+        return { group, groupId, member };
     } else {
         return "Already exists";
     }
