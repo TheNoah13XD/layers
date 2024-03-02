@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 
 import { Section, Type } from "@components/styled";
-import { Button, Card, Icon, Snackbar } from "@components/material";
+import { Button, Card, Icon } from "@components/material";
 
 interface FindCardProps {
     id: string;

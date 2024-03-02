@@ -29,11 +29,6 @@ const Home = () => {
         setTimeout(() => setSnackbar(false), 2000);
     };
 
-    const handleSwingClick = () => {
-        console.log('Swing clicked');
-        showError('This feature is not available yet');
-    };
-
     const getButtonProps = (isActive: boolean): ButtonProps => ({
         type: isActive ? "filled" : "outlined",
         icon: isActive ? "layers" : undefined,
@@ -59,7 +54,7 @@ const Home = () => {
                     {active === 'index' ? (
                         <LayerIndex role={role!} score={user.score!} stylize='mt-7' />
                     ) : (
-                        <FeelsLog feel=': )' stylize='mt-7' onPress={handleSwingClick} />
+                        <FeelsLog feel=': )' stylize='mt-7' onPress={() => showError('This feature is not available yet.')} />
                     )}
 
                     <Section stylize={`${role === 'seeker' ? "bg-primaryFixed" : "bg-secondaryFixed"} rounded-[50px] overflow-hidden w-full mt-7 mb-20 pt-7 pb-12`}>
