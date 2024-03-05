@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { Pressable, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 
 import { useAuth } from '@context';
@@ -38,19 +38,15 @@ const SignUp = () => {
         setTimeout(() => setSnackbar(false), 2000);
     };
 
-    const handleGoogleSignIn = () => {
-        showError('This feature is not available yet.');
-    };
-
     const handleSignUp = async() => {
         if (!completeProfile) {
-            if (!email || !password) {
+            if (!name || !username) {
                 showError('Please fill in all fields.');
             } else {
                 setCompleteProfile(true);
             }
         } else {
-            if (!name || !username) {
+            if (!email || !password) {
                 showError('Please fill in all fields.');
             } else if (!isChecked) {
                 showError('Please agree to terms & conditions.');
@@ -80,12 +76,12 @@ const SignUp = () => {
         <CustomKeyboardView>
             <Section stylize='w-full h-full '>
                 <Section stylize='px-[18px] mt-[68px]'>
-                    <Context title='Sign Up' description='create a new Layers Account.' icon='lock-open' />
+                    <Context title='Sign Up' description='create a new Layers Account.' icon='how-to-reg' />
 
                     {!completeProfile ? (
                         <Section stylize='px-5 pt-10'>
-                            <TextField value={email} onChangeText={setEmail} icon='mail-outline' keyboardType='email-address' placeholder='Email'/>
-                            <TextField value={password} onChangeText={setPassword} icon='lock-outline' secureTextEntry placeholder='Password' stylize='mt-2' />
+                            <TextField value={name} onChangeText={setName} icon='face' placeholder='Full Name'/>
+                            <TextField value={username} onChangeText={setUsername} icon='person' placeholder='Username' stylize='mt-2' />
 
                             <Type stylize='text-bodyLarge text-onSurface text-center mt-4'>or</Type>
 
@@ -96,12 +92,12 @@ const SignUp = () => {
                         </Section>
                     ) : (
                         <Section stylize='px-5 pt-[108px]'>
-                            <TextField value={name} onChangeText={setName} icon='face' placeholder='Full Name'/>
-                            <TextField value={username} onChangeText={setUsername} icon='person' placeholder='Username' stylize='mt-2' />
+                            <TextField value={email} onChangeText={setEmail} icon='mail-outline' keyboardType='email-address' placeholder='Email'/>
+                            <TextField value={password} onChangeText={setPassword} icon='lock-outline' secureTextEntry placeholder='Password' stylize='mt-2' />
 
                             <Section stylize='flex-row items-center pl-4 pt-10'>
                                 <Check value={isChecked} onValueChange={setChecked} />
-                                <Type stylize='text-bodyLarge text-onPrimaryContainer pl-2'>Agree to terms & conditions.</Type>
+                                <Pressable onPress={() => setChecked(!isChecked)}><Type stylize='text-bodyLarge text-onPrimaryContainer pl-2'>Agree to terms & conditions.</Type></Pressable>
                             </Section>
                         </Section>
                     )}

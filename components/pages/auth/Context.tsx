@@ -25,7 +25,8 @@ export const Context = ({ title, description, icon, iconFamily = 'material' }: C
                         left: 0,
                         bottom: 0,
                         right: 0,
-                        zIndex: -1
+                        zIndex: -1,
+                        transform: title === 'Sign Up' ? [{ rotate: '180deg' }] : [{ rotate: '0deg' }]
                     }}
                     source={GradientContainer}
                     placeholder={Blurhash}
