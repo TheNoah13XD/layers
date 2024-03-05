@@ -1,9 +1,13 @@
 import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
-import { UserCredential, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { doc, onSnapshot, setDoc } from "firebase/firestore";
+import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
+import { UserCredential, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, GoogleAuthProvider, signInWithCredential, signOut } from "firebase/auth";
+import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 
 import { auth, db } from "@firebase";
 import { User } from "@types";
+
+WebBrowser.maybeCompleteAuthSession();
 
 interface UserUpdate {
     age?: number;
@@ -16,6 +20,7 @@ interface AuthContextType {
     user: User | null;
     isLoading: boolean;
     isAuthenticated: boolean | undefined;
+    promptAsync: any;
     userUpdate: (userId: string, data: UserUpdate) => Promise<void | String>;
     signin: (email: string, password: string) => Promise<UserCredential | String>;
     signup: (email: string, password: string, name: string, username: string) => Promise<UserCredential | String>;
@@ -32,6 +37,11 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(undefined);
+
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        iosClientId: "131774972809-8em04ottcre6u5ssok6cb0f6o9rsq76g.apps.googleusercontent.com",
+        androidClientId: "131774972809-rj96rh837hg5rrjsqsuoah9cbr7co364.apps.googleusercontent.com",
+    });
     
     const isUserEqual = (prevUser: User | null, data: any) => {
         if (!prevUser || !data) {
@@ -144,6 +154,28 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
         return () => unsubscribe();
     }, []);
 
+    useEffect(() => {
+        if (response?.type === 'success') {
+            const { id_token } = response.params;
+            const credential = GoogleAuthProvider.credential(id_token);
+            signInWithCredential(auth, credential).then((userCredential) => {
+                const userRef = doc(db, 'users', userCredential.user.uid);
+                getDoc(userRef).then((docSnapshot) => {
+                    if (!docSnapshot.exists()) {
+                        setDoc(userRef, {
+                            id: userCredential.user.uid,
+                            email: userCredential.user.email,
+                            name: userCredential.user.displayName,
+                            username: userCredential.user.displayName
+                        });
+                    }
+                });
+            }).catch((error) => {
+                console.log(error);
+            })
+        }
+    }, [response]);
+
     const signin = async (email: string, password: string): Promise<UserCredential | String> => {
         setIsLoading(true);
         try {
@@ -195,6 +227,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
             user,
             isLoading,
             isAuthenticated,
+            promptAsync,
             signin,
             signup,
             signout,

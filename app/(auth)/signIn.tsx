@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Pressable } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 
 import { useAuth } from '@context';
 
 import { CustomKeyboardView, Section, Type } from '@components/styled';
 import { Button, Fab, Snackbar, TextField } from '@components/material';
-import { Context } from '@components/pages/auth';
+import { Context, GoogelLogo } from '@components/pages/auth';
 
 const SignIn = () => {
-    const { user, isAuthenticated, isLoading, signin } = useAuth();
+    const { user, isAuthenticated, isLoading, signin, promptAsync } = useAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -31,10 +31,6 @@ const SignIn = () => {
         setError(message);
         setSnackbar(true);
         setTimeout(() => setSnackbar(false), 2000);
-    };
-
-    const handleGoogleSignIn = () => {
-        showError('This feature is not available yet.');
     };
 
     const handleSignIn = async() => {
@@ -72,9 +68,10 @@ const SignIn = () => {
 
                         <Type stylize='text-bodyLarge text-onSurface text-center mt-4'>or</Type>
 
-                        <Pressable className='flex justify-center items-center bg-onSurface w-full h-14 mt-4 rounded-full' onPress={handleGoogleSignIn}>
-                            <Type stylize='text-inverseOnSurface text-bodyLarge'>Sign in with Google</Type>
-                        </Pressable>
+                        <TouchableOpacity activeOpacity={0.7} className='flex-row justify-center items-center bg-onSurface w-full h-14 mt-4 rounded-full' onPress={() => promptAsync()}>
+                            <GoogelLogo />
+                            <Type stylize='text-inverseOnSurface text-[20px] pl-4'>Sign in with Google</Type>
+                        </TouchableOpacity>
                     </Section>
                 </Section>
 

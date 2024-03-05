@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Pressable } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
 
 import { useAuth } from '@context';
 
 import { CustomKeyboardView, Section, Type } from '@components/styled';
 import { Button, Check, Fab, Snackbar, TextField } from '@components/material';
-import { Context } from '@components/pages/auth';
+import { Context, GoogelLogo } from '@components/pages/auth';
 
 const SignUp = () => {
-    const { user, isAuthenticated, isLoading, signup } = useAuth();
+    const { user, isAuthenticated, isLoading, signup, promptAsync } = useAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -89,9 +89,10 @@ const SignUp = () => {
 
                             <Type stylize='text-bodyLarge text-onSurface text-center mt-4'>or</Type>
 
-                            <Pressable className='flex justify-center items-center bg-onSurface w-full h-14 mt-4 rounded-full' onPress={handleGoogleSignIn}>
-                                <Type stylize='text-inverseOnSurface text-bodyLarge'>Continue with Google</Type>
-                            </Pressable>
+                            <TouchableOpacity activeOpacity={0.7} className='flex-row justify-center items-center bg-onSurface w-full h-14 mt-4 rounded-full' onPress={() => promptAsync()}>
+                                <GoogelLogo />
+                                <Type stylize='text-inverseOnSurface text-[20px] pl-4'>Continue with Google</Type>
+                            </TouchableOpacity>
                         </Section>
                     ) : (
                         <Section stylize='px-5 pt-[108px]'>

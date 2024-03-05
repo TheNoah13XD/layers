@@ -29,11 +29,11 @@ Download the expo go app and scan the QR code to see the app in action.
 <div style="display: flex" >
   <div>
     <p>android:</p>
-    <img src="https://raw.githubusercontent.com/TheNoah13XD/layers/bbd6006ab8e662809bddba7f2f3d019580ed66ee/assets/images/qr/android.svg" width="300"/>
+    <img src="https://qr.expo.dev/eas-update?updateId=7962d9cd-2213-4d05-b271-d40e0eb002e9&appScheme=exp&host=u.expo.dev" width="300"/>
   </div>
   <div>
     <p>ios:</p>
-    <img src="https://raw.githubusercontent.com/TheNoah13XD/layers/bbd6006ab8e662809bddba7f2f3d019580ed66ee/assets/images/qr/ios.svg" width="300"/>
+    <img src="https://qr.expo.dev/eas-update?updateId=ca022b28-38cc-4e1f-a711-a5663060ea4e&appScheme=exp&host=u.expo.dev" width="300"/>
   </div>
 </div>
 
