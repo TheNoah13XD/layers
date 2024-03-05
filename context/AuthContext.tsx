@@ -39,8 +39,10 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(undefined);
 
     const [request, response, promptAsync] = Google.useAuthRequest({
-        iosClientId: "131774972809-8em04ottcre6u5ssok6cb0f6o9rsq76g.apps.googleusercontent.com",
-        androidClientId: "131774972809-rj96rh837hg5rrjsqsuoah9cbr7co364.apps.googleusercontent.com",
+        // @ts-ignore
+        iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
+        // @ts-ignore
+        androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
     });
     
     const isUserEqual = (prevUser: User | null, data: any) => {
