@@ -17,7 +17,7 @@ const ChatsLayout = () => {
             />
             <Stack.Screen
                 name="chatroom"
-            />            
+            />
         </Stack>
     )
 }

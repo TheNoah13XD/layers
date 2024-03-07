@@ -715,3 +715,10 @@ export const getRoomId = (userId1: string, userId2: string) => {
     const roomId = sortedIds.join('-');
     return roomId;
 }
+
+export const checkIfUsernameExists = async (username: string) => {
+    const q = query(usersRef, where('username', '==', username));
+    const querySnapshot = await getDocs(q);
+
+    return !querySnapshot.empty;
+};

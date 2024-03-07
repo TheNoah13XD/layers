@@ -1,11 +1,10 @@
-import { TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { usePathname } from "expo-router";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 
 import { Section, Type } from "../styled";
 import { Icon } from "./Icon";
-import { View } from "react-native";
 
 export const Nav = ({ state, descriptors, navigation, ...props }: BottomTabBarProps) => {
     return (

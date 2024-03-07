@@ -7,8 +7,6 @@ import { Nav } from '@components/material';
 const AppLayout = () => {
     const { user, isAuthenticated } = useAuth();
 
-    const segments = useSegments();
-
     useEffect(() => {
         if (!isAuthenticated) {
             router.replace('/start');

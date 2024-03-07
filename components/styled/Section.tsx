@@ -1,9 +1,10 @@
-import { View } from "react-native";
+import { View, ViewProps } from "react-native";
 import { styled } from "nativewind";
 
 interface SectionProps {
     children?: React.ReactNode;
     stylize?: string;
+    rest?: ViewProps;
 }
 const StyledView = styled(View)
 

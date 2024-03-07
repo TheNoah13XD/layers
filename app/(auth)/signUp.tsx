@@ -65,6 +65,10 @@ const SignUp = () => {
                         showError('Invalid email address.');
                         setCompleteProfile(false);
                         break;
+                    case response.toString().includes('taken'):
+                        showError('Username already in use.');
+                        setCompleteProfile(false);
+                        break;
                     default:
                         router.replace('/assessments');
                 }
@@ -80,8 +84,8 @@ const SignUp = () => {
 
                     {!completeProfile ? (
                         <Section stylize='px-5 pt-10'>
-                            <TextField value={name} onChangeText={setName} icon='face' placeholder='Full Name'/>
-                            <TextField value={username} onChangeText={setUsername} icon='person' placeholder='Username' stylize='mt-2' />
+                            <TextField key={1} value={name} onChangeText={setName} icon='face' placeholder='Full Name'/>
+                            <TextField key={2} value={username} onChangeText={setUsername} icon='person' placeholder='Username' stylize='mt-2' />
 
                             <Type stylize='text-bodyLarge text-onSurface text-center mt-4'>or</Type>
 
@@ -92,8 +96,8 @@ const SignUp = () => {
                         </Section>
                     ) : (
                         <Section stylize='px-5 pt-[108px]'>
-                            <TextField value={email} onChangeText={setEmail} icon='mail-outline' keyboardType='email-address' placeholder='Email'/>
-                            <TextField value={password} onChangeText={setPassword} icon='lock-outline' secureTextEntry placeholder='Password' stylize='mt-2' />
+                            <TextField key={3} value={email} onChangeText={setEmail} icon='mail-outline' keyboardType='email-address' placeholder='Email' />
+                            <TextField key={4} value={password} onChangeText={setPassword} icon='lock-outline' secureTextEntry placeholder='Password' stylize='mt-2' />
 
                             <Section stylize='flex-row items-center pl-4 pt-10'>
                                 <Check value={isChecked} onValueChange={setChecked} />

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TextInput } from "react-native";
+import { TextInput, TextInputProps } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import { FontWeight } from '@constants';
@@ -16,9 +16,10 @@ interface TextFieldProps {
     keyboardType?: "email-address" | "numeric" | "phone-pad" | "default";
     secureTextEntry?: boolean;
     stylize?: string;
+    rest?: TextInputProps;
 }
 
-export const TextField = ({ value, onChangeText, maxLength = 120, placeholder, icon, keyboardType, secureTextEntry, stylize }: TextFieldProps) => {
+export const TextField = ({ value, onChangeText, maxLength = 120, placeholder, icon, keyboardType, secureTextEntry, stylize, rest }: TextFieldProps) => {
     const [isFocused, setIsFocused] = useState(false);
 
     const handleFocus = () => setIsFocused(true);
@@ -36,11 +37,12 @@ export const TextField = ({ value, onChangeText, maxLength = 120, placeholder, i
                 placeholder={isFocused ? "" : placeholder}
                 placeholderTextColor="#48454E" 
                 keyboardType={keyboardType}
-                secureTextEntry={secureTextEntry} 
+                secureTextEntry={secureTextEntry}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 style={{ fontFamily: FontWeight['regular'] }} 
                 className="text-bodyLarge text-onSurface w-full h-14 pl-3"
+                {...rest}
             />
         </Section>
     );

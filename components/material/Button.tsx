@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import { BgColors, TextColors, BorderColors, Colors } from "@types";
@@ -16,9 +16,10 @@ export interface ButtonProps {
     onPress?: () => void;
     stylize?: string;
     children: React.ReactNode;
+    rest?: TouchableOpacityProps;
 }
 
-export const Button = ({ type, containerColor, contentColor, borderColor, icon, onPress, stylize, children }: ButtonProps) => {
+export const Button = ({ type, containerColor, contentColor, borderColor, icon, onPress, stylize, children, rest }: ButtonProps) => {
     const iconColor = contentColor.replace('text-', '') as keyof Colors;
 
     const iconElement = useMemo(() => {
@@ -37,7 +38,7 @@ export const Button = ({ type, containerColor, contentColor, borderColor, icon, 
 
     return (
         <Section stylize={stylize}>
-            <TouchableOpacity activeOpacity={0.9} className={`flex flex-row items-center justify-center h-10 px-4 outline-none rounded-[20px] ${buttonStyle}`} onPress={onPress}>
+            <TouchableOpacity activeOpacity={0.9} className={`flex flex-row items-center justify-center h-10 px-4 outline-none rounded-[20px] ${buttonStyle}`} onPress={onPress} {...rest}>
                 {iconElement}
                 <Type weight="medium" stylize={`text-labelLarge ${contentColor} px-2`}>{children}</Type>
             </TouchableOpacity>

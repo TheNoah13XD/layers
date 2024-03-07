@@ -1,11 +1,12 @@
-import { Switch } from "react-native";
+import { Switch, SwitchProps } from "react-native";
 
 interface CheckProps {
     isEnabled: boolean;
     toggleSwitch: () => void;
+    rest?: SwitchProps;
 }
 
-export const Toggle = ({ isEnabled, toggleSwitch }: CheckProps) => {
+export const Toggle = ({ isEnabled, toggleSwitch, rest }: CheckProps) => {
     return (
         <Switch
             trackColor={{false: '#605690', true: '#605690'}}
@@ -13,6 +14,7 @@ export const Toggle = ({ isEnabled, toggleSwitch }: CheckProps) => {
             ios_backgroundColor="#605690"
             onValueChange={toggleSwitch}
             value={isEnabled}
+            {...rest}
         />
     );
 }

@@ -6,6 +6,7 @@ import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 
 import { auth, db } from "@firebase";
 import { User } from "@types";
+import { checkIfUsernameExists } from "utils/firebase";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -168,7 +169,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
                             id: userCredential.user.uid,
                             email: userCredential.user.email,
                             name: userCredential.user.displayName,
-                            username: userCredential.user.displayName
+                            username: userCredential.user.uid,
                         });
                     }
                 });
@@ -195,6 +196,11 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     const signup = async (email: string, password: string, name: string, username: string): Promise<UserCredential | String> => {
         setIsLoading(true);
         try {
+            const usernameTaken = await checkIfUsernameExists(username);
+            if (usernameTaken) {
+                return 'Username is taken';
+            }
+
             const response = await createUserWithEmailAndPassword(auth, email, password);
             await setDoc(doc(db, "users", response.user.uid), {
                 id: response.user.uid,
