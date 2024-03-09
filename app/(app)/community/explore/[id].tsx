@@ -82,7 +82,7 @@ const GroupPage = () => {
             <ScrollView>
                 <Section stylize="mb-24">
                     <Section stylize="bg-primaryContainer rounded-b-[50px] w-full h-[280px]">
-                        <Back color="primary" onPress={() => router.push('/community/explore/')} />
+                        <Back color="primary" onPress={() => router.back()} />
                         <Icon name='more-vert' color='primary' stylize="absolute top-[88px] right-6" />
                     </Section>
 

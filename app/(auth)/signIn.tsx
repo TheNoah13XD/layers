@@ -75,7 +75,7 @@ const SignIn = () => {
                     </Section>
                 </Section>
 
-                <Section stylize='flex flex-row items-center justify-between px-9 pt-11'>
+                <Section stylize='flex flex-row items-center justify-between pr-9 pl-5 pt-11'>
                     <Button type='text' contentColor='text-primary' onPress={() => router.replace("/signUp")}>Create Account</Button>
                     <Fab icon="arrow-forward" family={family} type="large" containerColor='bg-primaryContainer' contentColor='primary' onPress={handleSignIn} />
                 </Section>

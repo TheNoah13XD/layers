@@ -99,15 +99,22 @@ const SignUp = () => {
                             <TextField key={3} value={email} onChangeText={setEmail} icon='mail-outline' keyboardType='email-address' placeholder='Email' />
                             <TextField key={4} value={password} onChangeText={setPassword} icon='lock-outline' secureTextEntry placeholder='Password' stylize='mt-2' />
 
-                            <Section stylize='flex-row items-center pl-4 pt-10'>
+                            <Section stylize='flex-row items-center pt-10'>
                                 <Check value={isChecked} onValueChange={setChecked} />
-                                <Pressable onPress={() => setChecked(!isChecked)}><Type stylize='text-bodyLarge text-onPrimaryContainer pl-2'>Agree to terms & conditions.</Type></Pressable>
+                                <Section stylize='flex-row'>
+                                    <Pressable onPress={() => setChecked(!isChecked)}>
+                                        <Type stylize='text-bodyLarge text-onPrimaryContainer pl-2'>Agree to</Type>
+                                    </Pressable>
+                                    <Pressable onPress={() => {router.push("/terms")}}>
+                                        <Type stylize='text-bodyLarge text-onPrimaryContainer underline decoration-solid decoration-[#1C1149] pl-2'>terms & conditions.</Type>
+                                    </Pressable>
+                                </Section>
                             </Section>
                         </Section>
                     )}
                 </Section>
 
-                <Section stylize={`flex flex-row items-center justify-between px-9 ${!completeProfile ? 'pt-11' : 'pt-2'}`}>
+                <Section stylize={`flex flex-row items-center justify-between pr-9 pl-5 ${!completeProfile ? 'pt-11' : 'pt-2'}`}>
                     <Button type='text' contentColor='text-primary' onPress={() => router.replace("/signIn")}>Sign In</Button>
                     <Fab family={family} icon='arrow-forward' type="large" containerColor='bg-primaryContainer' contentColor='primary' onPress={handleSignUp} />
                 </Section>

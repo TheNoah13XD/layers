@@ -1,3 +1,4 @@
+import { Header } from '@components/material/Header';
 import { Stack } from 'expo-router';
 
 const AuthLayout = () => {
@@ -17,6 +18,13 @@ const AuthLayout = () => {
             />
             <Stack.Screen
                 name="signUp"
+            />
+            <Stack.Screen
+                name="terms"
+                options={{
+                    headerShown: true,
+                    header: () => <Header title='Terms & Conditions' />
+                }}
             />
             <Stack.Screen
                 name="assessments"

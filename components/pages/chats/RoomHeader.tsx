@@ -19,7 +19,7 @@ export const RoomHeader = ({ title, type, role, color = "secondary", handleRelea
 
     return (
         <Section stylize={`absolute top-0 ${seeker ? 'bg-[#F5FAFF]' : 'bg-[#F4EEFF]'} rounded-[18px] border border-outline w-full h-[140px] z-30`}>
-            <Back color={color} onPress={() => router.push('/chats')} />
+            <Back color={color} onPress={() => router.back()} />
 
             <Section stylize="flex-row items-center mt-20 ml-16">
                 <Icon family='materialCommunity' name='account-outline' color={seeker ? "onSecondaryContainer" : "onPrimaryContainer"} size={28} stylize={`flex justify-center items-center ${seeker ? "bg-secondaryContainer" : "bg-primaryContainer"} rounded-full w-10 h-10`}/>

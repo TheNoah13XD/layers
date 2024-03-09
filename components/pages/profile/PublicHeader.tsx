@@ -19,7 +19,7 @@ export const PublicHeader = ({ username, bio, role }: PublicHeaderProps) => {
                 <Section stylize={`self-center ${role === "seeker" ? "bg-primaryFixedDim" : "bg-secondaryFixedDim"} rounded-[25px] w-40 h-40`} />
             </Section>
 
-            <Back onPress={() => router.push('/community')} color={role === "seeker" ? "primary" : "secondary"} />
+            <Back onPress={() => router.back()} color={role === "seeker" ? "primary" : "secondary"} />
             <Icon name="more-vert" color={role === "seeker" ? "primary" : "secondary"} stylize="absolute top-[88px] right-6"  />
 
             <Section stylize="flex-row justify-between items-center mt-[384px] px-7">

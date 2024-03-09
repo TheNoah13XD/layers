@@ -72,7 +72,7 @@ const RecordPage = () => {
     return (
         <>
             <Section stylize="bg-surface rounded-b-[50px] w-full h-[418px]">
-                <Back color="primary" onPress={router.back} />
+                <Back color="primary" onPress={() => router.back()} />
                 <Image
                     style={{
                         position: 'absolute',

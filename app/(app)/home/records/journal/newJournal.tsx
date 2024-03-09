@@ -39,7 +39,7 @@ const NewJournal = () => {
 
     return (
         <>
-            <Back color="primary" stylize="top-[65px]" />
+            <Back color="primary" stylize="top-[65px]" onPress={() => router.back()} />
             <Button type="filled" containerColor="bg-primary" contentColor="text-onPrimary" onPress={() => {router.push("/home/records/journalHistory")}} stylize="absolute top-[57px] right-6">Stats</Button>
 
             <Section stylize="mt-[168px] px-7">
